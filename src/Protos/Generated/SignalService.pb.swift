@@ -681,6 +681,7 @@ struct SignalServiceProtos_DataMessage {
     case aibotMessage // = 6
     case aiTrainerMessage // = 7
     case aiBetrainerToTrainerMessage // = 8
+    case aiTrainerToBetrainerMessage // = 9
 
     init() {
       self = .endSession
@@ -695,6 +696,7 @@ struct SignalServiceProtos_DataMessage {
       case 6: self = .aibotMessage
       case 7: self = .aiTrainerMessage
       case 8: self = .aiBetrainerToTrainerMessage
+      case 9: self = .aiTrainerToBetrainerMessage
       default: return nil
       }
     }
@@ -708,6 +710,7 @@ struct SignalServiceProtos_DataMessage {
       case .aibotMessage: return 6
       case .aiTrainerMessage: return 7
       case .aiBetrainerToTrainerMessage: return 8
+      case .aiTrainerToBetrainerMessage: return 9
       }
     }
 
@@ -3267,6 +3270,7 @@ extension SignalServiceProtos_DataMessage.Flags: SwiftProtobuf._ProtoNameProvidi
     6: .same(proto: "AIBOT_MESSAGE"),
     7: .same(proto: "AI_TRAINER_MESSAGE"),
     8: .same(proto: "AI_BETRAINER_TO_TRAINER_MESSAGE"),
+    9: .same(proto: "AI_TRAINER_TO_BETRAINER_MESSAGE"),
   ]
 }
 

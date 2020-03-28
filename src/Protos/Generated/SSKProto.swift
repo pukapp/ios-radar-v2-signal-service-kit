@@ -3145,6 +3145,7 @@ extension SSKProtoDataMessageAITrainerInfo.SSKProtoDataMessageAITrainerInfoBuild
         case aibotMessage = 6
         case aiTrainerMessage = 7
         case aiBetrainerToTrainerMessage = 8
+        case aiTrainerToBetrainerMessage = 9
     }
 
     private class func SSKProtoDataMessageFlagsWrap(_ value: SignalServiceProtos_DataMessage.Flags) -> SSKProtoDataMessageFlags {
@@ -3156,6 +3157,7 @@ extension SSKProtoDataMessageAITrainerInfo.SSKProtoDataMessageAITrainerInfoBuild
         case .aibotMessage: return .aibotMessage
         case .aiTrainerMessage: return .aiTrainerMessage
         case .aiBetrainerToTrainerMessage: return .aiBetrainerToTrainerMessage
+        case .aiTrainerToBetrainerMessage: return .aiTrainerToBetrainerMessage
         }
     }
 
@@ -3168,6 +3170,7 @@ extension SSKProtoDataMessageAITrainerInfo.SSKProtoDataMessageAITrainerInfoBuild
         case .aibotMessage: return .aibotMessage
         case .aiTrainerMessage: return .aiTrainerMessage
         case .aiBetrainerToTrainerMessage: return .aiBetrainerToTrainerMessage
+        case .aiTrainerToBetrainerMessage: return .aiTrainerToBetrainerMessage
         }
     }
 

@@ -118,6 +118,7 @@ message DataMessage {
     AIBOT_MESSAGE           = 6;
     AI_TRAINER_MESSAGE      = 7;
     AI_BETRAINER_TO_TRAINER_MESSAGE = 8;
+    AI_TRAINER_TO_BETRAINER_MESSAGE = 9;
   }
 
   message Quote {
