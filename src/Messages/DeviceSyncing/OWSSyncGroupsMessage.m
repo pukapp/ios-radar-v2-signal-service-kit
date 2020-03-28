@@ -69,7 +69,8 @@ NS_ASSUME_NONNULL_BEGIN
         enumerateCollectionObjectsWithTransaction:transaction
                                        usingBlock:^(id obj, BOOL *stop) {
                                            if (![obj isKindOfClass:[TSGroupThread class]]) {
-                                               if (![obj isKindOfClass:[TSContactThread class]]) {
+                                               if (![obj isKindOfClass:[TSContactThread class]] ||
+                                                   ![obj isKindOfClass:[TSTrainerThread class]]) {
                                                    OWSLogWarn(
                                                        @"Ignoring non group thread in thread collection: %@", obj);
                                                }

@@ -1124,7 +1124,7 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
-    TSThread *_Nullable thread = [self threadForEnvelope:envelope dataMessage:dataMessage transaction:transaction];
+    TSTrainerThread *_Nullable thread = [TSTrainerThread getOrCreateThreadWithContactId:envelope.source anyTransaction:transaction];
     
     if (!thread) {
         OWSFailDebug(@"ignoring expiring messages update for unknown group.");
