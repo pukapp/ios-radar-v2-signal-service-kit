@@ -1398,7 +1398,6 @@ struct SignalServiceProtos_DataMessage {
     // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
     // methods supported on all messages.
 
-    /// @required
     var trainerID: String {
       get {return _trainerID ?? String()}
       set {_trainerID = newValue}

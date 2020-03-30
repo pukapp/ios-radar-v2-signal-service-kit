@@ -236,7 +236,6 @@ message DataMessage {
   }
 
   message AITrainModeInfo {
-    // @required
     optional string trainerId = 1;
     optional string trainOpenerId = 2;
     optional string beTrainerId = 3;
