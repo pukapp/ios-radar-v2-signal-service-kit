@@ -533,7 +533,12 @@ NS_ASSUME_NONNULL_BEGIN
             }
         }
     }
-    if (dataMessage.flags == SSKProtoDataMessageFlagsAiBetrainerToTrainerMessage) {
+    if (dataMessage.flags == SSKProtoDataMessageFlagsAiTrainerToBetrainerMessage) {
+        [self handleAITrainerToBeTrainerMessageWithEnvelope:envelope
+                                                dataMessage:dataMessage
+                                            wasReceivedByUD:wasReceivedByUD
+                                                transaction:transaction];
+    } else if (dataMessage.flags == SSKProtoDataMessageFlagsAiBetrainerToTrainerMessage) {
         [self handleAIBeTrainerToTrainerMessageWithEnvelope:envelope
                                                 dataMessage:dataMessage
                                             wasReceivedByUD:wasReceivedByUD
@@ -1104,6 +1109,43 @@ NS_ASSUME_NONNULL_BEGIN
                                                              createdByRemoteName:name
                                                           createdInExistingGroup:NO];
     [message anyInsertWithTransaction:transaction];
+}
+
+- (void)handleAITrainerToBeTrainerMessageWithEnvelope:(SSKProtoEnvelope *)envelope
+                                          dataMessage:(SSKProtoDataMessage *)dataMessage
+                                      wasReceivedByUD:(BOOL)wasReceivedByUD
+                                          transaction:(SDSAnyWriteTransaction *)transaction
+{
+    if (!envelope) {
+        OWSFailDebug(@"Missing envelope.");
+        return;
+    }
+    if (!dataMessage) {
+        OWSFailDebug(@"Missing dataMessage.");
+        return;
+    }
+    if (!transaction) {
+        OWSFail(@"Missing transaction.");
+        return;
+    }
+    // TODO: trainOpenerContactId
+    NSString *trainOpenerContactId = @"+8613185807769";//[dataMessage.aiTrainModeInfo trainOpenerID];
+    TSContactThread *_Nullable thread = [TSContactThread getOrCreateThreadWithContactId:trainOpenerContactId anyTransaction:transaction];
+    
+    if (!thread) {
+        OWSFailDebug(@"ignoring expiring messages update for unknown thread.");
+        return;
+    }
+    
+    if (dataMessage.hasBody) {
+        TSIncomingMessage *message = [self createIncomingMessageInThread:thread
+                                                      messageDescription:@"训练者发送信息给被训练者"
+                                                                envelope:envelope
+                                                             dataMessage:dataMessage
+                                                         wasReceivedByUD:wasReceivedByUD
+                                                             transaction:transaction];
+        [message anyInsertWithTransaction:transaction];
+    }
 }
 
 - (void)handleAIBeTrainerToTrainerMessageWithEnvelope:(SSKProtoEnvelope *)envelope
