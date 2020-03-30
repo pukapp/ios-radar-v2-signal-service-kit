@@ -131,7 +131,7 @@ NSString *envelopeAddress(SSKProtoEnvelope *envelope)
         [description appendString:@"ExpirationTimerUpdate"];
     } else if ((dataMessage.flags & SSKProtoDataMessageFlagsProfileKeyUpdate) != 0) {
         [description appendString:@"ProfileKey"];
-    } else if ((dataMessage.flags & SSKProtoDataMessageFlagsAibotStateUpdate) != 0) {
+    } else if ((dataMessage.flags & SSKProtoDataMessageFlagsAiBotStateUpdate) != 0) {
         [description appendString:@"AibotStateUpdate"];
     } else if (dataMessage.attachments.count > 0) {
         [description appendString:@"MessageWithAttachment"];

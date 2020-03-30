@@ -114,11 +114,12 @@ message DataMessage {
     END_SESSION             = 1;
     EXPIRATION_TIMER_UPDATE = 2;
     PROFILE_KEY_UPDATE      = 4;
-    AIBOT_STATE_UPDATE      = 5;
-    AIBOT_MESSAGE           = 6;
-    AI_TRAINER_MESSAGE      = 7;
-    AI_BETRAINER_TO_TRAINER_MESSAGE = 8;
-    AI_TRAINER_TO_BETRAINER_MESSAGE = 9;
+
+    AI_BOT_STATE_UPDATE               = 1001;
+    AI_BOT_MESSAGE                    = 1002;
+    AI_BETRAINER_TO_TRAINER_MESSAGE   = 1003;
+    AI_TRAINER_TO_BETRAINER_MESSAGE   = 1004;
+    AI_TRAINER_TO_TRAINOPENER_MESSAGE = 1005;
   }
 
   message Quote {
@@ -234,11 +235,11 @@ message DataMessage {
     CURRENT = 1;
   }
 
-  message AITrainerInfo {
+  message AITrainModeInfo {
     // @required
-    optional string trainer = 1;
-    optional string contactOpenedTrainer = 2;
-    optional string contact = 3;
+    optional string trainerId = 1;
+    optional string trainOpenerId = 2;
+    optional string beTrainerId = 3;
   }
 
   optional string            body                    =  1;
@@ -255,6 +256,7 @@ message DataMessage {
   optional uint32            requiredProtocolVersion = 12;
   optional uint32            messageTimer            = 13;
   optional bool              aiBotState              = 14;
+  optional AITrainModeInfo   aiTrainModeInfo         = 15;
 }
 
 message NullMessage {

@@ -533,14 +533,14 @@ NS_ASSUME_NONNULL_BEGIN
             }
         }
     }
-    if (dataMessage.flags == 8) {
+    if (dataMessage.flags == SSKProtoDataMessageFlagsAiBetrainerToTrainerMessage) {
         [self handleAIBeTrainerToTrainerMessageWithEnvelope:envelope
                                                 dataMessage:dataMessage
                                             wasReceivedByUD:wasReceivedByUD
                                                 transaction:transaction];
-    } else if (dataMessage.flags == 6) {
+    } else if (dataMessage.flags == SSKProtoDataMessageFlagsAiBotMessage) {
         [self handleAIBotMessageWithEnvelope:envelope dataMessage:dataMessage transaction:transaction];
-    } else if (dataMessage.flags == 5) {
+    } else if (dataMessage.flags == SSKProtoDataMessageFlagsAiBotStateUpdate) {
         [self handleAIBotStateUpdateMessageWithEnvelope:envelope dataMessage:dataMessage transaction:transaction];
     } else if ((dataMessage.flags & SSKProtoDataMessageFlagsEndSession) != 0) {
         [self handleEndSessionMessageWithEnvelope:envelope dataMessage:dataMessage transaction:transaction];

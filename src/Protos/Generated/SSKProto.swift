@@ -3000,89 +3000,89 @@ extension SSKProtoDataMessageSticker.SSKProtoDataMessageStickerBuilder {
 
 #endif
 
-// MARK: - SSKProtoDataMessageAITrainerInfo
+// MARK: - SSKProtoDataMessageAITrainModeInfo
 
-@objc public class SSKProtoDataMessageAITrainerInfo: NSObject {
+@objc public class SSKProtoDataMessageAITrainModeInfo: NSObject {
 
-    // MARK: - SSKProtoDataMessageAITrainerInfoBuilder
+    // MARK: - SSKProtoDataMessageAITrainModeInfoBuilder
 
-    @objc public class func builder(trainer: String) -> SSKProtoDataMessageAITrainerInfoBuilder {
-        return SSKProtoDataMessageAITrainerInfoBuilder(trainer: trainer)
+    @objc public class func builder(trainerID: String) -> SSKProtoDataMessageAITrainModeInfoBuilder {
+        return SSKProtoDataMessageAITrainModeInfoBuilder(trainerID: trainerID)
     }
 
     // asBuilder() constructs a builder that reflects the proto's contents.
-    @objc public func asBuilder() -> SSKProtoDataMessageAITrainerInfoBuilder {
-        let builder = SSKProtoDataMessageAITrainerInfoBuilder(trainer: trainer)
-        if let _value = contactOpenedTrainer {
-            builder.setContactOpenedTrainer(_value)
+    @objc public func asBuilder() -> SSKProtoDataMessageAITrainModeInfoBuilder {
+        let builder = SSKProtoDataMessageAITrainModeInfoBuilder(trainerID: trainerID)
+        if let _value = trainOpenerID {
+            builder.setTrainOpenerID(_value)
         }
-        if let _value = contact {
-            builder.setContact(_value)
+        if let _value = beTrainerID {
+            builder.setBeTrainerID(_value)
         }
         return builder
     }
 
-    @objc public class SSKProtoDataMessageAITrainerInfoBuilder: NSObject {
+    @objc public class SSKProtoDataMessageAITrainModeInfoBuilder: NSObject {
 
-        private var proto = SignalServiceProtos_DataMessage.AITrainerInfo()
+        private var proto = SignalServiceProtos_DataMessage.AITrainModeInfo()
 
         @objc fileprivate override init() {}
 
-        @objc fileprivate init(trainer: String) {
+        @objc fileprivate init(trainerID: String) {
             super.init()
 
-            setTrainer(trainer)
+            setTrainerID(trainerID)
         }
 
-        @objc public func setTrainer(_ valueParam: String) {
-            proto.trainer = valueParam
+        @objc public func setTrainerID(_ valueParam: String) {
+            proto.trainerID = valueParam
         }
 
-        @objc public func setContactOpenedTrainer(_ valueParam: String) {
-            proto.contactOpenedTrainer = valueParam
+        @objc public func setTrainOpenerID(_ valueParam: String) {
+            proto.trainOpenerID = valueParam
         }
 
-        @objc public func setContact(_ valueParam: String) {
-            proto.contact = valueParam
+        @objc public func setBeTrainerID(_ valueParam: String) {
+            proto.beTrainerID = valueParam
         }
 
-        @objc public func build() throws -> SSKProtoDataMessageAITrainerInfo {
-            return try SSKProtoDataMessageAITrainerInfo.parseProto(proto)
+        @objc public func build() throws -> SSKProtoDataMessageAITrainModeInfo {
+            return try SSKProtoDataMessageAITrainModeInfo.parseProto(proto)
         }
 
         @objc public func buildSerializedData() throws -> Data {
-            return try SSKProtoDataMessageAITrainerInfo.parseProto(proto).serializedData()
+            return try SSKProtoDataMessageAITrainModeInfo.parseProto(proto).serializedData()
         }
     }
 
-    fileprivate let proto: SignalServiceProtos_DataMessage.AITrainerInfo
+    fileprivate let proto: SignalServiceProtos_DataMessage.AITrainModeInfo
 
-    @objc public let trainer: String
+    @objc public let trainerID: String
 
-    @objc public var contactOpenedTrainer: String? {
-        guard proto.hasContactOpenedTrainer else {
+    @objc public var trainOpenerID: String? {
+        guard proto.hasTrainOpenerID else {
             return nil
         }
-        return proto.contactOpenedTrainer
+        return proto.trainOpenerID
     }
-    @objc public var hasContactOpenedTrainer: Bool {
-        return proto.hasContactOpenedTrainer
+    @objc public var hasTrainOpenerID: Bool {
+        return proto.hasTrainOpenerID
     }
 
-    @objc public var contact: String? {
-        guard proto.hasContact else {
+    @objc public var beTrainerID: String? {
+        guard proto.hasBeTrainerID else {
             return nil
         }
-        return proto.contact
+        return proto.beTrainerID
     }
-    @objc public var hasContact: Bool {
-        return proto.hasContact
+    @objc public var hasBeTrainerID: Bool {
+        return proto.hasBeTrainerID
     }
 
-    private init(proto: SignalServiceProtos_DataMessage.AITrainerInfo,
-                 trainer: String) {
+    private init(proto: SignalServiceProtos_DataMessage.AITrainModeInfo,
+                 trainerID: String) {
         self.proto = proto
-        self.trainer = trainer
+        self.trainerID = trainerID
     }
 
     @objc
@@ -3090,23 +3090,23 @@ extension SSKProtoDataMessageSticker.SSKProtoDataMessageStickerBuilder {
         return try self.proto.serializedData()
     }
 
-    @objc public class func parseData(_ serializedData: Data) throws -> SSKProtoDataMessageAITrainerInfo {
-        let proto = try SignalServiceProtos_DataMessage.AITrainerInfo(serializedData: serializedData)
+    @objc public class func parseData(_ serializedData: Data) throws -> SSKProtoDataMessageAITrainModeInfo {
+        let proto = try SignalServiceProtos_DataMessage.AITrainModeInfo(serializedData: serializedData)
         return try parseProto(proto)
     }
 
-    fileprivate class func parseProto(_ proto: SignalServiceProtos_DataMessage.AITrainerInfo) throws -> SSKProtoDataMessageAITrainerInfo {
-        guard proto.hasTrainer else {
-            throw SSKProtoError.invalidProtobuf(description: "\(logTag) missing required field: trainer")
+    fileprivate class func parseProto(_ proto: SignalServiceProtos_DataMessage.AITrainModeInfo) throws -> SSKProtoDataMessageAITrainModeInfo {
+        guard proto.hasTrainerID else {
+            throw SSKProtoError.invalidProtobuf(description: "\(logTag) missing required field: trainerID")
         }
-        let trainer = proto.trainer
+        let trainerID = proto.trainerID
 
-        // MARK: - Begin Validation Logic for SSKProtoDataMessageAITrainerInfo -
+        // MARK: - Begin Validation Logic for SSKProtoDataMessageAITrainModeInfo -
 
-        // MARK: - End Validation Logic for SSKProtoDataMessageAITrainerInfo -
+        // MARK: - End Validation Logic for SSKProtoDataMessageAITrainModeInfo -
 
-        let result = SSKProtoDataMessageAITrainerInfo(proto: proto,
-                                                      trainer: trainer)
+        let result = SSKProtoDataMessageAITrainModeInfo(proto: proto,
+                                                        trainerID: trainerID)
         return result
     }
 
@@ -3117,14 +3117,14 @@ extension SSKProtoDataMessageSticker.SSKProtoDataMessageStickerBuilder {
 
 #if DEBUG
 
-extension SSKProtoDataMessageAITrainerInfo {
+extension SSKProtoDataMessageAITrainModeInfo {
     @objc public func serializedDataIgnoringErrors() -> Data? {
         return try! self.serializedData()
     }
 }
 
-extension SSKProtoDataMessageAITrainerInfo.SSKProtoDataMessageAITrainerInfoBuilder {
-    @objc public func buildIgnoringErrors() -> SSKProtoDataMessageAITrainerInfo? {
+extension SSKProtoDataMessageAITrainModeInfo.SSKProtoDataMessageAITrainModeInfoBuilder {
+    @objc public func buildIgnoringErrors() -> SSKProtoDataMessageAITrainModeInfo? {
         return try! self.build()
     }
 }
@@ -3141,11 +3141,11 @@ extension SSKProtoDataMessageAITrainerInfo.SSKProtoDataMessageAITrainerInfoBuild
         case endSession = 1
         case expirationTimerUpdate = 2
         case profileKeyUpdate = 4
-        case aibotStateUpdate = 5
-        case aibotMessage = 6
-        case aiTrainerMessage = 7
-        case aiBetrainerToTrainerMessage = 8
-        case aiTrainerToBetrainerMessage = 9
+        case aiBotStateUpdate = 1001
+        case aiBotMessage = 1002
+        case aiBetrainerToTrainerMessage = 1003
+        case aiTrainerToBetrainerMessage = 1004
+        case aiTrainerToTrainopenerMessage = 1005
     }
 
     private class func SSKProtoDataMessageFlagsWrap(_ value: SignalServiceProtos_DataMessage.Flags) -> SSKProtoDataMessageFlags {
@@ -3153,11 +3153,11 @@ extension SSKProtoDataMessageAITrainerInfo.SSKProtoDataMessageAITrainerInfoBuild
         case .endSession: return .endSession
         case .expirationTimerUpdate: return .expirationTimerUpdate
         case .profileKeyUpdate: return .profileKeyUpdate
-        case .aibotStateUpdate: return .aibotStateUpdate
-        case .aibotMessage: return .aibotMessage
-        case .aiTrainerMessage: return .aiTrainerMessage
+        case .aiBotStateUpdate: return .aiBotStateUpdate
+        case .aiBotMessage: return .aiBotMessage
         case .aiBetrainerToTrainerMessage: return .aiBetrainerToTrainerMessage
         case .aiTrainerToBetrainerMessage: return .aiTrainerToBetrainerMessage
+        case .aiTrainerToTrainopenerMessage: return .aiTrainerToTrainopenerMessage
         }
     }
 
@@ -3166,11 +3166,11 @@ extension SSKProtoDataMessageAITrainerInfo.SSKProtoDataMessageAITrainerInfoBuild
         case .endSession: return .endSession
         case .expirationTimerUpdate: return .expirationTimerUpdate
         case .profileKeyUpdate: return .profileKeyUpdate
-        case .aibotStateUpdate: return .aibotStateUpdate
-        case .aibotMessage: return .aibotMessage
-        case .aiTrainerMessage: return .aiTrainerMessage
+        case .aiBotStateUpdate: return .aiBotStateUpdate
+        case .aiBotMessage: return .aiBotMessage
         case .aiBetrainerToTrainerMessage: return .aiBetrainerToTrainerMessage
         case .aiTrainerToBetrainerMessage: return .aiTrainerToBetrainerMessage
+        case .aiTrainerToTrainopenerMessage: return .aiTrainerToTrainopenerMessage
         }
     }
 
@@ -3239,6 +3239,9 @@ extension SSKProtoDataMessageAITrainerInfo.SSKProtoDataMessageAITrainerInfoBuild
         }
         if hasAiBotState {
             builder.setAiBotState(aiBotState)
+        }
+        if let _value = aiTrainModeInfo {
+            builder.setAiTrainModeInfo(_value)
         }
         return builder
     }
@@ -3323,6 +3326,10 @@ extension SSKProtoDataMessageAITrainerInfo.SSKProtoDataMessageAITrainerInfoBuild
             proto.aiBotState = valueParam
         }
 
+        @objc public func setAiTrainModeInfo(_ valueParam: SSKProtoDataMessageAITrainModeInfo) {
+            proto.aiTrainModeInfo = valueParam.proto
+        }
+
         @objc public func build() throws -> SSKProtoDataMessage {
             return try SSKProtoDataMessage.parseProto(proto)
         }
@@ -3345,6 +3352,8 @@ extension SSKProtoDataMessageAITrainerInfo.SSKProtoDataMessageAITrainerInfoBuild
     @objc public let preview: [SSKProtoDataMessagePreview]
 
     @objc public let sticker: SSKProtoDataMessageSticker?
+
+    @objc public let aiTrainModeInfo: SSKProtoDataMessageAITrainModeInfo?
 
     @objc public var body: String? {
         guard proto.hasBody else {
@@ -3414,7 +3423,8 @@ extension SSKProtoDataMessageAITrainerInfo.SSKProtoDataMessageAITrainerInfoBuild
                  quote: SSKProtoDataMessageQuote?,
                  contact: [SSKProtoDataMessageContact],
                  preview: [SSKProtoDataMessagePreview],
-                 sticker: SSKProtoDataMessageSticker?) {
+                 sticker: SSKProtoDataMessageSticker?,
+                 aiTrainModeInfo: SSKProtoDataMessageAITrainModeInfo?) {
         self.proto = proto
         self.attachments = attachments
         self.group = group
@@ -3422,6 +3432,7 @@ extension SSKProtoDataMessageAITrainerInfo.SSKProtoDataMessageAITrainerInfoBuild
         self.contact = contact
         self.preview = preview
         self.sticker = sticker
+        self.aiTrainModeInfo = aiTrainModeInfo
     }
 
     @objc
@@ -3459,6 +3470,11 @@ extension SSKProtoDataMessageAITrainerInfo.SSKProtoDataMessageAITrainerInfoBuild
             sticker = try SSKProtoDataMessageSticker.parseProto(proto.sticker)
         }
 
+        var aiTrainModeInfo: SSKProtoDataMessageAITrainModeInfo? = nil
+        if proto.hasAiTrainModeInfo {
+            aiTrainModeInfo = try SSKProtoDataMessageAITrainModeInfo.parseProto(proto.aiTrainModeInfo)
+        }
+
         // MARK: - Begin Validation Logic for SSKProtoDataMessage -
 
         // MARK: - End Validation Logic for SSKProtoDataMessage -
@@ -3469,7 +3485,8 @@ extension SSKProtoDataMessageAITrainerInfo.SSKProtoDataMessageAITrainerInfoBuild
                                          quote: quote,
                                          contact: contact,
                                          preview: preview,
-                                         sticker: sticker)
+                                         sticker: sticker,
+                                         aiTrainModeInfo: aiTrainModeInfo)
         return result
     }
 

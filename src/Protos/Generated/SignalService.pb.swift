@@ -670,6 +670,15 @@ struct SignalServiceProtos_DataMessage {
   /// Clears the value of `aiBotState`. Subsequent reads from it will return its default value.
   mutating func clearAiBotState() {self._aiBotState = nil}
 
+  var aiTrainModeInfo: SignalServiceProtos_DataMessage.AITrainModeInfo {
+    get {return _aiTrainModeInfo ?? SignalServiceProtos_DataMessage.AITrainModeInfo()}
+    set {_aiTrainModeInfo = newValue}
+  }
+  /// Returns true if `aiTrainModeInfo` has been explicitly set.
+  var hasAiTrainModeInfo: Bool {return self._aiTrainModeInfo != nil}
+  /// Clears the value of `aiTrainModeInfo`. Subsequent reads from it will return its default value.
+  mutating func clearAiTrainModeInfo() {self._aiTrainModeInfo = nil}
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   enum Flags: SwiftProtobuf.Enum {
@@ -677,11 +686,11 @@ struct SignalServiceProtos_DataMessage {
     case endSession // = 1
     case expirationTimerUpdate // = 2
     case profileKeyUpdate // = 4
-    case aibotStateUpdate // = 5
-    case aibotMessage // = 6
-    case aiTrainerMessage // = 7
-    case aiBetrainerToTrainerMessage // = 8
-    case aiTrainerToBetrainerMessage // = 9
+    case aiBotStateUpdate // = 1001
+    case aiBotMessage // = 1002
+    case aiBetrainerToTrainerMessage // = 1003
+    case aiTrainerToBetrainerMessage // = 1004
+    case aiTrainerToTrainopenerMessage // = 1005
 
     init() {
       self = .endSession
@@ -692,11 +701,11 @@ struct SignalServiceProtos_DataMessage {
       case 1: self = .endSession
       case 2: self = .expirationTimerUpdate
       case 4: self = .profileKeyUpdate
-      case 5: self = .aibotStateUpdate
-      case 6: self = .aibotMessage
-      case 7: self = .aiTrainerMessage
-      case 8: self = .aiBetrainerToTrainerMessage
-      case 9: self = .aiTrainerToBetrainerMessage
+      case 1001: self = .aiBotStateUpdate
+      case 1002: self = .aiBotMessage
+      case 1003: self = .aiBetrainerToTrainerMessage
+      case 1004: self = .aiTrainerToBetrainerMessage
+      case 1005: self = .aiTrainerToTrainopenerMessage
       default: return nil
       }
     }
@@ -706,11 +715,11 @@ struct SignalServiceProtos_DataMessage {
       case .endSession: return 1
       case .expirationTimerUpdate: return 2
       case .profileKeyUpdate: return 4
-      case .aibotStateUpdate: return 5
-      case .aibotMessage: return 6
-      case .aiTrainerMessage: return 7
-      case .aiBetrainerToTrainerMessage: return 8
-      case .aiTrainerToBetrainerMessage: return 9
+      case .aiBotStateUpdate: return 1001
+      case .aiBotMessage: return 1002
+      case .aiBetrainerToTrainerMessage: return 1003
+      case .aiTrainerToBetrainerMessage: return 1004
+      case .aiTrainerToTrainopenerMessage: return 1005
       }
     }
 
@@ -1384,46 +1393,46 @@ struct SignalServiceProtos_DataMessage {
     fileprivate var _data: SignalServiceProtos_AttachmentPointer? = nil
   }
 
-  struct AITrainerInfo {
+  struct AITrainModeInfo {
     // SwiftProtobuf.Message conformance is added in an extension below. See the
     // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
     // methods supported on all messages.
 
     /// @required
-    var trainer: String {
-      get {return _trainer ?? String()}
-      set {_trainer = newValue}
+    var trainerID: String {
+      get {return _trainerID ?? String()}
+      set {_trainerID = newValue}
     }
-    /// Returns true if `trainer` has been explicitly set.
-    var hasTrainer: Bool {return self._trainer != nil}
-    /// Clears the value of `trainer`. Subsequent reads from it will return its default value.
-    mutating func clearTrainer() {self._trainer = nil}
+    /// Returns true if `trainerID` has been explicitly set.
+    var hasTrainerID: Bool {return self._trainerID != nil}
+    /// Clears the value of `trainerID`. Subsequent reads from it will return its default value.
+    mutating func clearTrainerID() {self._trainerID = nil}
 
-    var contactOpenedTrainer: String {
-      get {return _contactOpenedTrainer ?? String()}
-      set {_contactOpenedTrainer = newValue}
+    var trainOpenerID: String {
+      get {return _trainOpenerID ?? String()}
+      set {_trainOpenerID = newValue}
     }
-    /// Returns true if `contactOpenedTrainer` has been explicitly set.
-    var hasContactOpenedTrainer: Bool {return self._contactOpenedTrainer != nil}
-    /// Clears the value of `contactOpenedTrainer`. Subsequent reads from it will return its default value.
-    mutating func clearContactOpenedTrainer() {self._contactOpenedTrainer = nil}
+    /// Returns true if `trainOpenerID` has been explicitly set.
+    var hasTrainOpenerID: Bool {return self._trainOpenerID != nil}
+    /// Clears the value of `trainOpenerID`. Subsequent reads from it will return its default value.
+    mutating func clearTrainOpenerID() {self._trainOpenerID = nil}
 
-    var contact: String {
-      get {return _contact ?? String()}
-      set {_contact = newValue}
+    var beTrainerID: String {
+      get {return _beTrainerID ?? String()}
+      set {_beTrainerID = newValue}
     }
-    /// Returns true if `contact` has been explicitly set.
-    var hasContact: Bool {return self._contact != nil}
-    /// Clears the value of `contact`. Subsequent reads from it will return its default value.
-    mutating func clearContact() {self._contact = nil}
+    /// Returns true if `beTrainerID` has been explicitly set.
+    var hasBeTrainerID: Bool {return self._beTrainerID != nil}
+    /// Clears the value of `beTrainerID`. Subsequent reads from it will return its default value.
+    mutating func clearBeTrainerID() {self._beTrainerID = nil}
 
     var unknownFields = SwiftProtobuf.UnknownStorage()
 
     init() {}
 
-    fileprivate var _trainer: String? = nil
-    fileprivate var _contactOpenedTrainer: String? = nil
-    fileprivate var _contact: String? = nil
+    fileprivate var _trainerID: String? = nil
+    fileprivate var _trainOpenerID: String? = nil
+    fileprivate var _beTrainerID: String? = nil
   }
 
   init() {}
@@ -1439,6 +1448,7 @@ struct SignalServiceProtos_DataMessage {
   fileprivate var _requiredProtocolVersion: UInt32? = nil
   fileprivate var _messageTimer: UInt32? = nil
   fileprivate var _aiBotState: Bool? = nil
+  fileprivate var _aiTrainModeInfo: SignalServiceProtos_DataMessage.AITrainModeInfo? = nil
 }
 
 #if swift(>=4.2)
@@ -3171,6 +3181,7 @@ extension SignalServiceProtos_DataMessage: SwiftProtobuf.Message, SwiftProtobuf.
     12: .same(proto: "requiredProtocolVersion"),
     13: .same(proto: "messageTimer"),
     14: .same(proto: "aiBotState"),
+    15: .same(proto: "aiTrainModeInfo"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -3190,6 +3201,7 @@ extension SignalServiceProtos_DataMessage: SwiftProtobuf.Message, SwiftProtobuf.
       case 12: try decoder.decodeSingularUInt32Field(value: &self._requiredProtocolVersion)
       case 13: try decoder.decodeSingularUInt32Field(value: &self._messageTimer)
       case 14: try decoder.decodeSingularBoolField(value: &self._aiBotState)
+      case 15: try decoder.decodeSingularMessageField(value: &self._aiTrainModeInfo)
       default: break
       }
     }
@@ -3238,6 +3250,9 @@ extension SignalServiceProtos_DataMessage: SwiftProtobuf.Message, SwiftProtobuf.
     if let v = self._aiBotState {
       try visitor.visitSingularBoolField(value: v, fieldNumber: 14)
     }
+    if let v = self._aiTrainModeInfo {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 15)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -3256,6 +3271,7 @@ extension SignalServiceProtos_DataMessage: SwiftProtobuf.Message, SwiftProtobuf.
     if lhs._requiredProtocolVersion != rhs._requiredProtocolVersion {return false}
     if lhs._messageTimer != rhs._messageTimer {return false}
     if lhs._aiBotState != rhs._aiBotState {return false}
+    if lhs._aiTrainModeInfo != rhs._aiTrainModeInfo {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -3266,11 +3282,11 @@ extension SignalServiceProtos_DataMessage.Flags: SwiftProtobuf._ProtoNameProvidi
     1: .same(proto: "END_SESSION"),
     2: .same(proto: "EXPIRATION_TIMER_UPDATE"),
     4: .same(proto: "PROFILE_KEY_UPDATE"),
-    5: .same(proto: "AIBOT_STATE_UPDATE"),
-    6: .same(proto: "AIBOT_MESSAGE"),
-    7: .same(proto: "AI_TRAINER_MESSAGE"),
-    8: .same(proto: "AI_BETRAINER_TO_TRAINER_MESSAGE"),
-    9: .same(proto: "AI_TRAINER_TO_BETRAINER_MESSAGE"),
+    1001: .same(proto: "AI_BOT_STATE_UPDATE"),
+    1002: .same(proto: "AI_BOT_MESSAGE"),
+    1003: .same(proto: "AI_BETRAINER_TO_TRAINER_MESSAGE"),
+    1004: .same(proto: "AI_TRAINER_TO_BETRAINER_MESSAGE"),
+    1005: .same(proto: "AI_TRAINER_TO_TRAINOPENER_MESSAGE"),
   ]
 }
 
@@ -3807,42 +3823,42 @@ extension SignalServiceProtos_DataMessage.Sticker: SwiftProtobuf.Message, SwiftP
   }
 }
 
-extension SignalServiceProtos_DataMessage.AITrainerInfo: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = SignalServiceProtos_DataMessage.protoMessageName + ".AITrainerInfo"
+extension SignalServiceProtos_DataMessage.AITrainModeInfo: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = SignalServiceProtos_DataMessage.protoMessageName + ".AITrainModeInfo"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "trainer"),
-    2: .same(proto: "contactOpenedTrainer"),
-    3: .same(proto: "contact"),
+    1: .same(proto: "trainerId"),
+    2: .same(proto: "trainOpenerId"),
+    3: .same(proto: "beTrainerId"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
       switch fieldNumber {
-      case 1: try decoder.decodeSingularStringField(value: &self._trainer)
-      case 2: try decoder.decodeSingularStringField(value: &self._contactOpenedTrainer)
-      case 3: try decoder.decodeSingularStringField(value: &self._contact)
+      case 1: try decoder.decodeSingularStringField(value: &self._trainerID)
+      case 2: try decoder.decodeSingularStringField(value: &self._trainOpenerID)
+      case 3: try decoder.decodeSingularStringField(value: &self._beTrainerID)
       default: break
       }
     }
   }
 
   func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if let v = self._trainer {
+    if let v = self._trainerID {
       try visitor.visitSingularStringField(value: v, fieldNumber: 1)
     }
-    if let v = self._contactOpenedTrainer {
+    if let v = self._trainOpenerID {
       try visitor.visitSingularStringField(value: v, fieldNumber: 2)
     }
-    if let v = self._contact {
+    if let v = self._beTrainerID {
       try visitor.visitSingularStringField(value: v, fieldNumber: 3)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  static func ==(lhs: SignalServiceProtos_DataMessage.AITrainerInfo, rhs: SignalServiceProtos_DataMessage.AITrainerInfo) -> Bool {
-    if lhs._trainer != rhs._trainer {return false}
-    if lhs._contactOpenedTrainer != rhs._contactOpenedTrainer {return false}
-    if lhs._contact != rhs._contact {return false}
+  static func ==(lhs: SignalServiceProtos_DataMessage.AITrainModeInfo, rhs: SignalServiceProtos_DataMessage.AITrainModeInfo) -> Bool {
+    if lhs._trainerID != rhs._trainerID {return false}
+    if lhs._trainOpenerID != rhs._trainOpenerID {return false}
+    if lhs._beTrainerID != rhs._beTrainerID {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
