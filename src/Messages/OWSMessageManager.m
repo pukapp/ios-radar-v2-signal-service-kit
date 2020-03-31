@@ -1207,7 +1207,15 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
+    if (!dataMessage.aiTrainModeInfo) {
+        OWSFail(@"Missing aiTrainModeInfo.");
+        return;
+    }
+    
     TSTrainerThread *_Nullable thread = [TSTrainerThread getOrCreateThreadWithContactId:envelope.source anyTransaction:transaction];
+    
+    [SSKEnvironment.shared storeTrainerContactId:dataMessage.aiTrainModeInfo.trainerID withTrainerThreadUniqueId:thread.uniqueId];
+    [SSKEnvironment.shared storeTrainOpenerContactId:dataMessage.aiTrainModeInfo.trainOpenerID withTrainerThreadUniqueId:thread.uniqueId];
     
     if (!thread) {
         OWSFailDebug(@"ignoring expiring messages update for unknown group.");
