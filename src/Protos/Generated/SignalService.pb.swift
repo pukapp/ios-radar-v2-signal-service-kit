@@ -118,6 +118,15 @@ struct SignalServiceProtos_Envelope {
   /// Clears the value of `serverTimestamp`. Subsequent reads from it will return its default value.
   mutating func clearServerTimestamp() {self._serverTimestamp = nil}
 
+  var noti: SignalServiceProtos_Notification {
+    get {return _noti ?? SignalServiceProtos_Notification()}
+    set {_noti = newValue}
+  }
+  /// Returns true if `noti` has been explicitly set.
+  var hasNoti: Bool {return self._noti != nil}
+  /// Clears the value of `noti`. Subsequent reads from it will return its default value.
+  mutating func clearNoti() {self._noti = nil}
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   enum TypeEnum: SwiftProtobuf.Enum {
@@ -128,6 +137,7 @@ struct SignalServiceProtos_Envelope {
     case prekeyBundle // = 3
     case receipt // = 5
     case unidentifiedSender // = 6
+    case notice // = 7
 
     init() {
       self = .unknown
@@ -141,6 +151,7 @@ struct SignalServiceProtos_Envelope {
       case 3: self = .prekeyBundle
       case 5: self = .receipt
       case 6: self = .unidentifiedSender
+      case 7: self = .notice
       default: return nil
       }
     }
@@ -153,6 +164,7 @@ struct SignalServiceProtos_Envelope {
       case .prekeyBundle: return 3
       case .receipt: return 5
       case .unidentifiedSender: return 6
+      case .notice: return 7
       }
     }
 
@@ -169,11 +181,80 @@ struct SignalServiceProtos_Envelope {
   fileprivate var _content: Data? = nil
   fileprivate var _serverGuid: String? = nil
   fileprivate var _serverTimestamp: UInt64? = nil
+  fileprivate var _noti: SignalServiceProtos_Notification? = nil
 }
 
 #if swift(>=4.2)
 
 extension SignalServiceProtos_Envelope.TypeEnum: CaseIterable {
+  // Support synthesized by the compiler.
+}
+
+#endif  // swift(>=4.2)
+
+struct SignalServiceProtos_Notification {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  var type: SignalServiceProtos_Notification.TypeEnum {
+    get {return _type ?? .ai}
+    set {_type = newValue}
+  }
+  /// Returns true if `type` has been explicitly set.
+  var hasType: Bool {return self._type != nil}
+  /// Clears the value of `type`. Subsequent reads from it will return its default value.
+  mutating func clearType() {self._type = nil}
+
+  var aiOn: Bool {
+    get {return _aiOn ?? false}
+    set {_aiOn = newValue}
+  }
+  /// Returns true if `aiOn` has been explicitly set.
+  var hasAiOn: Bool {return self._aiOn != nil}
+  /// Clears the value of `aiOn`. Subsequent reads from it will return its default value.
+  mutating func clearAiOn() {self._aiOn = nil}
+
+  var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  enum TypeEnum: SwiftProtobuf.Enum {
+    typealias RawValue = Int
+    case ai // = 0
+    case webLogin // = 1
+    case trainerOff // = 2
+
+    init() {
+      self = .ai
+    }
+
+    init?(rawValue: Int) {
+      switch rawValue {
+      case 0: self = .ai
+      case 1: self = .webLogin
+      case 2: self = .trainerOff
+      default: return nil
+      }
+    }
+
+    var rawValue: Int {
+      switch self {
+      case .ai: return 0
+      case .webLogin: return 1
+      case .trainerOff: return 2
+      }
+    }
+
+  }
+
+  init() {}
+
+  fileprivate var _type: SignalServiceProtos_Notification.TypeEnum? = nil
+  fileprivate var _aiOn: Bool? = nil
+}
+
+#if swift(>=4.2)
+
+extension SignalServiceProtos_Notification.TypeEnum: CaseIterable {
   // Support synthesized by the compiler.
 }
 
@@ -2746,6 +2827,7 @@ extension SignalServiceProtos_Envelope: SwiftProtobuf.Message, SwiftProtobuf._Me
     8: .same(proto: "content"),
     9: .same(proto: "serverGuid"),
     10: .same(proto: "serverTimestamp"),
+    11: .same(proto: "noti"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -2760,6 +2842,7 @@ extension SignalServiceProtos_Envelope: SwiftProtobuf.Message, SwiftProtobuf._Me
       case 8: try decoder.decodeSingularBytesField(value: &self._content)
       case 9: try decoder.decodeSingularStringField(value: &self._serverGuid)
       case 10: try decoder.decodeSingularUInt64Field(value: &self._serverTimestamp)
+      case 11: try decoder.decodeSingularMessageField(value: &self._noti)
       default: break
       }
     }
@@ -2793,6 +2876,9 @@ extension SignalServiceProtos_Envelope: SwiftProtobuf.Message, SwiftProtobuf._Me
     if let v = self._serverTimestamp {
       try visitor.visitSingularUInt64Field(value: v, fieldNumber: 10)
     }
+    if let v = self._noti {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 11)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -2806,6 +2892,7 @@ extension SignalServiceProtos_Envelope: SwiftProtobuf.Message, SwiftProtobuf._Me
     if lhs._content != rhs._content {return false}
     if lhs._serverGuid != rhs._serverGuid {return false}
     if lhs._serverTimestamp != rhs._serverTimestamp {return false}
+    if lhs._noti != rhs._noti {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -2819,6 +2906,50 @@ extension SignalServiceProtos_Envelope.TypeEnum: SwiftProtobuf._ProtoNameProvidi
     3: .same(proto: "PREKEY_BUNDLE"),
     5: .same(proto: "RECEIPT"),
     6: .same(proto: "UNIDENTIFIED_SENDER"),
+    7: .same(proto: "NOTICE"),
+  ]
+}
+
+extension SignalServiceProtos_Notification: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = _protobuf_package + ".Notification"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "type"),
+    3: .same(proto: "aiOn"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      switch fieldNumber {
+      case 1: try decoder.decodeSingularEnumField(value: &self._type)
+      case 3: try decoder.decodeSingularBoolField(value: &self._aiOn)
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if let v = self._type {
+      try visitor.visitSingularEnumField(value: v, fieldNumber: 1)
+    }
+    if let v = self._aiOn {
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 3)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: SignalServiceProtos_Notification, rhs: SignalServiceProtos_Notification) -> Bool {
+    if lhs._type != rhs._type {return false}
+    if lhs._aiOn != rhs._aiOn {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension SignalServiceProtos_Notification.TypeEnum: SwiftProtobuf._ProtoNameProviding {
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    0: .same(proto: "AI"),
+    1: .same(proto: "WEB_LOGIN"),
+    2: .same(proto: "TRAINER_OFF"),
   ]
 }
 

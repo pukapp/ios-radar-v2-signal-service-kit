@@ -22,6 +22,7 @@ message Envelope {
     PREKEY_BUNDLE       = 3;
     RECEIPT             = 5;
     UNIDENTIFIED_SENDER = 6;
+    NOTICE = 7;
   }
 
   optional Type   type            = 1;
@@ -36,6 +37,16 @@ message Envelope {
   optional string serverGuid      = 9;
   // We may eventually want to make this required.
   optional uint64 serverTimestamp = 10;
+  optional Notification noti = 11;
+}
+message Notification {
+  enum Type {
+    AI = 0;
+    WEB_LOGIN = 1;
+    TRAINER_OFF = 2;
+  }
+  optional Type type = 1;
+  optional bool aiOn = 3;
 }
 
 message TypingMessage {

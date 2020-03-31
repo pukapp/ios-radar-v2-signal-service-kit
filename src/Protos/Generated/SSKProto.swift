@@ -24,6 +24,7 @@ public enum SSKProtoError: Error {
         case prekeyBundle = 3
         case receipt = 5
         case unidentifiedSender = 6
+        case notice = 7
     }
 
     private class func SSKProtoEnvelopeTypeWrap(_ value: SignalServiceProtos_Envelope.TypeEnum) -> SSKProtoEnvelopeType {
@@ -34,6 +35,7 @@ public enum SSKProtoError: Error {
         case .prekeyBundle: return .prekeyBundle
         case .receipt: return .receipt
         case .unidentifiedSender: return .unidentifiedSender
+        case .notice: return .notice
         }
     }
 
@@ -45,6 +47,7 @@ public enum SSKProtoError: Error {
         case .prekeyBundle: return .prekeyBundle
         case .receipt: return .receipt
         case .unidentifiedSender: return .unidentifiedSender
+        case .notice: return .notice
         }
     }
 
@@ -80,6 +83,9 @@ public enum SSKProtoError: Error {
         }
         if hasServerTimestamp {
             builder.setServerTimestamp(serverTimestamp)
+        }
+        if let _value = noti {
+            builder.setNoti(_value)
         }
         return builder
     }
@@ -132,6 +138,10 @@ public enum SSKProtoError: Error {
             proto.serverTimestamp = valueParam
         }
 
+        @objc public func setNoti(_ valueParam: SSKProtoNotification) {
+            proto.noti = valueParam.proto
+        }
+
         @objc public func build() throws -> SSKProtoEnvelope {
             return try SSKProtoEnvelope.parseProto(proto)
         }
@@ -144,6 +154,8 @@ public enum SSKProtoError: Error {
     fileprivate let proto: SignalServiceProtos_Envelope
 
     @objc public let timestamp: UInt64
+
+    @objc public let noti: SSKProtoNotification?
 
     public var type: SSKProtoEnvelopeType? {
         guard proto.hasType else {
@@ -228,9 +240,11 @@ public enum SSKProtoError: Error {
     }
 
     private init(proto: SignalServiceProtos_Envelope,
-                 timestamp: UInt64) {
+                 timestamp: UInt64,
+                 noti: SSKProtoNotification?) {
         self.proto = proto
         self.timestamp = timestamp
+        self.noti = noti
     }
 
     @objc
@@ -249,12 +263,18 @@ public enum SSKProtoError: Error {
         }
         let timestamp = proto.timestamp
 
+        var noti: SSKProtoNotification? = nil
+        if proto.hasNoti {
+            noti = try SSKProtoNotification.parseProto(proto.noti)
+        }
+
         // MARK: - Begin Validation Logic for SSKProtoEnvelope -
 
         // MARK: - End Validation Logic for SSKProtoEnvelope -
 
         let result = SSKProtoEnvelope(proto: proto,
-                                      timestamp: timestamp)
+                                      timestamp: timestamp,
+                                      noti: noti)
         return result
     }
 
@@ -273,6 +293,146 @@ extension SSKProtoEnvelope {
 
 extension SSKProtoEnvelope.SSKProtoEnvelopeBuilder {
     @objc public func buildIgnoringErrors() -> SSKProtoEnvelope? {
+        return try! self.build()
+    }
+}
+
+#endif
+
+// MARK: - SSKProtoNotification
+
+@objc public class SSKProtoNotification: NSObject {
+
+    // MARK: - SSKProtoNotificationType
+
+    @objc public enum SSKProtoNotificationType: Int32 {
+        case ai = 0
+        case webLogin = 1
+        case trainerOff = 2
+    }
+
+    private class func SSKProtoNotificationTypeWrap(_ value: SignalServiceProtos_Notification.TypeEnum) -> SSKProtoNotificationType {
+        switch value {
+        case .ai: return .ai
+        case .webLogin: return .webLogin
+        case .trainerOff: return .trainerOff
+        }
+    }
+
+    private class func SSKProtoNotificationTypeUnwrap(_ value: SSKProtoNotificationType) -> SignalServiceProtos_Notification.TypeEnum {
+        switch value {
+        case .ai: return .ai
+        case .webLogin: return .webLogin
+        case .trainerOff: return .trainerOff
+        }
+    }
+
+    // MARK: - SSKProtoNotificationBuilder
+
+    @objc public class func builder() -> SSKProtoNotificationBuilder {
+        return SSKProtoNotificationBuilder()
+    }
+
+    // asBuilder() constructs a builder that reflects the proto's contents.
+    @objc public func asBuilder() -> SSKProtoNotificationBuilder {
+        let builder = SSKProtoNotificationBuilder()
+        if let _value = type {
+            builder.setType(_value)
+        }
+        if hasAiOn {
+            builder.setAiOn(aiOn)
+        }
+        return builder
+    }
+
+    @objc public class SSKProtoNotificationBuilder: NSObject {
+
+        private var proto = SignalServiceProtos_Notification()
+
+        @objc fileprivate override init() {}
+
+        @objc public func setType(_ valueParam: SSKProtoNotificationType) {
+            proto.type = SSKProtoNotificationTypeUnwrap(valueParam)
+        }
+
+        @objc public func setAiOn(_ valueParam: Bool) {
+            proto.aiOn = valueParam
+        }
+
+        @objc public func build() throws -> SSKProtoNotification {
+            return try SSKProtoNotification.parseProto(proto)
+        }
+
+        @objc public func buildSerializedData() throws -> Data {
+            return try SSKProtoNotification.parseProto(proto).serializedData()
+        }
+    }
+
+    fileprivate let proto: SignalServiceProtos_Notification
+
+    public var type: SSKProtoNotificationType? {
+        guard proto.hasType else {
+            return nil
+        }
+        return SSKProtoNotification.SSKProtoNotificationTypeWrap(proto.type)
+    }
+    // This "unwrapped" accessor should only be used if the "has value" accessor has already been checked.
+    @objc public var unwrappedType: SSKProtoNotificationType {
+        if !hasType {
+            // TODO: We could make this a crashing assert.
+            owsFailDebug("Unsafe unwrap of missing optional: Notification.type.")
+        }
+        return SSKProtoNotification.SSKProtoNotificationTypeWrap(proto.type)
+    }
+    @objc public var hasType: Bool {
+        return proto.hasType
+    }
+
+    @objc public var aiOn: Bool {
+        return proto.aiOn
+    }
+    @objc public var hasAiOn: Bool {
+        return proto.hasAiOn
+    }
+
+    private init(proto: SignalServiceProtos_Notification) {
+        self.proto = proto
+    }
+
+    @objc
+    public func serializedData() throws -> Data {
+        return try self.proto.serializedData()
+    }
+
+    @objc public class func parseData(_ serializedData: Data) throws -> SSKProtoNotification {
+        let proto = try SignalServiceProtos_Notification(serializedData: serializedData)
+        return try parseProto(proto)
+    }
+
+    fileprivate class func parseProto(_ proto: SignalServiceProtos_Notification) throws -> SSKProtoNotification {
+        // MARK: - Begin Validation Logic for SSKProtoNotification -
+
+        // MARK: - End Validation Logic for SSKProtoNotification -
+
+        let result = SSKProtoNotification(proto: proto)
+        return result
+    }
+
+    @objc public override var debugDescription: String {
+        return "\(proto)"
+    }
+}
+
+#if DEBUG
+
+extension SSKProtoNotification {
+    @objc public func serializedDataIgnoringErrors() -> Data? {
+        return try! self.serializedData()
+    }
+}
+
+extension SSKProtoNotification.SSKProtoNotificationBuilder {
+    @objc public func buildIgnoringErrors() -> SSKProtoNotification? {
         return try! self.build()
     }
 }
