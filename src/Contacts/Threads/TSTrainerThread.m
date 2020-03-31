@@ -132,7 +132,11 @@ isArchivedByLegacyTimestampForSorting:isArchivedByLegacyTimestampForSorting
 }
 
 - (BOOL)isGroupThread {
-    return false;
+    return NO;
+}
+
+- (BOOL)isTrainerThread {
+    return YES;
 }
 
 - (BOOL)hasSafetyNumbers

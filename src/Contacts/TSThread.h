@@ -69,6 +69,10 @@ NS_SWIFT_NAME(init(uniqueId:archivalDate:archivedAsOfMessageSortId:conversationC
  */
 - (BOOL)isGroupThread;
 
+
+/// 训练者聊天
+- (BOOL)isTrainerThread;
+
 /**
  *  Returns the name of the thread.
  *

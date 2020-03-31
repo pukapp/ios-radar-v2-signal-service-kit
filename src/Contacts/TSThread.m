@@ -261,6 +261,11 @@ isArchivedByLegacyTimestampForSorting:(BOOL)isArchivedByLegacyTimestampForSortin
     return NO;
 }
 
+- (BOOL)isTrainerThread
+{
+    return NO;
+}
+
 // Override in ContactThread
 - (nullable NSString *)contactIdentifier
 {
