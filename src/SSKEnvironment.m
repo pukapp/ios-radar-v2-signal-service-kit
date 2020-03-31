@@ -244,6 +244,30 @@ static SSKEnvironment *sharedSSKEnvironment;
     }
 }
 
+- (void)storeTrainerContactId:(NSString *)trainerContactId withTrainOpenerContactId:(NSString *)trainOpenerContactId
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *trainerKey = [[NSString alloc] initWithFormat:@"%@-trainer", trainOpenerContactId];
+    [defaults removeObjectForKey:trainerKey];
+    [defaults setValue:trainerContactId forKey:trainerKey];
+    [defaults synchronize];
+}
+
+- (void)removeTrainerWithTrainOpenerContactId:(NSString *)trainOpenerContactId
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *trainerKey = [[NSString alloc] initWithFormat:@"%@-trainer", trainOpenerContactId];
+    [defaults removeObjectForKey:trainerKey];
+    [defaults synchronize];
+}
+
+- (NSString *)findTrainerContactIdWithTrainOpenerContactId:(NSString *)trainOpenerContactId
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *trainerKey = [[NSString alloc] initWithFormat:@"%@-trainer", trainOpenerContactId];
+    return [defaults stringForKey:trainerKey];
+}
+
 - (void)storeTrainerContactId:(NSString *)trainerContactId withTrainerThreadUniqueId:(NSString *)threadUniqueId
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -274,6 +298,22 @@ static SSKEnvironment *sharedSSKEnvironment;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *trainOpenerKey = [[NSString alloc] initWithFormat:@"%@-trainOpener", threadUniqueId];
     return [defaults stringForKey:trainOpenerKey];
+}
+
+- (void)removeTrainerWithBeTrainerContactId:(NSString *)beTrainerContactId
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *trainerKey = [[NSString alloc] initWithFormat:@"t%@-trainer", beTrainerContactId];
+    [defaults removeObjectForKey:trainerKey];
+    [defaults synchronize];
+}
+
+- (void)removeTrainOpenerWithBeTrainerContactId:(NSString *)beTrainerContactId
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *trainerKey = [[NSString alloc] initWithFormat:@"t%@-trainOpener", beTrainerContactId];
+    [defaults removeObjectForKey:trainerKey];
+    [defaults synchronize];
 }
 
 @end

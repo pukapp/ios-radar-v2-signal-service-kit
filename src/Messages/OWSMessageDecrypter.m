@@ -29,6 +29,7 @@
 #import <SignalCoreKit/SCKExceptionWrapper.h>
 #import <SignalMetadataKit/SignalMetadataKit-Swift.h>
 #import <SignalServiceKit/SignalServiceKit-Swift.h>
+#import "TSAccountManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -322,7 +323,36 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
 
 - (void)handleRecieveNotiteWith:(SSKProtoEnvelope *)envelope
 {
-    // TODO: handleRecieveNotiteWith
+    if (!envelope.notify.hasType) {
+        return;
+    }
+    switch (envelope.notify.unwrappedType) {
+        case SSKProtoNotificationTypeBot:
+            break;
+            
+        case SSKProtoNotificationTypeTrainerOff: { // 训练者断开
+            NSString *me = [TSAccountManager.sharedInstance localNumber];
+            NSString *trainOpener = envelope.notify.trainModeInfo.trainOpener;
+            NSString *trainer = envelope.notify.trainModeInfo.trainerID;
+            NSString *beTrainer = envelope.notify.trainModeInfo.beTrainerID;
+            if ([me isEqualToString:trainer]) { // 当前是训练者
+                // 删除训练对话
+                [SDSDatabaseStorage.shared writeWithBlock:^(SDSAnyWriteTransaction * _Nonnull transaction) {
+                    TSTrainerThread *thread = [TSTrainerThread getThreadWithContactId:beTrainer transaction:transaction.transitional_yapReadTransaction];
+                    [thread anyRemoveWithTransaction:transaction];
+                }];
+                // 删除训练对话相关信息
+                [SSKEnvironment.shared removeTrainOpenerWithBeTrainerContactId:beTrainer];
+                [SSKEnvironment.shared removeTrainerWithBeTrainerContactId:beTrainer];
+            } else {
+                [SSKEnvironment.shared removeTrainerWithTrainOpenerContactId:trainOpener];
+            }
+            
+            break;
+        }
+        case SSKProtoNotificationTypeWebLogin:
+            break;
+    }
 }
 
 - (void)throws_decryptSecureMessage:(SSKProtoEnvelope *)envelope

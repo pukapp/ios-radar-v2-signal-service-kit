@@ -128,10 +128,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)isComplete;
 
+
+- (void)removeTrainerWithTrainOpenerContactId:(NSString *)trainOpenerContactId;
+- (void)storeTrainerContactId:(NSString *)trainerContactId withTrainOpenerContactId:(NSString *)trainOpenerContactId;
+- (NSString *)findTrainerContactIdWithTrainOpenerContactId:(NSString *)trainOpenerContactId;
+
 - (void)storeTrainerContactId:(NSString *)trainerContactId withTrainerThreadUniqueId:(NSString *)threadUniqueId;
 - (void)storeTrainOpenerContactId:(NSString *)trainOpenerContactId withTrainerThreadUniqueId:(NSString *)threadUniqueId;
 - (NSString *)findTrainerContactIdWithTrainerThreadUniqueId:(NSString *)threadUniqueId;
 - (NSString *)findTrainOpenerContactIdWithTrainerThreadUniqueId:(NSString *)threadUniqueId;
+
+- (void)removeTrainerWithBeTrainerContactId:(NSString *)beTrainerContactId;
+- (void)removeTrainOpenerWithBeTrainerContactId:(NSString *)beTrainerContactId;
 
 @end
 
