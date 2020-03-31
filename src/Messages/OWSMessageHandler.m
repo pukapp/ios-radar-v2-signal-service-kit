@@ -40,6 +40,8 @@ NSString *envelopeAddress(SSKProtoEnvelope *envelope)
             return @"PreKeyEncryptedMessage";
         case SSKProtoEnvelopeTypeUnidentifiedSender:
             return @"UnidentifiedSender";
+        case SSKProtoEnvelopeTypeNotice:
+            return @"Notice";
         default:
             // Shouldn't happen
             OWSProdFail([OWSAnalyticsEvents messageManagerErrorEnvelopeTypeOther]);

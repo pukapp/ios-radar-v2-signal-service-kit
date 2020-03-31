@@ -212,14 +212,14 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
         }
 
         if (envelope.unwrappedType != SSKProtoEnvelopeTypeUnidentifiedSender) {
-            if (!envelope.hasSource || envelope.source.length < 1 || !envelope.source.isValidE164) {
-                OWSFailDebug(@"incoming envelope has invalid source");
-                return failureBlock();
-            }
-            if (!envelope.hasSourceDevice || envelope.sourceDevice < 1) {
-                OWSFailDebug(@"incoming envelope has invalid source device");
-                return failureBlock();
-            }
+//            if (!envelope.hasSource || envelope.source.length < 1 || !envelope.source.isValidE164) {
+//                OWSFailDebug(@"incoming envelope has invalid source");
+//                return failureBlock();
+//            }
+//            if (!envelope.hasSourceDevice || envelope.sourceDevice < 1) {
+//                OWSFailDebug(@"incoming envelope has invalid source device");
+//                return failureBlock();
+//            }
 
             // We block UD messages later, after they are decrypted.
             if ([self isEnvelopeSenderBlocked:envelope]) {
@@ -229,6 +229,11 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
         }
 
         switch (envelope.unwrappedType) {
+            case SSKProtoEnvelopeTypeNotice: {
+                [self handleRecieveNotiteWith:envelope];
+                failureBlock();
+                return;
+            }
             case SSKProtoEnvelopeTypeCiphertext: {
                 [self throws_decryptSecureMessage:envelope
                     envelopeData:envelopeData
@@ -313,6 +318,11 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
     }
 
     failureBlock();
+}
+
+- (void)handleRecieveNotiteWith:(SSKProtoEnvelope *)envelope
+{
+    // TODO: handleRecieveNotiteWith
 }
 
 - (void)throws_decryptSecureMessage:(SSKProtoEnvelope *)envelope
