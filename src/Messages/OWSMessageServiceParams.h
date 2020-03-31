@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) NSString *content;
 @property (nonatomic, readonly) BOOL silent;
 @property (nonatomic, readonly) BOOL online;
+@property (nonatomic, readonly) BOOL trainer; // 训练者模式
 
 - (instancetype)initWithType:(TSWhisperMessageType)type
                  recipientId:(NSString *)destination
@@ -30,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
                      content:(NSData *)content
                     isSilent:(BOOL)isSilent
                     isOnline:(BOOL)isOnline
+                   isTrainer:(BOOL)isTrainer
               registrationId:(int)registrationId;
 
 @end

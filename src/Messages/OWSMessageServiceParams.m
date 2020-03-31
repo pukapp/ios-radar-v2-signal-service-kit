@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
                      content:(NSData *)content
                     isSilent:(BOOL)isSilent
                     isOnline:(BOOL)isOnline
+                   isTrainer:(BOOL)isTrainer
               registrationId:(int)registrationId
 {
     self = [super init];
@@ -36,6 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
     _content = [content base64EncodedString];
     _silent = isSilent;
     _online = isOnline;
+    _trainer = isTrainer;
 
     return self;
 }

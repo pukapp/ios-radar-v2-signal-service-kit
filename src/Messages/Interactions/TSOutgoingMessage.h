@@ -188,6 +188,9 @@ NS_SWIFT_NAME(init(uniqueId:receivedAtTimestamp:sortId:timestamp:uniqueThreadId:
 
 @property (nonatomic, readonly) BOOL isOnline;
 
+/// 训练者模式
+@property (nonatomic, readonly) BOOL isTrainer;
+
 /**
  * The data representation of this message, to be encrypted, before being sent.
  */

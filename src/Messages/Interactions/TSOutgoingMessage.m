@@ -622,6 +622,11 @@ perMessageExpirationDurationSeconds:perMessageExpirationDurationSeconds
     return NO;
 }
 
+- (BOOL)isTrainer
+{
+    return NO;
+}
+
 - (OWSInteractionType)interactionType
 {
     return OWSInteractionType_OutgoingMessage;
