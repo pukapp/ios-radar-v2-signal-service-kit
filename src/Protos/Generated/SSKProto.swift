@@ -84,8 +84,8 @@ public enum SSKProtoError: Error {
         if hasServerTimestamp {
             builder.setServerTimestamp(serverTimestamp)
         }
-        if let _value = noti {
-            builder.setNoti(_value)
+        if let _value = notify {
+            builder.setNotify(_value)
         }
         return builder
     }
@@ -138,8 +138,8 @@ public enum SSKProtoError: Error {
             proto.serverTimestamp = valueParam
         }
 
-        @objc public func setNoti(_ valueParam: SSKProtoNotification) {
-            proto.noti = valueParam.proto
+        @objc public func setNotify(_ valueParam: SSKProtoNotification) {
+            proto.notify = valueParam.proto
         }
 
         @objc public func build() throws -> SSKProtoEnvelope {
@@ -155,7 +155,7 @@ public enum SSKProtoError: Error {
 
     @objc public let timestamp: UInt64
 
-    @objc public let noti: SSKProtoNotification?
+    @objc public let notify: SSKProtoNotification?
 
     public var type: SSKProtoEnvelopeType? {
         guard proto.hasType else {
@@ -241,10 +241,10 @@ public enum SSKProtoError: Error {
 
     private init(proto: SignalServiceProtos_Envelope,
                  timestamp: UInt64,
-                 noti: SSKProtoNotification?) {
+                 notify: SSKProtoNotification?) {
         self.proto = proto
         self.timestamp = timestamp
-        self.noti = noti
+        self.notify = notify
     }
 
     @objc
@@ -263,9 +263,9 @@ public enum SSKProtoError: Error {
         }
         let timestamp = proto.timestamp
 
-        var noti: SSKProtoNotification? = nil
-        if proto.hasNoti {
-            noti = try SSKProtoNotification.parseProto(proto.noti)
+        var notify: SSKProtoNotification? = nil
+        if proto.hasNotify {
+            notify = try SSKProtoNotification.parseProto(proto.notify)
         }
 
         // MARK: - Begin Validation Logic for SSKProtoEnvelope -
@@ -274,7 +274,7 @@ public enum SSKProtoError: Error {
 
         let result = SSKProtoEnvelope(proto: proto,
                                       timestamp: timestamp,
-                                      noti: noti)
+                                      notify: notify)
         return result
     }
 
@@ -299,6 +299,384 @@ extension SSKProtoEnvelope.SSKProtoEnvelopeBuilder {
 
 #endif
 
+// MARK: - SSKProtoNotificationTrainModeInfo
+
+@objc public class SSKProtoNotificationTrainModeInfo: NSObject {
+
+    // MARK: - SSKProtoNotificationTrainModeInfoBuilder
+
+    @objc public class func builder() -> SSKProtoNotificationTrainModeInfoBuilder {
+        return SSKProtoNotificationTrainModeInfoBuilder()
+    }
+
+    // asBuilder() constructs a builder that reflects the proto's contents.
+    @objc public func asBuilder() -> SSKProtoNotificationTrainModeInfoBuilder {
+        let builder = SSKProtoNotificationTrainModeInfoBuilder()
+        if let _value = trainerID {
+            builder.setTrainerID(_value)
+        }
+        if let _value = beTrainerID {
+            builder.setBeTrainerID(_value)
+        }
+        if let _value = trainOpener {
+            builder.setTrainOpener(_value)
+        }
+        return builder
+    }
+
+    @objc public class SSKProtoNotificationTrainModeInfoBuilder: NSObject {
+
+        private var proto = SignalServiceProtos_Notification.TrainModeInfo()
+
+        @objc fileprivate override init() {}
+
+        @objc public func setTrainerID(_ valueParam: String) {
+            proto.trainerID = valueParam
+        }
+
+        @objc public func setBeTrainerID(_ valueParam: String) {
+            proto.beTrainerID = valueParam
+        }
+
+        @objc public func setTrainOpener(_ valueParam: String) {
+            proto.trainOpener = valueParam
+        }
+
+        @objc public func build() throws -> SSKProtoNotificationTrainModeInfo {
+            return try SSKProtoNotificationTrainModeInfo.parseProto(proto)
+        }
+
+        @objc public func buildSerializedData() throws -> Data {
+            return try SSKProtoNotificationTrainModeInfo.parseProto(proto).serializedData()
+        }
+    }
+
+    fileprivate let proto: SignalServiceProtos_Notification.TrainModeInfo
+
+    @objc public var trainerID: String? {
+        guard proto.hasTrainerID else {
+            return nil
+        }
+        return proto.trainerID
+    }
+    @objc public var hasTrainerID: Bool {
+        return proto.hasTrainerID
+    }
+
+    @objc public var beTrainerID: String? {
+        guard proto.hasBeTrainerID else {
+            return nil
+        }
+        return proto.beTrainerID
+    }
+    @objc public var hasBeTrainerID: Bool {
+        return proto.hasBeTrainerID
+    }
+
+    @objc public var trainOpener: String? {
+        guard proto.hasTrainOpener else {
+            return nil
+        }
+        return proto.trainOpener
+    }
+    @objc public var hasTrainOpener: Bool {
+        return proto.hasTrainOpener
+    }
+
+    private init(proto: SignalServiceProtos_Notification.TrainModeInfo) {
+        self.proto = proto
+    }
+
+    @objc
+    public func serializedData() throws -> Data {
+        return try self.proto.serializedData()
+    }
+
+    @objc public class func parseData(_ serializedData: Data) throws -> SSKProtoNotificationTrainModeInfo {
+        let proto = try SignalServiceProtos_Notification.TrainModeInfo(serializedData: serializedData)
+        return try parseProto(proto)
+    }
+
+    fileprivate class func parseProto(_ proto: SignalServiceProtos_Notification.TrainModeInfo) throws -> SSKProtoNotificationTrainModeInfo {
+        // MARK: - Begin Validation Logic for SSKProtoNotificationTrainModeInfo -
+
+        // MARK: - End Validation Logic for SSKProtoNotificationTrainModeInfo -
+
+        let result = SSKProtoNotificationTrainModeInfo(proto: proto)
+        return result
+    }
+
+    @objc public override var debugDescription: String {
+        return "\(proto)"
+    }
+}
+
+#if DEBUG
+
+extension SSKProtoNotificationTrainModeInfo {
+    @objc public func serializedDataIgnoringErrors() -> Data? {
+        return try! self.serializedData()
+    }
+}
+
+extension SSKProtoNotificationTrainModeInfo.SSKProtoNotificationTrainModeInfoBuilder {
+    @objc public func buildIgnoringErrors() -> SSKProtoNotificationTrainModeInfo? {
+        return try! self.build()
+    }
+}
+
+#endif
+
+// MARK: - SSKProtoNotificationBotModeInfo
+
+@objc public class SSKProtoNotificationBotModeInfo: NSObject {
+
+    // MARK: - SSKProtoNotificationBotModeInfoBuilder
+
+    @objc public class func builder() -> SSKProtoNotificationBotModeInfoBuilder {
+        return SSKProtoNotificationBotModeInfoBuilder()
+    }
+
+    // asBuilder() constructs a builder that reflects the proto's contents.
+    @objc public func asBuilder() -> SSKProtoNotificationBotModeInfoBuilder {
+        let builder = SSKProtoNotificationBotModeInfoBuilder()
+        if let _value = contact {
+            builder.setContact(_value)
+        }
+        if let _value = botContact {
+            builder.setBotContact(_value)
+        }
+        if hasState {
+            builder.setState(state)
+        }
+        return builder
+    }
+
+    @objc public class SSKProtoNotificationBotModeInfoBuilder: NSObject {
+
+        private var proto = SignalServiceProtos_Notification.BotModeInfo()
+
+        @objc fileprivate override init() {}
+
+        @objc public func setContact(_ valueParam: String) {
+            proto.contact = valueParam
+        }
+
+        @objc public func setBotContact(_ valueParam: String) {
+            proto.botContact = valueParam
+        }
+
+        @objc public func setState(_ valueParam: Bool) {
+            proto.state = valueParam
+        }
+
+        @objc public func build() throws -> SSKProtoNotificationBotModeInfo {
+            return try SSKProtoNotificationBotModeInfo.parseProto(proto)
+        }
+
+        @objc public func buildSerializedData() throws -> Data {
+            return try SSKProtoNotificationBotModeInfo.parseProto(proto).serializedData()
+        }
+    }
+
+    fileprivate let proto: SignalServiceProtos_Notification.BotModeInfo
+
+    @objc public var contact: String? {
+        guard proto.hasContact else {
+            return nil
+        }
+        return proto.contact
+    }
+    @objc public var hasContact: Bool {
+        return proto.hasContact
+    }
+
+    @objc public var botContact: String? {
+        guard proto.hasBotContact else {
+            return nil
+        }
+        return proto.botContact
+    }
+    @objc public var hasBotContact: Bool {
+        return proto.hasBotContact
+    }
+
+    @objc public var state: Bool {
+        return proto.state
+    }
+    @objc public var hasState: Bool {
+        return proto.hasState
+    }
+
+    private init(proto: SignalServiceProtos_Notification.BotModeInfo) {
+        self.proto = proto
+    }
+
+    @objc
+    public func serializedData() throws -> Data {
+        return try self.proto.serializedData()
+    }
+
+    @objc public class func parseData(_ serializedData: Data) throws -> SSKProtoNotificationBotModeInfo {
+        let proto = try SignalServiceProtos_Notification.BotModeInfo(serializedData: serializedData)
+        return try parseProto(proto)
+    }
+
+    fileprivate class func parseProto(_ proto: SignalServiceProtos_Notification.BotModeInfo) throws -> SSKProtoNotificationBotModeInfo {
+        // MARK: - Begin Validation Logic for SSKProtoNotificationBotModeInfo -
+
+        // MARK: - End Validation Logic for SSKProtoNotificationBotModeInfo -
+
+        let result = SSKProtoNotificationBotModeInfo(proto: proto)
+        return result
+    }
+
+    @objc public override var debugDescription: String {
+        return "\(proto)"
+    }
+}
+
+#if DEBUG
+
+extension SSKProtoNotificationBotModeInfo {
+    @objc public func serializedDataIgnoringErrors() -> Data? {
+        return try! self.serializedData()
+    }
+}
+
+extension SSKProtoNotificationBotModeInfo.SSKProtoNotificationBotModeInfoBuilder {
+    @objc public func buildIgnoringErrors() -> SSKProtoNotificationBotModeInfo? {
+        return try! self.build()
+    }
+}
+
+#endif
+
+// MARK: - SSKProtoNotificationWebLogin
+
+@objc public class SSKProtoNotificationWebLogin: NSObject {
+
+    // MARK: - SSKProtoNotificationWebLoginBuilder
+
+    @objc public class func builder() -> SSKProtoNotificationWebLoginBuilder {
+        return SSKProtoNotificationWebLoginBuilder()
+    }
+
+    // asBuilder() constructs a builder that reflects the proto's contents.
+    @objc public func asBuilder() -> SSKProtoNotificationWebLoginBuilder {
+        let builder = SSKProtoNotificationWebLoginBuilder()
+        if let _value = address {
+            builder.setAddress(_value)
+        }
+        if hasLoginTime {
+            builder.setLoginTime(loginTime)
+        }
+        if let _value = loginIp {
+            builder.setLoginIp(_value)
+        }
+        return builder
+    }
+
+    @objc public class SSKProtoNotificationWebLoginBuilder: NSObject {
+
+        private var proto = SignalServiceProtos_Notification.WebLogin()
+
+        @objc fileprivate override init() {}
+
+        @objc public func setAddress(_ valueParam: String) {
+            proto.address = valueParam
+        }
+
+        @objc public func setLoginTime(_ valueParam: UInt64) {
+            proto.loginTime = valueParam
+        }
+
+        @objc public func setLoginIp(_ valueParam: String) {
+            proto.loginIp = valueParam
+        }
+
+        @objc public func build() throws -> SSKProtoNotificationWebLogin {
+            return try SSKProtoNotificationWebLogin.parseProto(proto)
+        }
+
+        @objc public func buildSerializedData() throws -> Data {
+            return try SSKProtoNotificationWebLogin.parseProto(proto).serializedData()
+        }
+    }
+
+    fileprivate let proto: SignalServiceProtos_Notification.WebLogin
+
+    @objc public var address: String? {
+        guard proto.hasAddress else {
+            return nil
+        }
+        return proto.address
+    }
+    @objc public var hasAddress: Bool {
+        return proto.hasAddress
+    }
+
+    @objc public var loginTime: UInt64 {
+        return proto.loginTime
+    }
+    @objc public var hasLoginTime: Bool {
+        return proto.hasLoginTime
+    }
+
+    @objc public var loginIp: String? {
+        guard proto.hasLoginIp else {
+            return nil
+        }
+        return proto.loginIp
+    }
+    @objc public var hasLoginIp: Bool {
+        return proto.hasLoginIp
+    }
+
+    private init(proto: SignalServiceProtos_Notification.WebLogin) {
+        self.proto = proto
+    }
+
+    @objc
+    public func serializedData() throws -> Data {
+        return try self.proto.serializedData()
+    }
+
+    @objc public class func parseData(_ serializedData: Data) throws -> SSKProtoNotificationWebLogin {
+        let proto = try SignalServiceProtos_Notification.WebLogin(serializedData: serializedData)
+        return try parseProto(proto)
+    }
+
+    fileprivate class func parseProto(_ proto: SignalServiceProtos_Notification.WebLogin) throws -> SSKProtoNotificationWebLogin {
+        // MARK: - Begin Validation Logic for SSKProtoNotificationWebLogin -
+
+        // MARK: - End Validation Logic for SSKProtoNotificationWebLogin -
+
+        let result = SSKProtoNotificationWebLogin(proto: proto)
+        return result
+    }
+
+    @objc public override var debugDescription: String {
+        return "\(proto)"
+    }
+}
+
+#if DEBUG
+
+extension SSKProtoNotificationWebLogin {
+    @objc public func serializedDataIgnoringErrors() -> Data? {
+        return try! self.serializedData()
+    }
+}
+
+extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
+    @objc public func buildIgnoringErrors() -> SSKProtoNotificationWebLogin? {
+        return try! self.build()
+    }
+}
+
+#endif
+
 // MARK: - SSKProtoNotification
 
 @objc public class SSKProtoNotification: NSObject {
@@ -306,14 +684,14 @@ extension SSKProtoEnvelope.SSKProtoEnvelopeBuilder {
     // MARK: - SSKProtoNotificationType
 
     @objc public enum SSKProtoNotificationType: Int32 {
-        case ai = 0
+        case bot = 0
         case webLogin = 1
         case trainerOff = 2
     }
 
     private class func SSKProtoNotificationTypeWrap(_ value: SignalServiceProtos_Notification.TypeEnum) -> SSKProtoNotificationType {
         switch value {
-        case .ai: return .ai
+        case .bot: return .bot
         case .webLogin: return .webLogin
         case .trainerOff: return .trainerOff
         }
@@ -321,7 +699,7 @@ extension SSKProtoEnvelope.SSKProtoEnvelopeBuilder {
 
     private class func SSKProtoNotificationTypeUnwrap(_ value: SSKProtoNotificationType) -> SignalServiceProtos_Notification.TypeEnum {
         switch value {
-        case .ai: return .ai
+        case .bot: return .bot
         case .webLogin: return .webLogin
         case .trainerOff: return .trainerOff
         }
@@ -339,8 +717,14 @@ extension SSKProtoEnvelope.SSKProtoEnvelopeBuilder {
         if let _value = type {
             builder.setType(_value)
         }
-        if hasAiOn {
-            builder.setAiOn(aiOn)
+        if let _value = webLogin {
+            builder.setWebLogin(_value)
+        }
+        if let _value = botModeInfo {
+            builder.setBotModeInfo(_value)
+        }
+        if let _value = trainModeInfo {
+            builder.setTrainModeInfo(_value)
         }
         return builder
     }
@@ -355,8 +739,16 @@ extension SSKProtoEnvelope.SSKProtoEnvelopeBuilder {
             proto.type = SSKProtoNotificationTypeUnwrap(valueParam)
         }
 
-        @objc public func setAiOn(_ valueParam: Bool) {
-            proto.aiOn = valueParam
+        @objc public func setWebLogin(_ valueParam: SSKProtoNotificationWebLogin) {
+            proto.webLogin = valueParam.proto
+        }
+
+        @objc public func setBotModeInfo(_ valueParam: SSKProtoNotificationBotModeInfo) {
+            proto.botModeInfo = valueParam.proto
+        }
+
+        @objc public func setTrainModeInfo(_ valueParam: SSKProtoNotificationTrainModeInfo) {
+            proto.trainModeInfo = valueParam.proto
         }
 
         @objc public func build() throws -> SSKProtoNotification {
@@ -369,6 +761,12 @@ extension SSKProtoEnvelope.SSKProtoEnvelopeBuilder {
     }
 
     fileprivate let proto: SignalServiceProtos_Notification
+
+    @objc public let webLogin: SSKProtoNotificationWebLogin?
+
+    @objc public let botModeInfo: SSKProtoNotificationBotModeInfo?
+
+    @objc public let trainModeInfo: SSKProtoNotificationTrainModeInfo?
 
     public var type: SSKProtoNotificationType? {
         guard proto.hasType else {
@@ -388,15 +786,14 @@ extension SSKProtoEnvelope.SSKProtoEnvelopeBuilder {
         return proto.hasType
     }
 
-    @objc public var aiOn: Bool {
-        return proto.aiOn
-    }
-    @objc public var hasAiOn: Bool {
-        return proto.hasAiOn
-    }
-
-    private init(proto: SignalServiceProtos_Notification) {
+    private init(proto: SignalServiceProtos_Notification,
+                 webLogin: SSKProtoNotificationWebLogin?,
+                 botModeInfo: SSKProtoNotificationBotModeInfo?,
+                 trainModeInfo: SSKProtoNotificationTrainModeInfo?) {
         self.proto = proto
+        self.webLogin = webLogin
+        self.botModeInfo = botModeInfo
+        self.trainModeInfo = trainModeInfo
     }
 
     @objc
@@ -410,11 +807,29 @@ extension SSKProtoEnvelope.SSKProtoEnvelopeBuilder {
     }
 
     fileprivate class func parseProto(_ proto: SignalServiceProtos_Notification) throws -> SSKProtoNotification {
+        var webLogin: SSKProtoNotificationWebLogin? = nil
+        if proto.hasWebLogin {
+            webLogin = try SSKProtoNotificationWebLogin.parseProto(proto.webLogin)
+        }
+
+        var botModeInfo: SSKProtoNotificationBotModeInfo? = nil
+        if proto.hasBotModeInfo {
+            botModeInfo = try SSKProtoNotificationBotModeInfo.parseProto(proto.botModeInfo)
+        }
+
+        var trainModeInfo: SSKProtoNotificationTrainModeInfo? = nil
+        if proto.hasTrainModeInfo {
+            trainModeInfo = try SSKProtoNotificationTrainModeInfo.parseProto(proto.trainModeInfo)
+        }
+
         // MARK: - Begin Validation Logic for SSKProtoNotification -
 
         // MARK: - End Validation Logic for SSKProtoNotification -
 
-        let result = SSKProtoNotification(proto: proto)
+        let result = SSKProtoNotification(proto: proto,
+                                          webLogin: webLogin,
+                                          botModeInfo: botModeInfo,
+                                          trainModeInfo: trainModeInfo)
         return result
     }
 

@@ -118,14 +118,14 @@ struct SignalServiceProtos_Envelope {
   /// Clears the value of `serverTimestamp`. Subsequent reads from it will return its default value.
   mutating func clearServerTimestamp() {self._serverTimestamp = nil}
 
-  var noti: SignalServiceProtos_Notification {
-    get {return _noti ?? SignalServiceProtos_Notification()}
-    set {_noti = newValue}
+  var notify: SignalServiceProtos_Notification {
+    get {return _notify ?? SignalServiceProtos_Notification()}
+    set {_notify = newValue}
   }
-  /// Returns true if `noti` has been explicitly set.
-  var hasNoti: Bool {return self._noti != nil}
-  /// Clears the value of `noti`. Subsequent reads from it will return its default value.
-  mutating func clearNoti() {self._noti = nil}
+  /// Returns true if `notify` has been explicitly set.
+  var hasNotify: Bool {return self._notify != nil}
+  /// Clears the value of `notify`. Subsequent reads from it will return its default value.
+  mutating func clearNotify() {self._notify = nil}
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -181,7 +181,7 @@ struct SignalServiceProtos_Envelope {
   fileprivate var _content: Data? = nil
   fileprivate var _serverGuid: String? = nil
   fileprivate var _serverTimestamp: UInt64? = nil
-  fileprivate var _noti: SignalServiceProtos_Notification? = nil
+  fileprivate var _notify: SignalServiceProtos_Notification? = nil
 }
 
 #if swift(>=4.2)
@@ -198,7 +198,7 @@ struct SignalServiceProtos_Notification {
   // methods supported on all messages.
 
   var type: SignalServiceProtos_Notification.TypeEnum {
-    get {return _type ?? .ai}
+    get {return _type ?? .bot}
     set {_type = newValue}
   }
   /// Returns true if `type` has been explicitly set.
@@ -206,30 +206,48 @@ struct SignalServiceProtos_Notification {
   /// Clears the value of `type`. Subsequent reads from it will return its default value.
   mutating func clearType() {self._type = nil}
 
-  var aiOn: Bool {
-    get {return _aiOn ?? false}
-    set {_aiOn = newValue}
+  var webLogin: SignalServiceProtos_Notification.WebLogin {
+    get {return _webLogin ?? SignalServiceProtos_Notification.WebLogin()}
+    set {_webLogin = newValue}
   }
-  /// Returns true if `aiOn` has been explicitly set.
-  var hasAiOn: Bool {return self._aiOn != nil}
-  /// Clears the value of `aiOn`. Subsequent reads from it will return its default value.
-  mutating func clearAiOn() {self._aiOn = nil}
+  /// Returns true if `webLogin` has been explicitly set.
+  var hasWebLogin: Bool {return self._webLogin != nil}
+  /// Clears the value of `webLogin`. Subsequent reads from it will return its default value.
+  mutating func clearWebLogin() {self._webLogin = nil}
+
+  var botModeInfo: SignalServiceProtos_Notification.BotModeInfo {
+    get {return _botModeInfo ?? SignalServiceProtos_Notification.BotModeInfo()}
+    set {_botModeInfo = newValue}
+  }
+  /// Returns true if `botModeInfo` has been explicitly set.
+  var hasBotModeInfo: Bool {return self._botModeInfo != nil}
+  /// Clears the value of `botModeInfo`. Subsequent reads from it will return its default value.
+  mutating func clearBotModeInfo() {self._botModeInfo = nil}
+
+  var trainModeInfo: SignalServiceProtos_Notification.TrainModeInfo {
+    get {return _trainModeInfo ?? SignalServiceProtos_Notification.TrainModeInfo()}
+    set {_trainModeInfo = newValue}
+  }
+  /// Returns true if `trainModeInfo` has been explicitly set.
+  var hasTrainModeInfo: Bool {return self._trainModeInfo != nil}
+  /// Clears the value of `trainModeInfo`. Subsequent reads from it will return its default value.
+  mutating func clearTrainModeInfo() {self._trainModeInfo = nil}
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   enum TypeEnum: SwiftProtobuf.Enum {
     typealias RawValue = Int
-    case ai // = 0
+    case bot // = 0
     case webLogin // = 1
     case trainerOff // = 2
 
     init() {
-      self = .ai
+      self = .bot
     }
 
     init?(rawValue: Int) {
       switch rawValue {
-      case 0: self = .ai
+      case 0: self = .bot
       case 1: self = .webLogin
       case 2: self = .trainerOff
       default: return nil
@@ -238,7 +256,7 @@ struct SignalServiceProtos_Notification {
 
     var rawValue: Int {
       switch self {
-      case .ai: return 0
+      case .bot: return 0
       case .webLogin: return 1
       case .trainerOff: return 2
       }
@@ -246,10 +264,138 @@ struct SignalServiceProtos_Notification {
 
   }
 
+  struct TrainModeInfo {
+    // SwiftProtobuf.Message conformance is added in an extension below. See the
+    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+    // methods supported on all messages.
+
+    var trainerID: String {
+      get {return _trainerID ?? String()}
+      set {_trainerID = newValue}
+    }
+    /// Returns true if `trainerID` has been explicitly set.
+    var hasTrainerID: Bool {return self._trainerID != nil}
+    /// Clears the value of `trainerID`. Subsequent reads from it will return its default value.
+    mutating func clearTrainerID() {self._trainerID = nil}
+
+    var beTrainerID: String {
+      get {return _beTrainerID ?? String()}
+      set {_beTrainerID = newValue}
+    }
+    /// Returns true if `beTrainerID` has been explicitly set.
+    var hasBeTrainerID: Bool {return self._beTrainerID != nil}
+    /// Clears the value of `beTrainerID`. Subsequent reads from it will return its default value.
+    mutating func clearBeTrainerID() {self._beTrainerID = nil}
+
+    var trainOpener: String {
+      get {return _trainOpener ?? String()}
+      set {_trainOpener = newValue}
+    }
+    /// Returns true if `trainOpener` has been explicitly set.
+    var hasTrainOpener: Bool {return self._trainOpener != nil}
+    /// Clears the value of `trainOpener`. Subsequent reads from it will return its default value.
+    mutating func clearTrainOpener() {self._trainOpener = nil}
+
+    var unknownFields = SwiftProtobuf.UnknownStorage()
+
+    init() {}
+
+    fileprivate var _trainerID: String? = nil
+    fileprivate var _beTrainerID: String? = nil
+    fileprivate var _trainOpener: String? = nil
+  }
+
+  struct BotModeInfo {
+    // SwiftProtobuf.Message conformance is added in an extension below. See the
+    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+    // methods supported on all messages.
+
+    /// 聊天者
+    var contact: String {
+      get {return _contact ?? String()}
+      set {_contact = newValue}
+    }
+    /// Returns true if `contact` has been explicitly set.
+    var hasContact: Bool {return self._contact != nil}
+    /// Clears the value of `contact`. Subsequent reads from it will return its default value.
+    mutating func clearContact() {self._contact = nil}
+
+    /// 开启机器人方
+    var botContact: String {
+      get {return _botContact ?? String()}
+      set {_botContact = newValue}
+    }
+    /// Returns true if `botContact` has been explicitly set.
+    var hasBotContact: Bool {return self._botContact != nil}
+    /// Clears the value of `botContact`. Subsequent reads from it will return its default value.
+    mutating func clearBotContact() {self._botContact = nil}
+
+    /// 机器人状态  true: 开启  false: 关闭
+    var state: Bool {
+      get {return _state ?? false}
+      set {_state = newValue}
+    }
+    /// Returns true if `state` has been explicitly set.
+    var hasState: Bool {return self._state != nil}
+    /// Clears the value of `state`. Subsequent reads from it will return its default value.
+    mutating func clearState() {self._state = nil}
+
+    var unknownFields = SwiftProtobuf.UnknownStorage()
+
+    init() {}
+
+    fileprivate var _contact: String? = nil
+    fileprivate var _botContact: String? = nil
+    fileprivate var _state: Bool? = nil
+  }
+
+  struct WebLogin {
+    // SwiftProtobuf.Message conformance is added in an extension below. See the
+    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+    // methods supported on all messages.
+
+    var address: String {
+      get {return _address ?? String()}
+      set {_address = newValue}
+    }
+    /// Returns true if `address` has been explicitly set.
+    var hasAddress: Bool {return self._address != nil}
+    /// Clears the value of `address`. Subsequent reads from it will return its default value.
+    mutating func clearAddress() {self._address = nil}
+
+    var loginTime: UInt64 {
+      get {return _loginTime ?? 0}
+      set {_loginTime = newValue}
+    }
+    /// Returns true if `loginTime` has been explicitly set.
+    var hasLoginTime: Bool {return self._loginTime != nil}
+    /// Clears the value of `loginTime`. Subsequent reads from it will return its default value.
+    mutating func clearLoginTime() {self._loginTime = nil}
+
+    var loginIp: String {
+      get {return _loginIp ?? String()}
+      set {_loginIp = newValue}
+    }
+    /// Returns true if `loginIp` has been explicitly set.
+    var hasLoginIp: Bool {return self._loginIp != nil}
+    /// Clears the value of `loginIp`. Subsequent reads from it will return its default value.
+    mutating func clearLoginIp() {self._loginIp = nil}
+
+    var unknownFields = SwiftProtobuf.UnknownStorage()
+
+    init() {}
+
+    fileprivate var _address: String? = nil
+    fileprivate var _loginTime: UInt64? = nil
+    fileprivate var _loginIp: String? = nil
+  }
+
   init() {}
 
   fileprivate var _type: SignalServiceProtos_Notification.TypeEnum? = nil
-  fileprivate var _aiOn: Bool? = nil
+  fileprivate var _webLogin: SignalServiceProtos_Notification.WebLogin? = nil
+  fileprivate var _botModeInfo: SignalServiceProtos_Notification.BotModeInfo? = nil
+  fileprivate var _trainModeInfo: SignalServiceProtos_Notification.TrainModeInfo? = nil
 }
 
 #if swift(>=4.2)
@@ -2827,7 +2973,7 @@ extension SignalServiceProtos_Envelope: SwiftProtobuf.Message, SwiftProtobuf._Me
     8: .same(proto: "content"),
     9: .same(proto: "serverGuid"),
     10: .same(proto: "serverTimestamp"),
-    11: .same(proto: "noti"),
+    11: .same(proto: "notify"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -2842,7 +2988,7 @@ extension SignalServiceProtos_Envelope: SwiftProtobuf.Message, SwiftProtobuf._Me
       case 8: try decoder.decodeSingularBytesField(value: &self._content)
       case 9: try decoder.decodeSingularStringField(value: &self._serverGuid)
       case 10: try decoder.decodeSingularUInt64Field(value: &self._serverTimestamp)
-      case 11: try decoder.decodeSingularMessageField(value: &self._noti)
+      case 11: try decoder.decodeSingularMessageField(value: &self._notify)
       default: break
       }
     }
@@ -2876,7 +3022,7 @@ extension SignalServiceProtos_Envelope: SwiftProtobuf.Message, SwiftProtobuf._Me
     if let v = self._serverTimestamp {
       try visitor.visitSingularUInt64Field(value: v, fieldNumber: 10)
     }
-    if let v = self._noti {
+    if let v = self._notify {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 11)
     }
     try unknownFields.traverse(visitor: &visitor)
@@ -2892,7 +3038,7 @@ extension SignalServiceProtos_Envelope: SwiftProtobuf.Message, SwiftProtobuf._Me
     if lhs._content != rhs._content {return false}
     if lhs._serverGuid != rhs._serverGuid {return false}
     if lhs._serverTimestamp != rhs._serverTimestamp {return false}
-    if lhs._noti != rhs._noti {return false}
+    if lhs._notify != rhs._notify {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -2914,14 +3060,18 @@ extension SignalServiceProtos_Notification: SwiftProtobuf.Message, SwiftProtobuf
   static let protoMessageName: String = _protobuf_package + ".Notification"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "type"),
-    3: .same(proto: "aiOn"),
+    2: .same(proto: "webLogin"),
+    3: .same(proto: "botModeInfo"),
+    4: .same(proto: "trainModeInfo"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
       switch fieldNumber {
       case 1: try decoder.decodeSingularEnumField(value: &self._type)
-      case 3: try decoder.decodeSingularBoolField(value: &self._aiOn)
+      case 2: try decoder.decodeSingularMessageField(value: &self._webLogin)
+      case 3: try decoder.decodeSingularMessageField(value: &self._botModeInfo)
+      case 4: try decoder.decodeSingularMessageField(value: &self._trainModeInfo)
       default: break
       }
     }
@@ -2931,15 +3081,23 @@ extension SignalServiceProtos_Notification: SwiftProtobuf.Message, SwiftProtobuf
     if let v = self._type {
       try visitor.visitSingularEnumField(value: v, fieldNumber: 1)
     }
-    if let v = self._aiOn {
-      try visitor.visitSingularBoolField(value: v, fieldNumber: 3)
+    if let v = self._webLogin {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 2)
+    }
+    if let v = self._botModeInfo {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 3)
+    }
+    if let v = self._trainModeInfo {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: SignalServiceProtos_Notification, rhs: SignalServiceProtos_Notification) -> Bool {
     if lhs._type != rhs._type {return false}
-    if lhs._aiOn != rhs._aiOn {return false}
+    if lhs._webLogin != rhs._webLogin {return false}
+    if lhs._botModeInfo != rhs._botModeInfo {return false}
+    if lhs._trainModeInfo != rhs._trainModeInfo {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -2947,10 +3105,133 @@ extension SignalServiceProtos_Notification: SwiftProtobuf.Message, SwiftProtobuf
 
 extension SignalServiceProtos_Notification.TypeEnum: SwiftProtobuf._ProtoNameProviding {
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    0: .same(proto: "AI"),
+    0: .same(proto: "BOT"),
     1: .same(proto: "WEB_LOGIN"),
     2: .same(proto: "TRAINER_OFF"),
   ]
+}
+
+extension SignalServiceProtos_Notification.TrainModeInfo: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = SignalServiceProtos_Notification.protoMessageName + ".TrainModeInfo"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "trainerId"),
+    2: .same(proto: "beTrainerId"),
+    3: .same(proto: "trainOpener"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      switch fieldNumber {
+      case 1: try decoder.decodeSingularStringField(value: &self._trainerID)
+      case 2: try decoder.decodeSingularStringField(value: &self._beTrainerID)
+      case 3: try decoder.decodeSingularStringField(value: &self._trainOpener)
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if let v = self._trainerID {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 1)
+    }
+    if let v = self._beTrainerID {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 2)
+    }
+    if let v = self._trainOpener {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 3)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: SignalServiceProtos_Notification.TrainModeInfo, rhs: SignalServiceProtos_Notification.TrainModeInfo) -> Bool {
+    if lhs._trainerID != rhs._trainerID {return false}
+    if lhs._beTrainerID != rhs._beTrainerID {return false}
+    if lhs._trainOpener != rhs._trainOpener {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension SignalServiceProtos_Notification.BotModeInfo: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = SignalServiceProtos_Notification.protoMessageName + ".BotModeInfo"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "contact"),
+    2: .same(proto: "botContact"),
+    3: .same(proto: "state"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      switch fieldNumber {
+      case 1: try decoder.decodeSingularStringField(value: &self._contact)
+      case 2: try decoder.decodeSingularStringField(value: &self._botContact)
+      case 3: try decoder.decodeSingularBoolField(value: &self._state)
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if let v = self._contact {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 1)
+    }
+    if let v = self._botContact {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 2)
+    }
+    if let v = self._state {
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 3)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: SignalServiceProtos_Notification.BotModeInfo, rhs: SignalServiceProtos_Notification.BotModeInfo) -> Bool {
+    if lhs._contact != rhs._contact {return false}
+    if lhs._botContact != rhs._botContact {return false}
+    if lhs._state != rhs._state {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension SignalServiceProtos_Notification.WebLogin: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = SignalServiceProtos_Notification.protoMessageName + ".WebLogin"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "address"),
+    2: .same(proto: "loginTime"),
+    3: .same(proto: "loginIp"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      switch fieldNumber {
+      case 1: try decoder.decodeSingularStringField(value: &self._address)
+      case 2: try decoder.decodeSingularUInt64Field(value: &self._loginTime)
+      case 3: try decoder.decodeSingularStringField(value: &self._loginIp)
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if let v = self._address {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 1)
+    }
+    if let v = self._loginTime {
+      try visitor.visitSingularUInt64Field(value: v, fieldNumber: 2)
+    }
+    if let v = self._loginIp {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 3)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: SignalServiceProtos_Notification.WebLogin, rhs: SignalServiceProtos_Notification.WebLogin) -> Bool {
+    if lhs._address != rhs._address {return false}
+    if lhs._loginTime != rhs._loginTime {return false}
+    if lhs._loginIp != rhs._loginIp {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
 }
 
 extension SignalServiceProtos_TypingMessage: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {

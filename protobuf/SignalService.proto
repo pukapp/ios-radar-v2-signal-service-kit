@@ -37,16 +37,36 @@ message Envelope {
   optional string serverGuid      = 9;
   // We may eventually want to make this required.
   optional uint64 serverTimestamp = 10;
-  optional Notification noti = 11;
+  optional Notification notify = 11;
 }
+
 message Notification {
   enum Type {
-    AI = 0;
+    BOT = 0;
     WEB_LOGIN = 1;
     TRAINER_OFF = 2;
   }
   optional Type type = 1;
-  optional bool aiOn = 3;
+  optional WebLogin webLogin = 2;
+  optional BotModeInfo botModeInfo = 3;
+  optional TrainModeInfo trainModeInfo = 4;
+
+  message TrainModeInfo {
+    optional string trainerId = 1;
+    optional string beTrainerId = 2;
+    optional string trainOpener = 3;
+  }
+
+  message BotModeInfo {
+    optional string contact = 1; // 聊天者
+    optional string botContact = 2; // 开启机器人方
+    optional bool state = 3; // 机器人状态  true: 开启  false: 关闭
+  }
+  message WebLogin {
+    optional string address = 1;
+    optional uint64 loginTime = 2;
+    optional string loginIp = 3;
+  }
 }
 
 message TypingMessage {
