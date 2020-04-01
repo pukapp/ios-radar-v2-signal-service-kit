@@ -1212,10 +1212,9 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
-    TSTrainerThread *_Nullable thread = [TSTrainerThread getOrCreateThreadWithContactId:envelope.source anyTransaction:transaction];
-    
-    [SSKEnvironment.shared storeTrainerContactId:dataMessage.aiTrainModeInfo.trainerID withTrainerThreadUniqueId:thread.uniqueId];
-    [SSKEnvironment.shared storeTrainOpenerContactId:dataMessage.aiTrainModeInfo.trainOpenerID withTrainerThreadUniqueId:thread.uniqueId];
+    TSTrainerThread *_Nullable thread = [TSTrainerThread getOrCreateThreadWithTrainOpenerContactId:dataMessage.aiTrainModeInfo.trainOpenerID
+                                                                                beTrainerContactId:dataMessage.aiTrainModeInfo.beTrainerID
+                                                                                    anyTransaction:transaction];
     
     if (!thread) {
         OWSFailDebug(@"ignoring expiring messages update for unknown group.");
