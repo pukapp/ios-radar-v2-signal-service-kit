@@ -12,6 +12,9 @@ extern NSString *const TSTrainerThreadPrefix;
 
 @interface TSTrainerThread : TSThread
 
+@property (nonatomic, readonly, nullable) NSString *trainOpenerContactId;
+@property (nonatomic, readonly, nullable) NSString *beTrainerContactId;
+@property (nonatomic) BOOL hasDismissedOffers;
 
 - (instancetype)initWithUniqueId:(NSString *)uniqueId
                     archivalDate:(nullable NSDate *)archivalDate
@@ -27,33 +30,28 @@ isArchivedByLegacyTimestampForSorting:(BOOL)isArchivedByLegacyTimestampForSortin
 NS_SWIFT_NAME(init(uniqueId:archivalDate:archivedAsOfMessageSortId:conversationColorName:creationDate:isArchivedByLegacyTimestampForSorting:lastMessageDate:messageDraft:mutedUntilDate:shouldThreadBeVisible:hasDismissedOffers:));
 
 
-- (instancetype)initWithContactId:(NSString *)contactId;
+- (instancetype)initWithTrainOpenerContactId:(NSString *)trainOpenerContactId
+                          beTrainerContactId:(NSString *)beTrainerContactId;
 
-@property (nonatomic) BOOL hasDismissedOffers;
++ (instancetype)getOrCreateThreadWithTrainOpenerContactId:(NSString *)trainOpenerContactId
+                                       beTrainerContactId:(NSString *)beTrainerContactId;
 
-+ (instancetype)getOrCreateThreadWithContactId:(NSString *)contactId NS_SWIFT_NAME(getOrCreateThread(contactId:));
++ (instancetype)getOrCreateThreadWithTrainOpenerContactId:(NSString *)trainOpenerContactId
+                                       beTrainerContactId:(NSString *)beTrainerContactId
+                                           anyTransaction:(SDSAnyWriteTransaction *)transaction;
 
-+ (instancetype)getOrCreateThreadWithContactId:(NSString *)contactId
-                                   transaction:(YapDatabaseReadWriteTransaction *)transaction;
++ (nullable instancetype)getThreadWithTrainOpenerContactId:(NSString *)trainOpenerContactId
+                                        beTrainerContactId:(NSString *)beTrainerContactId
+                                               transaction:(YapDatabaseReadTransaction *)transaction;
 
-+ (instancetype)getOrCreateThreadWithContactId:(NSString *)contactId
-                                anyTransaction:(SDSAnyWriteTransaction *)transaction;
-
-// Unlike getOrCreateThreadWithContactId, this will _NOT_ create a thread if one does not already exist.
-+ (nullable instancetype)getThreadWithContactId:(NSString *)contactId transaction:(YapDatabaseReadTransaction *)transaction;
-+ (nullable instancetype)getThreadWithContactId:(NSString *)contactId
-                                 anyTransaction:(SDSAnyReadTransaction *)transaction;
++ (nullable instancetype)getThreadWithTrainOpenerContactId:(NSString *)trainOpenerContactId
+                                        beTrainerContactId:(NSString *)beTrainerContactId
+                                            anyTransaction:(SDSAnyWriteTransaction *)transaction;
 
 - (NSString *)contactIdentifier;
-- (SignalServiceAddress *)contactAddress;
-
-+ (NSString *)contactIdFromThreadId:(NSString *)threadId;
-
-+ (NSString *)threadIdFromContactId:(NSString *)contactId;
 
 + (NSString *)conversationColorNameForRecipientId:(NSString *)recipientId
                                       transaction:(SDSAnyReadTransaction *)transaction;
-
 @end
 
 NS_ASSUME_NONNULL_END

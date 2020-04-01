@@ -46,90 +46,82 @@ isArchivedByLegacyTimestampForSorting:isArchivedByLegacyTimestampForSorting
     }
     
     _hasDismissedOffers = hasDismissedOffers;
+    NSArray<NSString *> *components = [uniqueId componentsSeparatedByString:@"-"];
+    _trainOpenerContactId = components.firstObject;
+    _beTrainerContactId = components.lastObject;
     
     return self;
 }
 
-
-- (instancetype)initWithContactId:(NSString *)contactId {
-    NSString *uniqueIdentifier = [[self class] threadIdFromContactId:contactId];
+- (instancetype)initWithTrainOpenerContactId:(NSString *)trainOpenerContactId
+                          beTrainerContactId:(NSString *)beTrainerContactId
+{
+    OWSAssertDebug(trainOpenerContactId.length > 0);
+    OWSAssertDebug(beTrainerContactId.length > 0);
     
-    OWSAssertDebug(contactId.length > 0);
+    NSString *uniqueId = [[NSString alloc] initWithFormat:@"t-%@-%@", trainOpenerContactId, beTrainerContactId];
+    self = [super initWithUniqueId:uniqueId];
     
-    self = [super initWithUniqueId:uniqueIdentifier];
+    _trainOpenerContactId = trainOpenerContactId;
+    _beTrainerContactId = beTrainerContactId;
     
     return self;
 }
 
-+ (instancetype)getOrCreateThreadWithContactId:(NSString *)contactId
-                                   transaction:(YapDatabaseReadWriteTransaction *)transaction {
-    OWSAssertDebug(contactId.length > 0);
-    
-    TSTrainerThread *thread =
-    [self fetchObjectWithUniqueID:[self threadIdFromContactId:contactId] transaction:transaction];
-    
-    if (!thread) {
-        thread = [[TSTrainerThread alloc] initWithContactId:contactId];
-        [thread saveWithTransaction:transaction];
-    }
-    
-    return thread;
-}
-
-+ (instancetype)getOrCreateThreadWithContactId:(NSString *)contactId
-                                anyTransaction:(SDSAnyWriteTransaction *)transaction
++ (instancetype)getOrCreateThreadWithTrainOpenerContactId:(NSString *)trainOpenerContactId
+                                       beTrainerContactId:(NSString *)beTrainerContactId
 {
-    OWSAssertDebug(contactId.length > 0);
-    
-    NSString *uniqueId = [self threadIdFromContactId:contactId];
-    TSTrainerThread *thread = (TSTrainerThread *)[self anyFetchWithUniqueId:uniqueId transaction:transaction];
-    
-    if (!thread) {
-        thread = [[TSTrainerThread alloc] initWithContactId:contactId];
-        [thread anyInsertWithTransaction:transaction];
-    }
-    
-    return thread;
-}
-
-+ (instancetype)getOrCreateThreadWithContactId:(NSString *)contactId
-{
-    OWSAssertDebug(contactId.length > 0);
+    OWSAssertDebug(trainOpenerContactId.length > 0);
+    OWSAssertDebug(beTrainerContactId.length > 0);
     
     __block TSTrainerThread *thread;
     [[self dbReadWriteConnection] readWriteWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-        thread = [self getOrCreateThreadWithContactId:contactId transaction:transaction];
+        thread = [self getThreadWithTrainOpenerContactId:trainOpenerContactId
+                                      beTrainerContactId:beTrainerContactId
+                                             transaction:transaction];
     }];
     
     return thread;
 }
 
-+ (nullable instancetype)getThreadWithContactId:(NSString *)contactId
-                                    transaction:(YapDatabaseReadTransaction *)transaction
++ (instancetype)getOrCreateThreadWithTrainOpenerContactId:(NSString *)trainOpenerContactId
+                                       beTrainerContactId:(NSString *)beTrainerContactId
+                                           anyTransaction:(SDSAnyWriteTransaction *)transaction
 {
-    return [TSTrainerThread fetchObjectWithUniqueID:[self threadIdFromContactId:contactId] transaction:transaction];
+    OWSAssertDebug(trainOpenerContactId.length > 0);
+    OWSAssertDebug(beTrainerContactId.length > 0);
+    NSString *uniqueId = [[NSString alloc] initWithFormat:@"t-%@-%@", trainOpenerContactId, beTrainerContactId];
+    TSTrainerThread *thread = (TSTrainerThread *)[self anyFetchWithUniqueId:uniqueId transaction:transaction];
+    if (!thread) {
+        thread = [[TSTrainerThread alloc] initWithTrainOpenerContactId:trainOpenerContactId
+                                                    beTrainerContactId:beTrainerContactId];
+        [thread anyInsertWithTransaction:transaction];
+    }
+    return thread;
 }
 
-+ (nullable instancetype)getThreadWithContactId:(NSString *)contactId
-                                 anyTransaction:(SDSAnyReadTransaction *)transaction
++ (nullable instancetype)getThreadWithTrainOpenerContactId:(NSString *)trainOpenerContactId
+                               beTrainerContactId:(NSString *)beTrainerContactId
+                                      transaction:(YapDatabaseReadTransaction *)transaction
 {
-    return (TSTrainerThread *)[TSTrainerThread anyFetchWithUniqueId:[self threadIdFromContactId:contactId]
-                                                        transaction:transaction];
+    OWSAssertDebug(trainOpenerContactId.length > 0);
+    OWSAssertDebug(beTrainerContactId.length > 0);
+    NSString *uniqueId = [[NSString alloc] initWithFormat:@"t-%@-%@", trainOpenerContactId, beTrainerContactId];
+    TSTrainerThread *thread = [self fetchObjectWithUniqueID:uniqueId transaction:transaction];
+    return thread;
 }
 
-- (NSString *)contactIdentifier {
-    return [[self class] contactIdFromThreadId:self.uniqueId];
++ (nullable instancetype)getThreadWithTrainOpenerContactId:(NSString *)trainOpenerContactId
+                               beTrainerContactId:(NSString *)beTrainerContactId
+                                   anyTransaction:(SDSAnyWriteTransaction *)transaction
+{
+    OWSAssertDebug(trainOpenerContactId.length > 0);
+    OWSAssertDebug(beTrainerContactId.length > 0);
+    NSString *uniqueId = [[NSString alloc] initWithFormat:@"t-%@-%@", trainOpenerContactId, beTrainerContactId];
+    TSTrainerThread *thread = (TSTrainerThread *)[self anyFetchWithUniqueId:uniqueId transaction:transaction];
+    return thread;
 }
 
-- (SignalServiceAddress *)contactAddress
-{
-    return [[SignalServiceAddress alloc] initWithPhoneNumber:self.contactIdentifier];
-}
-
-- (NSArray<NSString *> *)recipientIdentifiers
-{
-    return @[self.contactIdentifier];
-}
 
 - (BOOL)isGroupThread {
     return NO;
@@ -139,23 +131,29 @@ isArchivedByLegacyTimestampForSorting:isArchivedByLegacyTimestampForSorting
     return YES;
 }
 
+- (NSString *)name
+{
+    return @"haha";
+//    return [SSKEnvironment.shared.contactsManager displayNameForPhoneIdentifier:self.contactIdentifier];
+}
+
+- (NSString *)contactIdentifier {
+    return self.beTrainerContactId;
+}
+
+- (NSArray<NSString *> *)recipientIdentifiers
+{
+    return @[self.beTrainerContactId];
+}
+
 - (BOOL)hasSafetyNumbers
 {
     return !![[OWSIdentityManager sharedManager] identityKeyForRecipientId:self.contactIdentifier];
 }
 
-
-- (NSString *)name
+- (SignalServiceAddress *)contactAddress
 {
-    return [SSKEnvironment.shared.contactsManager displayNameForPhoneIdentifier:self.contactIdentifier];
-}
-
-+ (NSString *)threadIdFromContactId:(NSString *)contactId {
-    return [TSTrainerThreadPrefix stringByAppendingString:contactId];
-}
-
-+ (NSString *)contactIdFromThreadId:(NSString *)threadId {
-    return [threadId substringWithRange:NSMakeRange(1, threadId.length - 1)];
+    return [[SignalServiceAddress alloc] initWithPhoneNumber:self.contactIdentifier];
 }
 
 + (NSString *)conversationColorNameForRecipientId:(NSString *)recipientId
@@ -163,14 +161,13 @@ isArchivedByLegacyTimestampForSorting:isArchivedByLegacyTimestampForSorting
 {
     OWSAssertDebug(recipientId.length > 0);
     
-    TSTrainerThread *_Nullable contactThread =
-    [TSTrainerThread getThreadWithContactId:recipientId anyTransaction:transaction];
+    TSContactThread *_Nullable contactThread =
+    [TSContactThread getThreadWithContactId:recipientId anyTransaction:transaction];
     if (contactThread) {
         return contactThread.conversationColorName;
     }
     return [self stableColorNameForNewConversationWithString:recipientId];
 }
-
 @end
 
 NS_ASSUME_NONNULL_END
