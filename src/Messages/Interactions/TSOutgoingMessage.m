@@ -802,7 +802,7 @@ perMessageExpirationDurationSeconds:perMessageExpirationDurationSeconds
                                  TSOutgoingMessageRecipientState *_Nullable recipientState
                                      = message.recipientStateMap[recipientId];
                                  if (!recipientState) {
-                                     OWSFailDebug(@"Missing recipient state for recipient: %@", recipientId);
+//                                     OWSFailDebug(@"Missing recipient state for recipient: %@", recipientId);
                                      return;
                                  }
                                  recipientState.state = OWSOutgoingMessageRecipientStateSent;
