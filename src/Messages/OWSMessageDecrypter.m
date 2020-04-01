@@ -29,7 +29,7 @@
 #import <SignalCoreKit/SCKExceptionWrapper.h>
 #import <SignalMetadataKit/SignalMetadataKit-Swift.h>
 #import <SignalServiceKit/SignalServiceKit-Swift.h>
-#import "TSAccountManager.h"
+#import "AppContext.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -331,23 +331,23 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
             break;
             
         case SSKProtoNotificationTypeTrainerOff: { // 训练者断开
-            NSString *me = [TSAccountManager.sharedInstance localNumber];
-            NSString *trainOpener = envelope.notify.trainModeInfo.trainOpener;
-            NSString *trainer = envelope.notify.trainModeInfo.trainerID;
-            NSString *beTrainer = envelope.notify.trainModeInfo.beTrainerID;
-            if ([me isEqualToString:trainer]) { // 当前是训练者
-                // 删除训练对话
-                [SDSDatabaseStorage.shared writeWithBlock:^(SDSAnyWriteTransaction * _Nonnull transaction) {
-                    TSTrainerThread *thread = [TSTrainerThread getThreadWithContactId:beTrainer transaction:transaction.transitional_yapReadTransaction];
-                    [thread anyRemoveWithTransaction:transaction];
-                }];
-                // 删除训练对话相关信息
-                [SSKEnvironment.shared removeTrainOpenerWithBeTrainerContactId:beTrainer];
-                [SSKEnvironment.shared removeTrainerWithBeTrainerContactId:beTrainer];
-            } else {
-                [SSKEnvironment.shared removeTrainerWithTrainOpenerContactId:trainOpener];
-            }
+            OWSAssertDebug(envelope);
             
+            NSString *trainOpenerContactId = envelope.notify.trainModeInfo.trainOpener;
+            NSString *beTrainerContactId = envelope.notify.trainModeInfo.beTrainerID;
+            NSString *trainerContactId = envelope.notify.trainModeInfo.trainerID;
+            
+            OWSAssertDebug(trainOpenerContactId);
+            OWSAssertDebug(beTrainerContactId);
+            OWSAssertDebug(trainerContactId);
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // 被训练者
+                [SSKEnvironment.shared beTrainerRemoveTrainerWithTrainOpenerContactId:trainOpenerContactId
+                                                                andBeTrainerContactId:beTrainerContactId];
+                // 训练者
+                [NSNotificationCenter.defaultCenter postNotificationName:OWSReceiveTrainOffNotification object:envelope];
+            });
             break;
         }
         case SSKProtoNotificationTypeWebLogin:

@@ -11,6 +11,9 @@ NSString *const OWSApplicationWillEnterForegroundNotification = @"OWSApplication
 NSString *const OWSApplicationWillResignActiveNotification = @"OWSApplicationWillResignActiveNotification";
 NSString *const OWSApplicationDidBecomeActiveNotification = @"OWSApplicationDidBecomeActiveNotification";
 
+/// 训练者断开
+NSString *const OWSReceiveTrainOffNotification = @"OWSReceiveTrainOffNotification";
+
 NSString *NSStringForUIApplicationState(UIApplicationState value)
 {
     switch (value) {
