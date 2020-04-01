@@ -46,7 +46,7 @@ NS_SWIFT_NAME(init(uniqueId:archivalDate:archivedAsOfMessageSortId:conversationC
 
 + (nullable instancetype)getThreadWithTrainOpenerContactId:(NSString *)trainOpenerContactId
                                         beTrainerContactId:(NSString *)beTrainerContactId
-                                            anyTransaction:(SDSAnyWriteTransaction *)transaction;
+                                            anyTransaction:(SDSAnyReadTransaction *)transaction;
 
 - (NSString *)contactIdentifier;
 
