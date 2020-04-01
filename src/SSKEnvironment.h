@@ -129,17 +129,19 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isComplete;
 
 
-- (void)removeTrainerWithTrainOpenerContactId:(NSString *)trainOpenerContactId;
-- (void)storeTrainerContactId:(NSString *)trainerContactId withTrainOpenerContactId:(NSString *)trainOpenerContactId;
-- (NSString *)findTrainerContactIdWithTrainOpenerContactId:(NSString *)trainOpenerContactId;
+/// 被训练者 查找当前对话是否有 训练者，若有则表示训练者是连接状态，无则表示训练者已断开
+- (NSString *)beTrainerFindTrainerContactIdWithTrainOpenerContactId:(NSString *)trainOpenerContactId
+                                              andBeTrainerContactId:(NSString *)beTrainerContactId;
 
-- (void)storeTrainerContactId:(NSString *)trainerContactId withTrainerThreadUniqueId:(NSString *)threadUniqueId;
-- (void)storeTrainOpenerContactId:(NSString *)trainOpenerContactId withTrainerThreadUniqueId:(NSString *)threadUniqueId;
-- (NSString *)findTrainerContactIdWithTrainerThreadUniqueId:(NSString *)threadUniqueId;
-- (NSString *)findTrainOpenerContactIdWithTrainerThreadUniqueId:(NSString *)threadUniqueId;
+/// 被训练者 申请分配训练者成功时，以当前对话信息存储训练者
+- (void)beTrainerStoreTrainerContactId:(NSString *)trainerContactId
+              withTrainOpenerContactId:(NSString *)trainOpenerContactId
+                 andBeTrainerContactId:(NSString *)beTrainerContactId;
 
-- (void)removeTrainerWithBeTrainerContactId:(NSString *)beTrainerContactId;
-- (void)removeTrainOpenerWithBeTrainerContactId:(NSString *)beTrainerContactId;
+/// 被训练者 收到 TRAINER_OFF 的 NOTICE 时，找到当前对话存储的 训练者 然后删除
+- (void)beTrainerRemoveTrainerWithTrainOpenerContactId:(NSString *)trainOpenerContactId
+                                 andBeTrainerContactId:(NSString *)beTrainerContactId;
+
 
 @end
 

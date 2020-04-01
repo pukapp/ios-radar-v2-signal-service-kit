@@ -244,76 +244,43 @@ static SSKEnvironment *sharedSSKEnvironment;
     }
 }
 
-- (void)storeTrainerContactId:(NSString *)trainerContactId withTrainOpenerContactId:(NSString *)trainOpenerContactId
+
+// MARK: - 被训练者 side
+- (void)beTrainerStoreTrainerContactId:(NSString *)trainerContactId
+              withTrainOpenerContactId:(NSString *)trainOpenerContactId
+                 andBeTrainerContactId:(NSString *)beTrainerContactId
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *trainerKey = [[NSString alloc] initWithFormat:@"%@-trainer", trainOpenerContactId];
-    [defaults removeObjectForKey:trainerKey];
-    [defaults setValue:trainerContactId forKey:trainerKey];
+    NSString *key = [self createTrainerKeyInBeTrainerSideWithTrainOpenerContactId:trainOpenerContactId
+                                                            andBeTrainerContactId:beTrainerContactId];
+    [defaults removeObjectForKey:key];
+    [defaults setValue:trainerContactId forKey:key];
     [defaults synchronize];
 }
 
-- (void)removeTrainerWithTrainOpenerContactId:(NSString *)trainOpenerContactId
+- (NSString *)beTrainerFindTrainerContactIdWithTrainOpenerContactId:(NSString *)trainOpenerContactId
+                                              andBeTrainerContactId:(NSString *)beTrainerContactId
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *trainerKey = [[NSString alloc] initWithFormat:@"%@-trainer", trainOpenerContactId];
-    [defaults removeObjectForKey:trainerKey];
+    NSString *key = [self createTrainerKeyInBeTrainerSideWithTrainOpenerContactId:trainOpenerContactId
+                                                            andBeTrainerContactId:beTrainerContactId];
+    return [defaults stringForKey:key];
+}
+
+- (void)beTrainerRemoveTrainerWithTrainOpenerContactId:(NSString *)trainOpenerContactId
+                                 andBeTrainerContactId:(NSString *)beTrainerContactId
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *key = [self createTrainerKeyInBeTrainerSideWithTrainOpenerContactId:trainOpenerContactId
+                                                            andBeTrainerContactId:beTrainerContactId];
+    [defaults removeObjectForKey:key];
     [defaults synchronize];
 }
 
-- (NSString *)findTrainerContactIdWithTrainOpenerContactId:(NSString *)trainOpenerContactId
+- (NSString *)createTrainerKeyInBeTrainerSideWithTrainOpenerContactId:(NSString *)trainOpenerContactId
+                                                andBeTrainerContactId:(NSString *)beTrainerContactId
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *trainerKey = [[NSString alloc] initWithFormat:@"%@-trainer", trainOpenerContactId];
-    return [defaults stringForKey:trainerKey];
-}
-
-- (void)storeTrainerContactId:(NSString *)trainerContactId withTrainerThreadUniqueId:(NSString *)threadUniqueId
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *trainerKey = [[NSString alloc] initWithFormat:@"%@-trainer", threadUniqueId];
-    [defaults removeObjectForKey:trainerKey];
-    [defaults setValue:trainerContactId forKey:trainerKey];
-    [defaults synchronize];
-}
-
-- (void)storeTrainOpenerContactId:(NSString *)trainOpenerContactId withTrainerThreadUniqueId:(NSString *)threadUniqueId
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *trainOpenerKey = [[NSString alloc] initWithFormat:@"%@-trainOpener", threadUniqueId];
-    [defaults removeObjectForKey:trainOpenerKey];
-    [defaults setValue:trainOpenerContactId forKey:trainOpenerKey];
-    [defaults synchronize];
-}
-
-- (NSString *)findTrainerContactIdWithTrainerThreadUniqueId:(NSString *)threadUniqueId
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *trainerKey = [[NSString alloc] initWithFormat:@"%@-trainer", threadUniqueId];
-    return [defaults stringForKey:trainerKey];
-}
-
-- (NSString *)findTrainOpenerContactIdWithTrainerThreadUniqueId:(NSString *)threadUniqueId
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *trainOpenerKey = [[NSString alloc] initWithFormat:@"%@-trainOpener", threadUniqueId];
-    return [defaults stringForKey:trainOpenerKey];
-}
-
-- (void)removeTrainerWithBeTrainerContactId:(NSString *)beTrainerContactId
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *trainerKey = [[NSString alloc] initWithFormat:@"t%@-trainer", beTrainerContactId];
-    [defaults removeObjectForKey:trainerKey];
-    [defaults synchronize];
-}
-
-- (void)removeTrainOpenerWithBeTrainerContactId:(NSString *)beTrainerContactId
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *trainerKey = [[NSString alloc] initWithFormat:@"t%@-trainOpener", beTrainerContactId];
-    [defaults removeObjectForKey:trainerKey];
-    [defaults synchronize];
+    return [[NSString alloc] initWithFormat:@"be-trainer-side-%@-%@-trainer-id", trainOpenerContactId, beTrainerContactId];
 }
 
 @end
