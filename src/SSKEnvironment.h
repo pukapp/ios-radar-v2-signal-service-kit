@@ -142,6 +142,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)beTrainerRemoveTrainerWithTrainOpenerContactId:(NSString *)trainOpenerContactId
                                  andBeTrainerContactId:(NSString *)beTrainerContactId;
 
+/// 存储对我设置了AI的人的AI状态
+- (void)storeContactAIState:(BOOL)state withHisContactId:(NSString *)contactId;
+
+/// 获取对我设置了AI的人的AI状态
+- (BOOL)findHisContactAIStateWithContactId:(NSString *)contactId;
 
 @end
 

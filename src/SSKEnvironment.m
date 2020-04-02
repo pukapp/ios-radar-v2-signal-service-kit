@@ -283,6 +283,28 @@ static SSKEnvironment *sharedSSKEnvironment;
     return [[NSString alloc] initWithFormat:@"be-trainer-side-%@-%@-trainer-id", trainOpenerContactId, beTrainerContactId];
 }
 
+
+- (void)storeContactAIState:(BOOL)state withHisContactId:(NSString *)contactId
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *key = [self createHisAIKeyWithHisContactId:contactId];
+    [defaults removeObjectForKey:key];
+    [defaults setBool:state forKey:key];
+    [defaults synchronize];
+}
+
+- (BOOL)findHisContactAIStateWithContactId:(NSString *)contactId
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *key = [self createHisAIKeyWithHisContactId:contactId];
+    return [defaults boolForKey:key];
+}
+
+- (NSString *)createHisAIKeyWithHisContactId:(NSString *)contactId
+{
+    return [[NSString alloc] initWithFormat:@"%@-ai-state-key", contactId];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
