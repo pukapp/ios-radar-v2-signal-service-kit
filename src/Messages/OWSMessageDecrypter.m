@@ -327,8 +327,20 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
         return;
     }
     switch (envelope.notify.unwrappedType) {
-        case SSKProtoNotificationTypeBot:
+        case SSKProtoNotificationTypeBot: { // AI开关状态
+            OWSAssertDebug(envelope);
+            
+            NSString *hisContactId = envelope.notify.botModeInfo.botContact;
+            BOOL state = envelope.notify.botModeInfo.state;
+            
+            OWSAssertDebug(hisContactId);
+            OWSAssertDebug(state);
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [SSKEnvironment.shared storeContactAIState:state withHisContactId:hisContactId];
+            });
             break;
+        }
             
         case SSKProtoNotificationTypeTrainerOff: { // 训练者断开
             OWSAssertDebug(envelope);
