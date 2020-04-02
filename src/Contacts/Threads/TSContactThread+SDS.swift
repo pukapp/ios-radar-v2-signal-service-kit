@@ -45,7 +45,9 @@ class TSContactThreadSerializer: SDSSerializer {
         // Subclass properties
         let groupModel: Data? = nil
         let hasDismissedOffers: Bool? = model.hasDismissedOffers
+        let hisAIState: Bool = model.hisAIState
+        let myAIState: Bool = model.myAIState
 
-        return ThreadRecord(id: id, recordType: recordType, uniqueId: uniqueId, archivalDate: archivalDate, archivedAsOfMessageSortId: archivedAsOfMessageSortId, conversationColorName: conversationColorName, creationDate: creationDate, isArchivedByLegacyTimestampForSorting: isArchivedByLegacyTimestampForSorting, lastMessageDate: lastMessageDate, messageDraft: messageDraft, mutedUntilDate: mutedUntilDate, shouldThreadBeVisible: shouldThreadBeVisible, groupModel: groupModel, hasDismissedOffers: hasDismissedOffers)
+        return ThreadRecord(id: id, recordType: recordType, uniqueId: uniqueId, archivalDate: archivalDate, archivedAsOfMessageSortId: archivedAsOfMessageSortId, conversationColorName: conversationColorName, creationDate: creationDate, isArchivedByLegacyTimestampForSorting: isArchivedByLegacyTimestampForSorting, lastMessageDate: lastMessageDate, messageDraft: messageDraft, mutedUntilDate: mutedUntilDate, shouldThreadBeVisible: shouldThreadBeVisible, groupModel: groupModel, hasDismissedOffers: hasDismissedOffers, hisAIState: hisAIState, myAIState: myAIState)
     }
 }

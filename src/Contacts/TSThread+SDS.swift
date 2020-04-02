@@ -39,6 +39,8 @@ public struct ThreadRecord: SDSRecord {
     // Subclass properties
     public let groupModel: Data?
     public let hasDismissedOffers: Bool?
+    public let hisAIState: Bool?
+    public let myAIState: Bool?
 
     public enum CodingKeys: String, CodingKey, ColumnExpression, CaseIterable {
         case id
@@ -55,6 +57,8 @@ public struct ThreadRecord: SDSRecord {
         case shouldThreadBeVisible
         case groupModel
         case hasDismissedOffers
+        case hisAIState
+        case myAIState
     }
 
     public static func columnName(_ column: ThreadRecord.CodingKeys, fullyQualified: Bool = false) -> String {
@@ -100,6 +104,8 @@ extension TSThread {
             let mutedUntilDate: Date? = record.mutedUntilDate
             let shouldThreadBeVisible: Bool = record.shouldThreadBeVisible
             let hasDismissedOffers: Bool = try SDSDeserialization.required(record.hasDismissedOffers, name: "hasDismissedOffers")
+            let hisAIState: Bool = record.hisAIState ?? false
+            let myAIState: Bool = record.myAIState ?? false
 
             return TSContactThread(uniqueId: uniqueId,
                                    archivalDate: archivalDate,
@@ -111,7 +117,9 @@ extension TSThread {
                                    messageDraft: messageDraft,
                                    mutedUntilDate: mutedUntilDate,
                                    shouldThreadBeVisible: shouldThreadBeVisible,
-                                   hasDismissedOffers: hasDismissedOffers)
+                                   hasDismissedOffers: hasDismissedOffers,
+                                   hisAIState: hisAIState,
+                                   myAIState: myAIState)
 
         case .groupThread:
 
@@ -217,6 +225,8 @@ extension TSThreadSerializer {
     // Subclass properties
     static let groupModelColumn = SDSColumnMetadata(columnName: "groupModel", columnType: .blob, isOptional: true, columnIndex: 12)
     static let hasDismissedOffersColumn = SDSColumnMetadata(columnName: "hasDismissedOffers", columnType: .int, isOptional: true, columnIndex: 13)
+    static let hisAIStateColumn = SDSColumnMetadata(columnName: "hisAIState", columnType: .int, isOptional: true, columnIndex: 14)
+    static let myAIStateColumn = SDSColumnMetadata(columnName: "myAIState", columnType: .int, isOptional: true, columnIndex: 15)
 
     // TODO: We should decide on a naming convention for
     //       tables that store models.
@@ -234,7 +244,9 @@ extension TSThreadSerializer {
         mutedUntilDateColumn,
         shouldThreadBeVisibleColumn,
         groupModelColumn,
-        hasDismissedOffersColumn
+        hasDismissedOffersColumn,
+        hisAIStateColumn,
+        myAIStateColumn
         ])
 }
 
@@ -542,6 +554,6 @@ class TSThreadSerializer: SDSSerializer {
         let groupModel: Data? = nil
         let hasDismissedOffers: Bool? = nil
 
-        return ThreadRecord(id: id, recordType: recordType, uniqueId: uniqueId, archivalDate: archivalDate, archivedAsOfMessageSortId: archivedAsOfMessageSortId, conversationColorName: conversationColorName, creationDate: creationDate, isArchivedByLegacyTimestampForSorting: isArchivedByLegacyTimestampForSorting, lastMessageDate: lastMessageDate, messageDraft: messageDraft, mutedUntilDate: mutedUntilDate, shouldThreadBeVisible: shouldThreadBeVisible, groupModel: groupModel, hasDismissedOffers: hasDismissedOffers)
+        return ThreadRecord(id: id, recordType: recordType, uniqueId: uniqueId, archivalDate: archivalDate, archivedAsOfMessageSortId: archivedAsOfMessageSortId, conversationColorName: conversationColorName, creationDate: creationDate, isArchivedByLegacyTimestampForSorting: isArchivedByLegacyTimestampForSorting, lastMessageDate: lastMessageDate, messageDraft: messageDraft, mutedUntilDate: mutedUntilDate, shouldThreadBeVisible: shouldThreadBeVisible, groupModel: groupModel, hasDismissedOffers: hasDismissedOffers, hisAIState: false, myAIState: false)
     }
 }

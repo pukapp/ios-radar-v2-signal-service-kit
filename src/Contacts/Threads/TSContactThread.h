@@ -29,7 +29,10 @@ isArchivedByLegacyTimestampForSorting:(BOOL)isArchivedByLegacyTimestampForSortin
                   mutedUntilDate:(nullable NSDate *)mutedUntilDate
            shouldThreadBeVisible:(BOOL)shouldThreadBeVisible
               hasDismissedOffers:(BOOL)hasDismissedOffers
-NS_SWIFT_NAME(init(uniqueId:archivalDate:archivedAsOfMessageSortId:conversationColorName:creationDate:isArchivedByLegacyTimestampForSorting:lastMessageDate:messageDraft:mutedUntilDate:shouldThreadBeVisible:hasDismissedOffers:));
+                      hisAIState:(BOOL)hisAIState
+                       myAIState:(BOOL)myAIState
+
+NS_SWIFT_NAME(init(uniqueId:archivalDate:archivedAsOfMessageSortId:conversationColorName:creationDate:isArchivedByLegacyTimestampForSorting:lastMessageDate:messageDraft:mutedUntilDate:shouldThreadBeVisible:hasDismissedOffers:hisAIState:myAIState:));
 
 // clang-format on
 
@@ -40,6 +43,12 @@ NS_SWIFT_NAME(init(uniqueId:archivalDate:archivedAsOfMessageSortId:conversationC
 - (instancetype)initWithContactId:(NSString *)contactId;
 
 @property (nonatomic) BOOL hasDismissedOffers;
+
+/// 对方对我的AI状态
+@property (nonatomic) BOOL hisAIState;
+
+/// 我对对方的AI状态
+@property (nonatomic) BOOL myAIState;
 
 + (instancetype)getOrCreateThreadWithContactId:(NSString *)contactId NS_SWIFT_NAME(getOrCreateThread(contactId:));
 
