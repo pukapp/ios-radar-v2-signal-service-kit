@@ -148,6 +148,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// 获取对我设置了AI的人的AI状态
 - (BOOL)findHisContactAIStateWithContactId:(NSString *)contactId;
 
+
+/// 存储我的AI状态
+- (void)storeMyAIState:(BOOL)state withContactId:(NSString *)contactId;
+
+/// 获取我的AI状态
+- (BOOL)findMyAIStateWithContactId:(NSString *)contactId;
+
 @end
 
 NS_ASSUME_NONNULL_END

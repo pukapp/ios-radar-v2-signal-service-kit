@@ -305,6 +305,26 @@ static SSKEnvironment *sharedSSKEnvironment;
     return [[NSString alloc] initWithFormat:@"%@-ai-state-key", contactId];
 }
 
+- (void)storeMyAIState:(BOOL)state withContactId:(NSString *)contactId
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *key = [self createMyAIKeyWithContactId:contactId];
+    [defaults removeObjectForKey:key];
+    [defaults setBool:state forKey:key];
+    [defaults synchronize];
+}
+
+- (BOOL)findMyAIStateWithContactId:(NSString *)contactId
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *key = [self createMyAIKeyWithContactId:contactId];
+    return [defaults boolForKey:key];
+}
+
+- (NSString *)createMyAIKeyWithContactId:(NSString *)contactId
+{
+    return [[NSString alloc] initWithFormat:@"%@-my-state-key", contactId];
+}
 @end
 
 NS_ASSUME_NONNULL_END
