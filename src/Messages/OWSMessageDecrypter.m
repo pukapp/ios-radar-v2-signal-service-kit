@@ -344,7 +344,7 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
         case SSKProtoNotificationTypeTrainerOff: { // 训练者断开
             OWSAssertDebug(envelope);
             
-            NSString *trainOpenerContactId = envelope.notify.trainModeInfo.trainOpener;
+            NSString *trainOpenerContactId = envelope.notify.trainModeInfo.trainOpenerID;
             NSString *beTrainerContactId = envelope.notify.trainModeInfo.beTrainerID;
             NSString *trainerContactId = envelope.notify.trainModeInfo.trainerID;
             

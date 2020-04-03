@@ -287,14 +287,14 @@ struct SignalServiceProtos_Notification {
     /// Clears the value of `beTrainerID`. Subsequent reads from it will return its default value.
     mutating func clearBeTrainerID() {self._beTrainerID = nil}
 
-    var trainOpener: String {
-      get {return _trainOpener ?? String()}
-      set {_trainOpener = newValue}
+    var trainOpenerID: String {
+      get {return _trainOpenerID ?? String()}
+      set {_trainOpenerID = newValue}
     }
-    /// Returns true if `trainOpener` has been explicitly set.
-    var hasTrainOpener: Bool {return self._trainOpener != nil}
-    /// Clears the value of `trainOpener`. Subsequent reads from it will return its default value.
-    mutating func clearTrainOpener() {self._trainOpener = nil}
+    /// Returns true if `trainOpenerID` has been explicitly set.
+    var hasTrainOpenerID: Bool {return self._trainOpenerID != nil}
+    /// Clears the value of `trainOpenerID`. Subsequent reads from it will return its default value.
+    mutating func clearTrainOpenerID() {self._trainOpenerID = nil}
 
     var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -302,7 +302,7 @@ struct SignalServiceProtos_Notification {
 
     fileprivate var _trainerID: String? = nil
     fileprivate var _beTrainerID: String? = nil
-    fileprivate var _trainOpener: String? = nil
+    fileprivate var _trainOpenerID: String? = nil
   }
 
   struct BotModeInfo {
@@ -3116,7 +3116,7 @@ extension SignalServiceProtos_Notification.TrainModeInfo: SwiftProtobuf.Message,
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "trainerId"),
     2: .same(proto: "beTrainerId"),
-    3: .same(proto: "trainOpener"),
+    3: .same(proto: "trainOpenerId"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -3124,7 +3124,7 @@ extension SignalServiceProtos_Notification.TrainModeInfo: SwiftProtobuf.Message,
       switch fieldNumber {
       case 1: try decoder.decodeSingularStringField(value: &self._trainerID)
       case 2: try decoder.decodeSingularStringField(value: &self._beTrainerID)
-      case 3: try decoder.decodeSingularStringField(value: &self._trainOpener)
+      case 3: try decoder.decodeSingularStringField(value: &self._trainOpenerID)
       default: break
       }
     }
@@ -3137,7 +3137,7 @@ extension SignalServiceProtos_Notification.TrainModeInfo: SwiftProtobuf.Message,
     if let v = self._beTrainerID {
       try visitor.visitSingularStringField(value: v, fieldNumber: 2)
     }
-    if let v = self._trainOpener {
+    if let v = self._trainOpenerID {
       try visitor.visitSingularStringField(value: v, fieldNumber: 3)
     }
     try unknownFields.traverse(visitor: &visitor)
@@ -3146,7 +3146,7 @@ extension SignalServiceProtos_Notification.TrainModeInfo: SwiftProtobuf.Message,
   static func ==(lhs: SignalServiceProtos_Notification.TrainModeInfo, rhs: SignalServiceProtos_Notification.TrainModeInfo) -> Bool {
     if lhs._trainerID != rhs._trainerID {return false}
     if lhs._beTrainerID != rhs._beTrainerID {return false}
-    if lhs._trainOpener != rhs._trainOpener {return false}
+    if lhs._trainOpenerID != rhs._trainOpenerID {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
