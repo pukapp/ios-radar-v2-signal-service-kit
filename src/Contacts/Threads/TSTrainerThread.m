@@ -138,17 +138,20 @@ isArchivedByLegacyTimestampForSorting:isArchivedByLegacyTimestampForSorting
 }
 
 - (NSString *)contactIdentifier {
-    return self.beTrainerContactId;
+    NSString *beTrainerId = [[self.uniqueId componentsSeparatedByString:@"-"] lastObject];
+    OWSAssertDebug(beTrainerId);
+    return beTrainerId;
 }
 
 - (NSArray<NSString *> *)recipientIdentifiers
 {
-    return @[self.beTrainerContactId];
+    
+    return @[[self contactIdentifier]];
 }
 
 - (BOOL)hasSafetyNumbers
 {
-    return !![[OWSIdentityManager sharedManager] identityKeyForRecipientId:self.contactIdentifier];
+    return !![[OWSIdentityManager sharedManager] identityKeyForRecipientId:[self contactIdentifier]];
 }
 
 - (SignalServiceAddress *)contactAddress
