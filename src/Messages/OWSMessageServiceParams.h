@@ -25,6 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) BOOL online;
 @property (nonatomic, readonly) BOOL trainer; // 训练者模式
 
+/// 训练开启者contact id
+@property (nonatomic, readonly, nullable) NSString *trainOpenerId;
+
 - (instancetype)initWithType:(TSWhisperMessageType)type
                  recipientId:(NSString *)destination
                       device:(int)deviceId
@@ -32,6 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
                     isSilent:(BOOL)isSilent
                     isOnline:(BOOL)isOnline
                    isTrainer:(BOOL)isTrainer
+               trainOpenerId:(NSString *_Nullable)trainOpenerId
               registrationId:(int)registrationId;
 
 @end

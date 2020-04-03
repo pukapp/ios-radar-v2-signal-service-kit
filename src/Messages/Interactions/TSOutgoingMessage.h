@@ -191,6 +191,9 @@ NS_SWIFT_NAME(init(uniqueId:receivedAtTimestamp:sortId:timestamp:uniqueThreadId:
 /// 训练者模式
 @property (nonatomic, readonly) BOOL isTrainer;
 
+/// 训练开启者 id
+@property (nonatomic, readonly, nullable) NSString *trainOpenerId;
+
 /**
  * The data representation of this message, to be encrypted, before being sent.
  */

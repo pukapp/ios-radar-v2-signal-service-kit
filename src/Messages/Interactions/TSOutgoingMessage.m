@@ -627,6 +627,11 @@ perMessageExpirationDurationSeconds:perMessageExpirationDurationSeconds
     return NO;
 }
 
+- (NSString *_Nullable)trainOpenerId
+{
+    return nil;
+}
+
 - (OWSInteractionType)interactionType
 {
     return OWSInteractionType_OutgoingMessage;

@@ -1803,6 +1803,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     BOOL isSilent = message.isSilent;
     BOOL isOnline = message.isOnline;
     BOOL isTrainer = message.isTrainer;
+    NSString *_Nullable trainOpenerId = message.trainOpenerId;
     
     OWSMessageServiceParams *messageParams =
         [[OWSMessageServiceParams alloc] initWithType:messageType
@@ -1812,6 +1813,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
                                              isSilent:isSilent
                                              isOnline:isOnline
                                             isTrainer:isTrainer
+                                        trainOpenerId:trainOpenerId
                                        registrationId:[cipher throws_remoteRegistrationId:transaction]];
 
     NSError *error;
