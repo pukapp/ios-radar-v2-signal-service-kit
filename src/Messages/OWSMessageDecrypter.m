@@ -334,7 +334,6 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
             BOOL state = envelope.notify.botModeInfo.state;
             
             OWSAssertDebug(hisContactId);
-            OWSAssertDebug(state);
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [SSKEnvironment.shared storeContactAIState:state withHisContactId:hisContactId];
