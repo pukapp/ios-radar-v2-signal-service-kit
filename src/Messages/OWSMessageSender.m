@@ -935,7 +935,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
 
             PreKeyBundle *_Nullable newKeyBundle = exception.userInfo[TSInvalidPreKeyBundleKey];
             if (newKeyBundle == nil) {
-                OWSProdFail([OWSAnalyticsEvents messageSenderErrorMissingNewPreKeyBundle]);
+//                OWSProdFail([OWSAnalyticsEvents messageSenderErrorMissingNewPreKeyBundle]);
                 return nil;
             }
 
