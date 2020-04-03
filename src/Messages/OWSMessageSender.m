@@ -726,7 +726,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
 
     BOOL isSyncMessage = [message isKindOfClass:[OWSOutgoingSyncMessage class]];
     if (!thread && !isSyncMessage) {
-        OWSFailDebug(@"Missing thread for non-sync message.");
+//        OWSFailDebug(@"Missing thread for non-sync message.");
 
         // This thread has been deleted since the message was enqueued.
         NSError *error = OWSErrorWithCodeDescription(OWSErrorCodeMessageSendNoValidRecipients,
