@@ -627,6 +627,11 @@ perMessageExpirationDurationSeconds:perMessageExpirationDurationSeconds
     return NO;
 }
 
+- (RadarMessageType)radarMessageType
+{
+    return RadarMessageTypeNormal;
+}
+
 - (NSString *_Nullable)trainOpenerId
 {
     return nil;

@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface OWSMessageServiceParams : MTLModel <MTLJSONSerializing>
 
+/// 0：普通聊天模式;1:训练者聊天模式
+@property (nonatomic, readonly) int msgType;
 @property (nonatomic, readonly) int type;
 @property (nonatomic, readonly) NSString *destination;
 @property (nonatomic, readonly) int destinationDeviceId;
@@ -29,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, nullable) NSString *trainOpenerId;
 
 - (instancetype)initWithType:(TSWhisperMessageType)type
+                     msgType:(RadarMessageType)msgType
                  recipientId:(NSString *)destination
                       device:(int)deviceId
                      content:(NSData *)content

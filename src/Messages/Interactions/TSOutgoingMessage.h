@@ -194,6 +194,9 @@ NS_SWIFT_NAME(init(uniqueId:receivedAtTimestamp:sortId:timestamp:uniqueThreadId:
 /// 训练开启者 id
 @property (nonatomic, readonly, nullable) NSString *trainOpenerId;
 
+/// radar 自定 msgType
+@property (nonatomic, readonly) RadarMessageType radarMessageType;
+
 /**
  * The data representation of this message, to be encrypted, before being sent.
  */

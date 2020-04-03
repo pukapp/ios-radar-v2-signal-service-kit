@@ -16,6 +16,11 @@ typedef NS_ENUM(NSInteger, TSWhisperMessageType) {
     TSUnidentifiedSenderMessageType = 6,
 };
 
+typedef NS_ENUM(NSInteger, RadarMessageType) {
+    RadarMessageTypeNormal = 0,
+    RadarMessageTypeTrainer = 1
+};
+
 #pragma mark Server Address
 
 #define textSecureHTTPTimeOut 10

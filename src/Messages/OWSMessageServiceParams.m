@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (instancetype)initWithType:(TSWhisperMessageType)type
+                     msgType:(RadarMessageType)msgType
                  recipientId:(NSString *)destination
                       device:(int)deviceId
                      content:(NSData *)content
@@ -32,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     _type = type;
+    _msgType = msgType;
     _destination = destination;
     _destinationDeviceId = deviceId;
     _destinationRegistrationId = registrationId;

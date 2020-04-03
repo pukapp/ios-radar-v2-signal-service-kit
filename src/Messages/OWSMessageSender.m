@@ -1807,6 +1807,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
     
     OWSMessageServiceParams *messageParams =
         [[OWSMessageServiceParams alloc] initWithType:messageType
+                                              msgType:message.radarMessageType
                                           recipientId:recipientId
                                                device:[deviceId intValue]
                                               content:serializedMessage
