@@ -1134,8 +1134,10 @@ NS_ASSUME_NONNULL_BEGIN
         OWSFail(@"Missing transaction.");
         return;
     }
-    // TODO: beTrainContactId
-    NSString *beTrainContactId = @"+8618516533739";//[dataMessage.aiTrainModeInfo beTrainerID];
+    
+    NSString *beTrainContactId = dataMessage.aiTrainModeInfo.beTrainerID;
+    OWSAssertDebug(beTrainContactId);
+    
     TSContactThread *_Nullable thread = [TSContactThread getOrCreateThreadWithContactId:beTrainContactId anyTransaction:transaction];
     
     if (!thread) {
@@ -1169,8 +1171,10 @@ NS_ASSUME_NONNULL_BEGIN
         OWSFail(@"Missing transaction.");
         return;
     }
-    // TODO: trainOpenerContactId
-    NSString *trainOpenerContactId = @"+8613185807769";//[dataMessage.aiTrainModeInfo trainOpenerID];
+    
+    NSString *trainOpenerContactId = dataMessage.aiTrainModeInfo.trainOpenerID;
+    OWSAssertDebug(trainOpenerContactId);
+    
     TSContactThread *_Nullable thread = [TSContactThread getOrCreateThreadWithContactId:trainOpenerContactId anyTransaction:transaction];
     
     if (!thread) {
