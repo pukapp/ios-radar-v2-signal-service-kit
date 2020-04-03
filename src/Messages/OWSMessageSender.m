@@ -1188,6 +1188,13 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
                 });
             })
             .catch(^(NSError *error) {
+        if (error.code == 400) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // 被训练者
+                [SSKEnvironment.shared beTrainerRemoveTrainerWithTrainOpenerContactId:@"+8613185807769"
+                                                                andBeTrainerContactId:@"+8618516533739"];
+            });
+        }
                 dispatch_async([OWSDispatch sendingQueue], ^{
                     NSUInteger statusCode = 0;
                     NSData *_Nullable responseData = nil;
