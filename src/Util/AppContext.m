@@ -13,6 +13,7 @@ NSString *const OWSApplicationDidBecomeActiveNotification = @"OWSApplicationDidB
 
 /// 训练者断开
 NSString *const OWSReceiveTrainOffNotification = @"OWSReceiveTrainOffNotification";
+NSString *const OWSReceiveTrainerDisconnectNotification = @"OWSReceiveTrainerDisconnectNotification";
 
 NSString *NSStringForUIApplicationState(UIApplicationState value)
 {

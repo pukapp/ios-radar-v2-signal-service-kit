@@ -54,6 +54,8 @@
 #import <SignalCoreKit/Threading.h>
 #import <SignalMetadataKit/SignalMetadataKit-Swift.h>
 #import <SignalServiceKit/SignalServiceKit-Swift.h>
+#import "SignalServiceKit/TSBeTrainerToTrainerOutgoingMessage.h"
+#import "SignalServiceKit/TSTrainerToBeTrainerOutgoingMessage.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -1188,6 +1190,13 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
                 });
             })
             .catch(^(NSError *error) {
+        
+                // 当训练者断开时
+                if (error.code == 400) {
+                    [self beTrainerRemoveTrainerWhenDisconnectedWithMessage:message];
+                    [self trainerRemoveConversationWhenDisconnectedWithMessage:message];
+                }
+        
                 dispatch_async([OWSDispatch sendingQueue], ^{
                     NSUInteger statusCode = 0;
                     NSData *_Nullable responseData = nil;
@@ -1216,6 +1225,30 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
                                 responseData:responseData];
                 });
             }) retainUntilComplete];
+}
+
+- (void)beTrainerRemoveTrainerWhenDisconnectedWithMessage:(TSOutgoingMessage *)message
+{
+    if ([message isKindOfClass: [TSBeTrainerToTrainerOutgoingMessage class]]) {
+        TSBeTrainerToTrainerOutgoingMessage *msg = (TSBeTrainerToTrainerOutgoingMessage *)message;
+        NSString *trainOpenerId = msg.trainOpenerId;
+        NSString *beTrainerId = TSAccountManager.sharedInstance.localNumber;
+        
+        if (trainOpenerId && beTrainerId) {
+            [SSKEnvironment.shared beTrainerRemoveTrainerWithTrainOpenerContactId:trainOpenerId
+                                                            andBeTrainerContactId:beTrainerId];
+        }
+    }
+}
+
+- (void)trainerRemoveConversationWhenDisconnectedWithMessage:(TSOutgoingMessage *)message
+{
+    if([message isKindOfClass: [TSTrainerToBeTrainerOutgoingMessage class]]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [NSNotificationCenter.defaultCenter postNotificationName:OWSReceiveTrainerDisconnectNotification
+                                                              object:message.thread];
+        });
+    }
 }
 
 - (void)messageSendDidSucceed:(OWSMessageSend *)messageSend

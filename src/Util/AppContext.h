@@ -25,6 +25,7 @@ extern NSString *const OWSApplicationWillResignActiveNotification;
 extern NSString *const OWSApplicationDidBecomeActiveNotification;
 
 extern NSString *const OWSReceiveTrainOffNotification;
+extern NSString *const OWSReceiveTrainerDisconnectNotification;
 
 typedef void (^BackgroundTaskExpirationHandler)(void);
 typedef void (^AppActiveBlock)(void);
