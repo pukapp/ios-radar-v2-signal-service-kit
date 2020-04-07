@@ -47,8 +47,8 @@ isArchivedByLegacyTimestampForSorting:isArchivedByLegacyTimestampForSorting
     
     _hasDismissedOffers = hasDismissedOffers;
     NSArray<NSString *> *components = [uniqueId componentsSeparatedByString:@"-"];
-    _trainOpenerContactId = components.firstObject;
-    _beTrainerContactId = components.lastObject;
+//    _trainOpenerContactId = components.firstObject;
+//    _beTrainerContactId = components.lastObject;
     
     return self;
 }
@@ -62,8 +62,8 @@ isArchivedByLegacyTimestampForSorting:isArchivedByLegacyTimestampForSorting
     NSString *uniqueId = [[NSString alloc] initWithFormat:@"t-%@-%@", trainOpenerContactId, beTrainerContactId];
     self = [super initWithUniqueId:uniqueId];
     
-    _trainOpenerContactId = trainOpenerContactId;
-    _beTrainerContactId = beTrainerContactId;
+//    _trainOpenerContactId = trainOpenerContactId;
+//    _beTrainerContactId = beTrainerContactId;
     
     return self;
 }
@@ -143,6 +143,19 @@ isArchivedByLegacyTimestampForSorting:isArchivedByLegacyTimestampForSorting
     NSString *beTrainerId = [[self.uniqueId componentsSeparatedByString:@"-"] lastObject];
     OWSAssertDebug(beTrainerId);
     return beTrainerId;
+}
+
+- (NSString *_Nullable)trainOpenerContactId
+{
+    NSArray<NSString *> *components = [self.uniqueId componentsSeparatedByString:@"-"];
+    NSString *trainOpenerId = components[1];
+    OWSAssertDebug(trainOpenerId);
+    return trainOpenerId;
+}
+
+- (NSString *_Nullable)beTrainerContactId
+{
+    return [self contactIdentifier];
 }
 
 - (NSArray<NSString *> *)recipientIdentifiers
