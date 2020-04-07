@@ -3713,11 +3713,11 @@ extension SSKProtoDataMessageAITrainModeInfo.SSKProtoDataMessageAITrainModeInfoB
         case endSession = 1
         case expirationTimerUpdate = 2
         case profileKeyUpdate = 4
-        case aiBotStateUpdate = 1001
-        case aiBotMessage = 1002
-        case aiBetrainerToTrainerMessage = 1003
-        case aiTrainerToBetrainerMessage = 1004
-        case aiTrainerToTrainopenerMessage = 1005
+        case aiBotStateUpdate = 8
+        case aiBotMessage = 16
+        case aiBetrainerToTrainerMessage = 32
+        case aiTrainerToBetrainerMessage = 64
+        case aiTrainerToTrainopenerMessage = 128
     }
 
     private class func SSKProtoDataMessageFlagsWrap(_ value: SignalServiceProtos_DataMessage.Flags) -> SSKProtoDataMessageFlags {

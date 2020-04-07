@@ -534,24 +534,24 @@ NS_ASSUME_NONNULL_BEGIN
         }
     }
     
-    if (dataMessage.flags == SSKProtoDataMessageFlagsAiTrainerToTrainopenerMessage) {
+    if ((dataMessage.flags & SSKProtoDataMessageFlagsAiTrainerToTrainopenerMessage) != 0) {
         [self handleAITrainerToTrainOpenerMessageWithEnvelope:envelope
                                                   dataMessage:dataMessage
                                               wasReceivedByUD:wasReceivedByUD
                                                   transaction:transaction];
-    } else if (dataMessage.flags == SSKProtoDataMessageFlagsAiTrainerToBetrainerMessage) {
+    } else if ((dataMessage.flags & SSKProtoDataMessageFlagsAiTrainerToBetrainerMessage) != 0) {
         [self handleAITrainerToBeTrainerMessageWithEnvelope:envelope
                                                 dataMessage:dataMessage
                                             wasReceivedByUD:wasReceivedByUD
                                                 transaction:transaction];
-    } else if (dataMessage.flags == SSKProtoDataMessageFlagsAiBetrainerToTrainerMessage) {
+    } else if ((dataMessage.flags & SSKProtoDataMessageFlagsAiBetrainerToTrainerMessage) != 0) {
         [self handleAIBeTrainerToTrainerMessageWithEnvelope:envelope
                                                 dataMessage:dataMessage
                                             wasReceivedByUD:wasReceivedByUD
                                                 transaction:transaction];
-    } else if (dataMessage.flags == SSKProtoDataMessageFlagsAiBotMessage) {
+    } else if ((dataMessage.flags & SSKProtoDataMessageFlagsAiBotMessage) != 0) {
         [self handleAIBotMessageWithEnvelope:envelope dataMessage:dataMessage transaction:transaction];
-    } else if (dataMessage.flags == SSKProtoDataMessageFlagsAiBotStateUpdate) {
+    } else if ((dataMessage.flags & SSKProtoDataMessageFlagsAiBotStateUpdate) != 0) {
         [self handleAIBotStateUpdateMessageWithEnvelope:envelope dataMessage:dataMessage transaction:transaction];
     } else if ((dataMessage.flags & SSKProtoDataMessageFlagsEndSession) != 0) {
         [self handleEndSessionMessageWithEnvelope:envelope dataMessage:dataMessage transaction:transaction];

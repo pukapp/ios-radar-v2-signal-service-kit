@@ -913,11 +913,11 @@ struct SignalServiceProtos_DataMessage {
     case endSession // = 1
     case expirationTimerUpdate // = 2
     case profileKeyUpdate // = 4
-    case aiBotStateUpdate // = 1001
-    case aiBotMessage // = 1002
-    case aiBetrainerToTrainerMessage // = 1003
-    case aiTrainerToBetrainerMessage // = 1004
-    case aiTrainerToTrainopenerMessage // = 1005
+    case aiBotStateUpdate // = 8
+    case aiBotMessage // = 16
+    case aiBetrainerToTrainerMessage // = 32
+    case aiTrainerToBetrainerMessage // = 64
+    case aiTrainerToTrainopenerMessage // = 128
 
     init() {
       self = .endSession
@@ -928,11 +928,11 @@ struct SignalServiceProtos_DataMessage {
       case 1: self = .endSession
       case 2: self = .expirationTimerUpdate
       case 4: self = .profileKeyUpdate
-      case 1001: self = .aiBotStateUpdate
-      case 1002: self = .aiBotMessage
-      case 1003: self = .aiBetrainerToTrainerMessage
-      case 1004: self = .aiTrainerToBetrainerMessage
-      case 1005: self = .aiTrainerToTrainopenerMessage
+      case 8: self = .aiBotStateUpdate
+      case 16: self = .aiBotMessage
+      case 32: self = .aiBetrainerToTrainerMessage
+      case 64: self = .aiTrainerToBetrainerMessage
+      case 128: self = .aiTrainerToTrainopenerMessage
       default: return nil
       }
     }
@@ -942,11 +942,11 @@ struct SignalServiceProtos_DataMessage {
       case .endSession: return 1
       case .expirationTimerUpdate: return 2
       case .profileKeyUpdate: return 4
-      case .aiBotStateUpdate: return 1001
-      case .aiBotMessage: return 1002
-      case .aiBetrainerToTrainerMessage: return 1003
-      case .aiTrainerToBetrainerMessage: return 1004
-      case .aiTrainerToTrainopenerMessage: return 1005
+      case .aiBotStateUpdate: return 8
+      case .aiBotMessage: return 16
+      case .aiBetrainerToTrainerMessage: return 32
+      case .aiTrainerToBetrainerMessage: return 64
+      case .aiTrainerToTrainopenerMessage: return 128
       }
     }
 
@@ -3693,11 +3693,11 @@ extension SignalServiceProtos_DataMessage.Flags: SwiftProtobuf._ProtoNameProvidi
     1: .same(proto: "END_SESSION"),
     2: .same(proto: "EXPIRATION_TIMER_UPDATE"),
     4: .same(proto: "PROFILE_KEY_UPDATE"),
-    1001: .same(proto: "AI_BOT_STATE_UPDATE"),
-    1002: .same(proto: "AI_BOT_MESSAGE"),
-    1003: .same(proto: "AI_BETRAINER_TO_TRAINER_MESSAGE"),
-    1004: .same(proto: "AI_TRAINER_TO_BETRAINER_MESSAGE"),
-    1005: .same(proto: "AI_TRAINER_TO_TRAINOPENER_MESSAGE"),
+    8: .same(proto: "AI_BOT_STATE_UPDATE"),
+    16: .same(proto: "AI_BOT_MESSAGE"),
+    32: .same(proto: "AI_BETRAINER_TO_TRAINER_MESSAGE"),
+    64: .same(proto: "AI_TRAINER_TO_BETRAINER_MESSAGE"),
+    128: .same(proto: "AI_TRAINER_TO_TRAINOPENER_MESSAGE"),
   ]
 }
 
