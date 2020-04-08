@@ -312,6 +312,9 @@ public class TypingIndicatorsImpl: NSObject, TypingIndicators {
         private func sendTypingMessageIfNecessary(forThread thread: TSThread, action: TypingIndicatorAction) {
             Logger.verbose("\(TypingIndicatorMessage.string(forTypingIndicatorAction: action))")
 
+            if thread.isRobot() {
+                return
+            }
             guard let delegate = delegate else {
                 owsFailDebug("Missing delegate.")
                 return
