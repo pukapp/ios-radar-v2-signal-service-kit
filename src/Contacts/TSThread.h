@@ -31,6 +31,8 @@ extern ConversationColorName const ConversationColorNameSteel;
 
 extern ConversationColorName const kConversationColorName_Default;
 
+extern NSString *const OWSRobotThreadContactIdentifier;
+
 /**
  *  TSThread is the superclass of TSContactThread and TSGroupThread
  */
@@ -99,6 +101,8 @@ NS_SWIFT_NAME(init(uniqueId:archivalDate:archivedAsOfMessageSortId:conversationC
 @property (nonatomic, readonly) NSArray<NSString *> *recipientIdentifiers;
 
 - (BOOL)isNoteToSelf;
+
+- (BOOL)isRobot;
 
 #pragma mark Interactions
 
