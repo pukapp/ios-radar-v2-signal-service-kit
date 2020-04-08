@@ -7,6 +7,8 @@
 #import "NSString+SSK.h"
 #import "OWSPrimaryStorage.h"
 #import "SignalRecipient.h"
+#import <ContactsUI/ContactsUI.h>
+#import "TSThread.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -34,6 +36,19 @@ NS_ASSUME_NONNULL_BEGIN
         _recipientId = recipientId;
     }
     return self;
+}
+
++ (SignalAccount *)makeRobotAccount
+{
+    CNMutableContact *cnContact = [CNMutableContact new];
+    [cnContact setImageData:UIImagePNGRepresentation([UIImage imageNamed:@"profile_icon_bot"])];
+    [cnContact setGivenName:@"机器人"];
+    Contact *contact = [[Contact alloc] initWithSystemContact:cnContact];
+    return [[SignalAccount alloc] initWithUniqueId:OWSRobotThreadContactIdentifier
+                                           contact:contact
+                         hasMultipleAccountContact:NO
+                          multipleAccountLabelText:@"Robot"
+                                       recipientId:OWSRobotThreadContactIdentifier];
 }
 
 // --- CODE GENERATION MARKER
