@@ -42,6 +42,9 @@ ConversationColorName const ConversationColorNameSteel = @"grey";
 
 ConversationColorName const kConversationColorName_Default = ConversationColorNameSteel;
 
+// TODO: 机器人ID
+NSString *const OWSRobotThreadContactIdentifier = @"+861234";
+
 @interface TSThread ()
 
 @property (nonatomic, nullable) NSDate *creationDate;
@@ -251,6 +254,11 @@ isArchivedByLegacyTimestampForSorting:(BOOL)isArchivedByLegacyTimestampForSortin
     }
     return (!self.isGroupThread && self.contactIdentifier != nil &&
         [self.contactIdentifier isEqualToString:self.tsAccountManager.localNumber]);
+}
+
+- (BOOL)isRobot
+{
+    return [self.contactIdentifier isEqualToString:OWSRobotThreadContactIdentifier];
 }
 
 #pragma mark - To be subclassed.
