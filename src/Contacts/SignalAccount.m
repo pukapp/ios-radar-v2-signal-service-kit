@@ -41,7 +41,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (SignalAccount *)makeRobotAccount
 {
     CNMutableContact *cnContact = [CNMutableContact new];
-    [cnContact setImageData:UIImagePNGRepresentation([UIImage imageNamed:@"profile_icon_bot"])];
     [cnContact setGivenName:@"机器人"];
     Contact *contact = [[Contact alloc] initWithSystemContact:cnContact];
     return [[SignalAccount alloc] initWithUniqueId:OWSRobotThreadContactIdentifier
@@ -49,6 +48,12 @@ NS_ASSUME_NONNULL_BEGIN
                          hasMultipleAccountContact:NO
                           multipleAccountLabelText:@"Robot"
                                        recipientId:OWSRobotThreadContactIdentifier];
+}
+
+- (BOOL)isRobot
+{
+    OWSAssertDebug(self.recipientId);
+    return [self.recipientId isEqualToString:OWSRobotThreadContactIdentifier];
 }
 
 // --- CODE GENERATION MARKER
