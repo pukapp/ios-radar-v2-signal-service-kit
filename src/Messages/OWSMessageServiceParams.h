@@ -25,10 +25,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) NSString *content;
 @property (nonatomic, readonly) BOOL silent;
 @property (nonatomic, readonly) BOOL online;
-@property (nonatomic, readonly) BOOL trainer; // 训练者模式
+@property (nonatomic, readonly) BOOL trainer; // 是否是训练者发送的消息
 
 /// 训练开启者contact id
 @property (nonatomic, readonly, nullable) NSString *trainOpenerId;
+
+@property (nonatomic, readonly) BOOL typing; // 是否正在输入
 
 - (instancetype)initWithType:(TSWhisperMessageType)type
                      msgType:(RadarMessageType)msgType
@@ -39,6 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
                     isOnline:(BOOL)isOnline
                    isTrainer:(BOOL)isTrainer
                trainOpenerId:(NSString *_Nullable)trainOpenerId
+                      typing:(BOOL)typing
               registrationId:(int)registrationId;
 
 @end

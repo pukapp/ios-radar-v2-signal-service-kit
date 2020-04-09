@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
                     isOnline:(BOOL)isOnline
                    isTrainer:(BOOL)isTrainer
                trainOpenerId:(NSString *_Nullable)trainOpenerId
+                      typing:(BOOL)typing
               registrationId:(int)registrationId
 {
     self = [super init];
@@ -42,6 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
     _online = isOnline;
     _trainer = isTrainer;
     _trainOpenerId = trainOpenerId;
+    _typing = typing;
 
     return self;
 }

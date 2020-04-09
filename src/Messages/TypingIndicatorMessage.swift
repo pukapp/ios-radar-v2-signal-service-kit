@@ -62,6 +62,10 @@ public class TypingIndicatorMessage: TSOutgoingMessage {
     public override var isOnline: Bool {
         return true
     }
+    
+    @objc public func indicatorAction() -> TypingIndicatorAction {
+        return action
+    }
 
     private func protoAction(forAction action: TypingIndicatorAction) -> SSKProtoTypingMessage.SSKProtoTypingMessageAction {
         switch action {
