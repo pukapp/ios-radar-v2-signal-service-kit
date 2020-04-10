@@ -32,6 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readonly) BOOL typing; // 是否正在输入
 
+@property (nonatomic, readonly, nullable) NSString *message; // 训练者模式时消息内容
+
 - (instancetype)initWithType:(TSWhisperMessageType)type
                      msgType:(RadarMessageType)msgType
                  recipientId:(NSString *)destination
@@ -42,6 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
                    isTrainer:(BOOL)isTrainer
                trainOpenerId:(NSString *_Nullable)trainOpenerId
                       typing:(BOOL)typing
+                     message:(NSString *_Nullable)message
               registrationId:(int)registrationId;
 
 @end

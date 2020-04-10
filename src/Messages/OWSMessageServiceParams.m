@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
                    isTrainer:(BOOL)isTrainer
                trainOpenerId:(NSString *_Nullable)trainOpenerId
                       typing:(BOOL)typing
+                     message:(NSString *_Nullable)message
               registrationId:(int)registrationId
 {
     self = [super init];
@@ -44,6 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
     _trainer = isTrainer;
     _trainOpenerId = trainOpenerId;
     _typing = typing;
+    _message = message;
 
     return self;
 }

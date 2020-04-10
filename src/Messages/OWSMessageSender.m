@@ -1845,6 +1845,11 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
         typing = action == OWSTypingIndicatorActionStarted ? YES : NO;
     }
     
+    NSString *_Nullable messageText = nil;
+    if (message.radarMessageType == RadarMessageTypeTrainer && !isTrainer) {
+        messageText = message.body;
+    }
+    
     OWSMessageServiceParams *messageParams =
         [[OWSMessageServiceParams alloc] initWithType:messageType
                                               msgType:message.radarMessageType
@@ -1856,6 +1861,7 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
                                             isTrainer:isTrainer
                                         trainOpenerId:trainOpenerId
                                                typing:typing
+                                              message:messageText
                                        registrationId:[cipher throws_remoteRegistrationId:transaction]];
 
     NSError *error;
