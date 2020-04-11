@@ -321,6 +321,9 @@ extension SSKProtoEnvelope.SSKProtoEnvelopeBuilder {
         if let _value = trainOpenerID {
             builder.setTrainOpenerID(_value)
         }
+        if let _value = message {
+            builder.setMessage(_value)
+        }
         return builder
     }
 
@@ -340,6 +343,10 @@ extension SSKProtoEnvelope.SSKProtoEnvelopeBuilder {
 
         @objc public func setTrainOpenerID(_ valueParam: String) {
             proto.trainOpenerID = valueParam
+        }
+
+        @objc public func setMessage(_ valueParam: String) {
+            proto.message = valueParam
         }
 
         @objc public func build() throws -> SSKProtoNotificationTrainModeInfo {
@@ -381,6 +388,16 @@ extension SSKProtoEnvelope.SSKProtoEnvelopeBuilder {
     }
     @objc public var hasTrainOpenerID: Bool {
         return proto.hasTrainOpenerID
+    }
+
+    @objc public var message: String? {
+        guard proto.hasMessage else {
+            return nil
+        }
+        return proto.message
+    }
+    @objc public var hasMessage: Bool {
+        return proto.hasMessage
     }
 
     private init(proto: SignalServiceProtos_Notification.TrainModeInfo) {

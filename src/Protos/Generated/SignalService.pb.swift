@@ -296,6 +296,15 @@ struct SignalServiceProtos_Notification {
     /// Clears the value of `trainOpenerID`. Subsequent reads from it will return its default value.
     mutating func clearTrainOpenerID() {self._trainOpenerID = nil}
 
+    var message: String {
+      get {return _message ?? String()}
+      set {_message = newValue}
+    }
+    /// Returns true if `message` has been explicitly set.
+    var hasMessage: Bool {return self._message != nil}
+    /// Clears the value of `message`. Subsequent reads from it will return its default value.
+    mutating func clearMessage() {self._message = nil}
+
     var unknownFields = SwiftProtobuf.UnknownStorage()
 
     init() {}
@@ -303,6 +312,7 @@ struct SignalServiceProtos_Notification {
     fileprivate var _trainerID: String? = nil
     fileprivate var _beTrainerID: String? = nil
     fileprivate var _trainOpenerID: String? = nil
+    fileprivate var _message: String? = nil
   }
 
   struct BotModeInfo {
@@ -3117,6 +3127,7 @@ extension SignalServiceProtos_Notification.TrainModeInfo: SwiftProtobuf.Message,
     1: .same(proto: "trainerId"),
     2: .same(proto: "beTrainerId"),
     3: .same(proto: "trainOpenerId"),
+    4: .same(proto: "message"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -3125,6 +3136,7 @@ extension SignalServiceProtos_Notification.TrainModeInfo: SwiftProtobuf.Message,
       case 1: try decoder.decodeSingularStringField(value: &self._trainerID)
       case 2: try decoder.decodeSingularStringField(value: &self._beTrainerID)
       case 3: try decoder.decodeSingularStringField(value: &self._trainOpenerID)
+      case 4: try decoder.decodeSingularStringField(value: &self._message)
       default: break
       }
     }
@@ -3140,6 +3152,9 @@ extension SignalServiceProtos_Notification.TrainModeInfo: SwiftProtobuf.Message,
     if let v = self._trainOpenerID {
       try visitor.visitSingularStringField(value: v, fieldNumber: 3)
     }
+    if let v = self._message {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 4)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -3147,6 +3162,7 @@ extension SignalServiceProtos_Notification.TrainModeInfo: SwiftProtobuf.Message,
     if lhs._trainerID != rhs._trainerID {return false}
     if lhs._beTrainerID != rhs._beTrainerID {return false}
     if lhs._trainOpenerID != rhs._trainOpenerID {return false}
+    if lhs._message != rhs._message {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

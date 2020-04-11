@@ -55,6 +55,7 @@ message Notification {
     optional string trainerId = 1;
     optional string beTrainerId = 2;
     optional string trainOpenerId = 3;
+    optional string message = 4;
   }
 
   message BotModeInfo {
