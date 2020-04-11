@@ -30,6 +30,8 @@
 #import <SignalMetadataKit/SignalMetadataKit-Swift.h>
 #import <SignalServiceKit/SignalServiceKit-Swift.h>
 #import "AppContext.h"
+#import <SignalServiceKit/TSIncomingMessage.h>
+#import <SignalCoreKit/NSDate+OWS.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -351,6 +353,11 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
             OWSAssertDebug(trainOpenerContactId);
             OWSAssertDebug(beTrainerContactId);
             OWSAssertDebug(trainerContactId);
+            
+            // 训练者30秒未回复断开
+            if (envelope.notify.trainModeInfo.hasMessage) {
+                [self handleTrainerNoReplyAfter30SecondsWithTrainModeInfo:envelope.notify.trainModeInfo];
+            }
 
             dispatch_async(dispatch_get_main_queue(), ^{
                 // 被训练者
@@ -364,6 +371,69 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
         case SSKProtoNotificationTypeWebLogin:
             break;
     }
+}
+
+- (void)handleTrainerNoReplyAfter30SecondsWithTrainModeInfo:(SSKProtoNotificationTrainModeInfo *)info
+{
+    NSString *localNumber = TSAccountManager.sharedInstance.localNumber;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // 被训练者
+        if ([localNumber isEqualToString:info.beTrainerID]) {
+            [self beTrainerHandleTrainOffWhenTrainerNoReplyWithTrainModeInfo:info];
+        }
+        // 训练开启者
+        if ([localNumber isEqualToString:info.trainOpenerID]) {
+            [self trainOpenerHandleTrainOffWhenTrainerNoReplyWithTrainModeInfo:info];
+        }
+    });
+}
+
+- (void)trainOpenerHandleTrainOffWhenTrainerNoReplyWithTrainModeInfo:(SSKProtoNotificationTrainModeInfo *)info
+{
+    // 训练开启者 插入一条 Outgoing
+    TSContactThread *thread = [TSContactThread getOrCreateThreadWithContactId:info.beTrainerID];
+    if (!thread) {
+        return;
+    }
+    TSOutgoingMessage *message = [[TSOutgoingMessage alloc] initOutgoingMessageWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                                    inThread:thread
+                                                                                 messageBody:info.message
+                                                                               attachmentIds:[NSMutableArray new]
+                                                                            expiresInSeconds:0
+                                                                             expireStartedAt:0
+                                                                              isVoiceMessage:NO
+                                                                            groupMetaMessage:TSGroupMetaMessageUnspecified
+                                                                               quotedMessage:nil
+                                                                                contactShare:nil
+                                                                                 linkPreview:nil
+                                                                              messageSticker:nil
+                                                         perMessageExpirationDurationSeconds:0];
+    [SSKEnvironment.shared.databaseStorage asyncWriteWithBlock:^(SDSAnyWriteTransaction * _Nonnull transaction) {
+        [message anyInsertWithTransaction:transaction];
+    }];
+}
+
+- (void)beTrainerHandleTrainOffWhenTrainerNoReplyWithTrainModeInfo:(SSKProtoNotificationTrainModeInfo *)info
+{
+    // 被训练者 插入一条 Incoimg 消息
+    TSContactThread *thread = [TSContactThread getOrCreateThreadWithContactId:info.trainOpenerID];
+    if (!thread) {
+        return;
+    }
+    TSIncomingMessage *message = [[TSIncomingMessage alloc] initMessageWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                            inThread:thread
+                                                                         messageBody:info.message
+                                                                       attachmentIds:@[]
+                                                                    expiresInSeconds:0
+                                                                     expireStartedAt:0
+                                                                       quotedMessage:nil
+                                                                        contactShare:nil
+                                                                         linkPreview:nil
+                                                                      messageSticker:nil
+                                                 perMessageExpirationDurationSeconds:0];
+    [SSKEnvironment.shared.databaseStorage asyncWriteWithBlock:^(SDSAnyWriteTransaction * _Nonnull transaction) {
+        [message anyInsertWithTransaction:transaction];
+    }];
 }
 
 - (void)throws_decryptSecureMessage:(SSKProtoEnvelope *)envelope
