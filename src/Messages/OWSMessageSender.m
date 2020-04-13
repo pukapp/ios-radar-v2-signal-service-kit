@@ -1229,26 +1229,22 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
 
 - (void)beTrainerRemoveTrainerWhenDisconnectedWithMessage:(TSOutgoingMessage *)message
 {
-    if ([message isKindOfClass: [TSBeTrainerToTrainerOutgoingMessage class]]) {
-        TSBeTrainerToTrainerOutgoingMessage *msg = (TSBeTrainerToTrainerOutgoingMessage *)message;
-        NSString *trainOpenerId = msg.trainOpenerId;
-        NSString *beTrainerId = TSAccountManager.sharedInstance.localNumber;
-        
-        if (trainOpenerId && beTrainerId) {
-            [SSKEnvironment.shared beTrainerRemoveTrainerWithTrainOpenerContactId:trainOpenerId
-                                                            andBeTrainerContactId:beTrainerId];
-        }
+    TSBeTrainerToTrainerOutgoingMessage *msg = (TSBeTrainerToTrainerOutgoingMessage *)message;
+    NSString *trainOpenerId = msg.trainOpenerId;
+    NSString *beTrainerId = TSAccountManager.sharedInstance.localNumber;
+    
+    if (trainOpenerId && beTrainerId) {
+        [SSKEnvironment.shared beTrainerRemoveTrainerWithTrainOpenerContactId:trainOpenerId
+                                                        andBeTrainerContactId:beTrainerId];
     }
 }
 
 - (void)trainerRemoveConversationWhenDisconnectedWithMessage:(TSOutgoingMessage *)message
 {
-    if([message isKindOfClass: [TSTrainerToBeTrainerOutgoingMessage class]]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [NSNotificationCenter.defaultCenter postNotificationName:OWSReceiveTrainerDisconnectNotification
-                                                              object:message.thread];
-        });
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [NSNotificationCenter.defaultCenter postNotificationName:OWSReceiveTrainerDisconnectNotification
+                                                          object:message.thread];
+    });
 }
 
 - (void)messageSendDidSucceed:(OWSMessageSend *)messageSend
