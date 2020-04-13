@@ -354,7 +354,7 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
             OWSAssertDebug(trainerContactId);
             
             // 训练者30秒未回复断开
-            if (envelope.notify.trainModeInfo.hasMessage) {
+            if (envelope.notify.trainModeInfo.hasMessage && envelope.notify.trainModeInfo.message.length > 0) {
                 [self handleTrainerNoReplyAfter30SecondsWithTrainModeInfo:envelope.notify.trainModeInfo];
             }
 
@@ -410,6 +410,7 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
                                                          perMessageExpirationDurationSeconds:0];
     [SSKEnvironment.shared.databaseStorage asyncWriteWithBlock:^(SDSAnyWriteTransaction * _Nonnull transaction) {
         [message anyInsertWithTransaction:transaction];
+        [message updateWithFakeMessageState:TSOutgoingMessageStateSent transaction:transaction];
     }];
 }
 
