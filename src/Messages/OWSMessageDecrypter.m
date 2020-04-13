@@ -337,9 +337,8 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
             
             OWSAssertDebug(hisContactId);
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [SSKEnvironment.shared storeContactAIState:state withHisContactId:hisContactId];
-            });
+            [SSKEnvironment.shared storeContactAIState:state withHisContactId:hisContactId];
+            
             break;
         }
             
@@ -359,10 +358,11 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
                 [self handleTrainerNoReplyAfter30SecondsWithTrainModeInfo:envelope.notify.trainModeInfo];
             }
 
+            // 被训练者
+            [SSKEnvironment.shared beTrainerRemoveTrainerWithTrainOpenerContactId:trainOpenerContactId
+                                                            andBeTrainerContactId:beTrainerContactId];
+            
             dispatch_async(dispatch_get_main_queue(), ^{
-                // 被训练者
-                [SSKEnvironment.shared beTrainerRemoveTrainerWithTrainOpenerContactId:trainOpenerContactId
-                                                                andBeTrainerContactId:beTrainerContactId];
                 // 训练者
                 [NSNotificationCenter.defaultCenter postNotificationName:OWSReceiveTrainOffNotification object:envelope];
             });
