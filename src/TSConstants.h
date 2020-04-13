@@ -43,11 +43,14 @@ typedef NS_ENUM(NSInteger, RadarMessageType) {
 
 
 // 正式服
+//#define aiMessageServerURL @"https://api.protagolabs.org/mode/manual"
 //#define textSecureWebSocketAPI @"https://api.iradar.org/v1/websocket/"
 //#define textSecureServerURL @"https://api.iradar.org/"
 #define textSecureDirectCDNServerURL @"https://d83eunklitikj.cloudfront.net"
 
+
 // 测试服
+#define aiMessageServerURL @"https://dev-api.protagolabs.org/mode/manual"
 #define textSecureWebSocketAPI @"https://test.iradar.org/v1/websocket/"
 #define textSecureServerURL @"https://test.iradar.org/"
 
