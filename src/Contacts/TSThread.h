@@ -32,6 +32,7 @@ extern ConversationColorName const ConversationColorNameSteel;
 extern ConversationColorName const kConversationColorName_Default;
 
 extern NSString *const OWSRobotThreadContactIdentifier;
+extern NSString *const OWSSecurityThreadContactIdentifier;
 
 /**
  *  TSThread is the superclass of TSContactThread and TSGroupThread

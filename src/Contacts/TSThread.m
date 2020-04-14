@@ -44,6 +44,8 @@ ConversationColorName const kConversationColorName_Default = ConversationColorNa
 
 // TODO: 机器人ID
 NSString *const OWSRobotThreadContactIdentifier = @"+861234";
+/// 安全通知ID
+NSString *const OWSSecurityThreadContactIdentifier = @"+8620200411";
 
 @interface TSThread ()
 

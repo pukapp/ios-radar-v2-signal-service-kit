@@ -369,6 +369,25 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
             break;
         }
         case SSKProtoNotificationTypeWebLogin:
+            OWSAssertDebug(envelope);
+            NSString *messagebody = [NSString stringWithFormat:@"%@;%llu", envelope.notify.webLogin.address, envelope.notify.webLogin.loginTime];
+            NSString *contactId = OWSSecurityThreadContactIdentifier;
+            TSContactThread *thread = [TSContactThread getOrCreateThreadWithContactId:contactId];
+            
+            TSIncomingMessage *message = [[TSIncomingMessage alloc] initMessageWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                                    inThread:thread
+                                                                                 messageBody:messagebody
+                                                                               attachmentIds:@[]
+                                                                            expiresInSeconds:0
+                                                                             expireStartedAt:0
+                                                                               quotedMessage:nil
+                                                                                contactShare:nil
+                                                                                 linkPreview:nil
+                                                                              messageSticker:nil
+                                                         perMessageExpirationDurationSeconds:0];
+            [SSKEnvironment.shared.databaseStorage asyncWriteWithBlock:^(SDSAnyWriteTransaction * _Nonnull transaction) {
+                [message anyInsertWithTransaction:transaction];
+            }];
             break;
     }
 }
