@@ -286,8 +286,8 @@ message DataMessage {
   optional Sticker           sticker                 = 11;
   optional uint32            requiredProtocolVersion = 12;
   optional uint32            messageTimer            = 13;
-  optional bool              aiBotState              = 14;
-  optional AITrainModeInfo   aiTrainModeInfo         = 15;
+  optional bool              aiBotState              = 1000;
+  optional AITrainModeInfo   aiTrainModeInfo         = 1001;
 }
 
 message NullMessage {

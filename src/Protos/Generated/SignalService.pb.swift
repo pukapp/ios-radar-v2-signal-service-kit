@@ -3607,8 +3607,8 @@ extension SignalServiceProtos_DataMessage: SwiftProtobuf.Message, SwiftProtobuf.
     11: .same(proto: "sticker"),
     12: .same(proto: "requiredProtocolVersion"),
     13: .same(proto: "messageTimer"),
-    14: .same(proto: "aiBotState"),
-    15: .same(proto: "aiTrainModeInfo"),
+    1000: .same(proto: "aiBotState"),
+    1001: .same(proto: "aiTrainModeInfo"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -3627,8 +3627,8 @@ extension SignalServiceProtos_DataMessage: SwiftProtobuf.Message, SwiftProtobuf.
       case 11: try decoder.decodeSingularMessageField(value: &self._sticker)
       case 12: try decoder.decodeSingularUInt32Field(value: &self._requiredProtocolVersion)
       case 13: try decoder.decodeSingularUInt32Field(value: &self._messageTimer)
-      case 14: try decoder.decodeSingularBoolField(value: &self._aiBotState)
-      case 15: try decoder.decodeSingularMessageField(value: &self._aiTrainModeInfo)
+      case 1000: try decoder.decodeSingularBoolField(value: &self._aiBotState)
+      case 1001: try decoder.decodeSingularMessageField(value: &self._aiTrainModeInfo)
       default: break
       }
     }
@@ -3675,10 +3675,10 @@ extension SignalServiceProtos_DataMessage: SwiftProtobuf.Message, SwiftProtobuf.
       try visitor.visitSingularUInt32Field(value: v, fieldNumber: 13)
     }
     if let v = self._aiBotState {
-      try visitor.visitSingularBoolField(value: v, fieldNumber: 14)
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 1000)
     }
     if let v = self._aiTrainModeInfo {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 15)
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 1001)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
