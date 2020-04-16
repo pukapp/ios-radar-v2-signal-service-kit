@@ -47,6 +47,9 @@ NSString *const OWSRobotThreadContactIdentifier = @"+861234";
 /// 安全通知ID
 NSString *const OWSSecurityThreadContactIdentifier = @"+8620200411";
 
+/// 交易所
+NSString *const OWSTradeThreadContactIdentifier = @"+8610001";
+
 @interface TSThread ()
 
 @property (nonatomic, nullable) NSDate *creationDate;
@@ -261,6 +264,11 @@ isArchivedByLegacyTimestampForSorting:(BOOL)isArchivedByLegacyTimestampForSortin
 - (BOOL)isRobot
 {
     return [self.contactIdentifier isEqualToString:OWSRobotThreadContactIdentifier];
+}
+
+- (BOOL)isTradeThread
+{
+    return [self.contactIdentifier isEqualToString:OWSTradeThreadContactIdentifier];
 }
 
 #pragma mark - To be subclassed.
