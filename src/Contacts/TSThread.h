@@ -34,6 +34,7 @@ extern ConversationColorName const kConversationColorName_Default;
 extern NSString *const OWSRobotThreadContactIdentifier;
 extern NSString *const OWSSecurityThreadContactIdentifier;
 extern NSString *const OWSTradeThreadContactIdentifier;
+extern NSString *const OWSWalletThreadContactIdentifier;
 
 /**
  *  TSThread is the superclass of TSContactThread and TSGroupThread
@@ -107,6 +108,8 @@ NS_SWIFT_NAME(init(uniqueId:archivalDate:archivedAsOfMessageSortId:conversationC
 - (BOOL)isRobot;
 
 - (BOOL)isTradeThread;
+
+- (BOOL)isWalletThread;
 
 #pragma mark Interactions
 

@@ -50,6 +50,9 @@ NSString *const OWSSecurityThreadContactIdentifier = @"+8620200411";
 /// 交易所
 NSString *const OWSTradeThreadContactIdentifier = @"+8610001";
 
+/// 钱包
+NSString *const OWSWalletThreadContactIdentifier = @"+8610002";
+
 @interface TSThread ()
 
 @property (nonatomic, nullable) NSDate *creationDate;
@@ -269,6 +272,11 @@ isArchivedByLegacyTimestampForSorting:(BOOL)isArchivedByLegacyTimestampForSortin
 - (BOOL)isTradeThread
 {
     return [self.contactIdentifier isEqualToString:OWSTradeThreadContactIdentifier];
+}
+
+- (BOOL)isWalletThread
+{
+    return [self.contactIdentifier isEqualToString:OWSWalletThreadContactIdentifier];
 }
 
 #pragma mark - To be subclassed.
