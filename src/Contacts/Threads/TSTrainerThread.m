@@ -136,7 +136,7 @@ isArchivedByLegacyTimestampForSorting:isArchivedByLegacyTimestampForSorting
     NSArray<NSString *> *components = [self.uniqueId componentsSeparatedByString:@"-"];
     NSString *item1 = [components[1] substringFromIndex:12];
     NSString *item2 = [components[2] substringFromIndex:12];
-    return [[NSString alloc] initWithFormat:@"训练对象(%@%@)", item1, item2];
+    return [[NSString alloc] initWithFormat:NSLocalizedString(@"ai_trainer_object_title", @""), item1, item2];
 }
 
 - (NSString *)contactIdentifier {
