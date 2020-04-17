@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (SignalAccount *)makeRobotAccount
 {
     CNMutableContact *cnContact = [CNMutableContact new];
-    [cnContact setGivenName:@"机器人"];
+    [cnContact setGivenName:@"AAAAA机器人"];
     Contact *contact = [[Contact alloc] initWithSystemContact:cnContact];
     return [[SignalAccount alloc] initWithUniqueId:OWSRobotThreadContactIdentifier
                                            contact:contact
@@ -49,6 +49,44 @@ NS_ASSUME_NONNULL_BEGIN
                           multipleAccountLabelText:@"Robot"
                                        recipientId:OWSRobotThreadContactIdentifier];
 }
+
++ (SignalAccount *)makeWalletAccount
+{
+    CNMutableContact *cnContact = [CNMutableContact new];
+    [cnContact setGivenName:@"AAAAA我的钱包"];
+    Contact *contact = [[Contact alloc] initWithSystemContact:cnContact];
+    return [[SignalAccount alloc] initWithUniqueId:OWSWalletThreadContactIdentifier
+                                           contact:contact
+                         hasMultipleAccountContact:NO
+                          multipleAccountLabelText:@"Wallet"
+                                       recipientId:OWSWalletThreadContactIdentifier];
+}
+
++ (SignalAccount *)makeTradeAccount
+{
+    CNMutableContact *cnContact = [CNMutableContact new];
+    [cnContact setGivenName:@"AAAAA交易所"];
+    Contact *contact = [[Contact alloc] initWithSystemContact:cnContact];
+    return [[SignalAccount alloc] initWithUniqueId:OWSTradeThreadContactIdentifier
+                                           contact:contact
+                         hasMultipleAccountContact:NO
+                          multipleAccountLabelText:@"Trade"
+                                       recipientId:OWSTradeThreadContactIdentifier];
+}
+
++ (SignalAccount *)makeMallAccount
+{
+    CNMutableContact *cnContact = [CNMutableContact new];
+    [cnContact setGivenName:@"AAAAA商城"];
+    Contact *contact = [[Contact alloc] initWithSystemContact:cnContact];
+    return [[SignalAccount alloc] initWithUniqueId:OWSMallThreadContactIdentifier
+                                           contact:contact
+                         hasMultipleAccountContact:NO
+                          multipleAccountLabelText:@"Mall"
+                                       recipientId:OWSMallThreadContactIdentifier];
+}
+
+
 
 - (BOOL)isRobot
 {

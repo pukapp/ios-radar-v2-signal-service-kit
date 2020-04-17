@@ -43,6 +43,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (SignalAccount *)makeRobotAccount;
 
++ (SignalAccount *)makeWalletAccount;
+
++ (SignalAccount *)makeTradeAccount;
+
++ (SignalAccount *)makeMallAccount;
+
 - (BOOL)isRobot;
 
 // --- CODE GENERATION MARKER
