@@ -42,8 +42,9 @@ ConversationColorName const ConversationColorNameSteel = @"grey";
 
 ConversationColorName const kConversationColorName_Default = ConversationColorNameSteel;
 
-// TODO: 机器人ID
-NSString *const OWSRobotThreadContactIdentifier = @"+861234";
+/// 机器人ID
+NSString *const OWSRobotThreadContactIdentifier = @"+8613800000000";
+
 /// 安全通知ID
 NSString *const OWSSecurityThreadContactIdentifier = @"+8620200411";
 
