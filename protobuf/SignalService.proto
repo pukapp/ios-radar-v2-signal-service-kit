@@ -45,6 +45,7 @@ message Notification {
     BOT = 0;
     WEB_LOGIN = 1;
     TRAINER_OFF = 2;
+    TRAINER_ON = 3;
   }
   optional Type type = 1;
   optional WebLogin webLogin = 2;

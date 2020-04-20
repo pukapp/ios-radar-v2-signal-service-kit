@@ -240,6 +240,7 @@ struct SignalServiceProtos_Notification {
     case bot // = 0
     case webLogin // = 1
     case trainerOff // = 2
+    case trainerOn // = 3
 
     init() {
       self = .bot
@@ -250,6 +251,7 @@ struct SignalServiceProtos_Notification {
       case 0: self = .bot
       case 1: self = .webLogin
       case 2: self = .trainerOff
+      case 3: self = .trainerOn
       default: return nil
       }
     }
@@ -259,6 +261,7 @@ struct SignalServiceProtos_Notification {
       case .bot: return 0
       case .webLogin: return 1
       case .trainerOff: return 2
+      case .trainerOn: return 3
       }
     }
 
@@ -3118,6 +3121,7 @@ extension SignalServiceProtos_Notification.TypeEnum: SwiftProtobuf._ProtoNamePro
     0: .same(proto: "BOT"),
     1: .same(proto: "WEB_LOGIN"),
     2: .same(proto: "TRAINER_OFF"),
+    3: .same(proto: "TRAINER_ON"),
   ]
 }
 
