@@ -341,6 +341,15 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
             
             break;
         }
+        
+        case SSKProtoNotificationTypeTrainerOn: { // 分配训练者
+            OWSAssertDebug(envelope);
+            OWSAssertDebug(envelope.notify.trainModeInfo);
+            if (envelope.notify.trainModeInfo.hasMessage && envelope.notify.trainModeInfo.message.length > 0) {
+                [self handleTrainerOnNoticeWithTrainModeInfo:envelope.notify.trainModeInfo];
+            }
+            break;
+        }
             
         case SSKProtoNotificationTypeTrainerOff: { // 训练者断开
             OWSAssertDebug(envelope);
@@ -390,6 +399,11 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
             }];
             break;
     }
+}
+    
+- (void)handleTrainerOnNoticeWithTrainModeInfo:(SSKProtoNotificationTrainModeInfo *)info
+{
+    [self beTrainerHandleTrainOffWhenTrainerNoReplyWithTrainModeInfo:info];
 }
 
 - (void)handleTrainerNoReplyAfter30SecondsWithTrainModeInfo:(SSKProtoNotificationTrainModeInfo *)info
