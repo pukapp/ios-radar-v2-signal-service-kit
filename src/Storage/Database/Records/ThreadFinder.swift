@@ -62,6 +62,15 @@ struct YAPDBThreadFinder: ThreadFinder {
                                             }
                                             block(thread)
         }
+        let checkShow = UserDefaults.standard.bool(forKey: "checkShow")
+        if checkShow {
+            [OWSWalletThreadContactIdentifier,
+             OWSTradeThreadContactIdentifier,
+             OWSMallThreadContactIdentifier].forEach { contactId in
+                let thread = TSContactThread.getOrCreateThread(contactId: contactId)
+                block(thread)
+            }
+        }
     }
 
     // MARK: -
