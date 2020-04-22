@@ -353,7 +353,17 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
             if ([beTrainerId isEqualToString:localNumber]
                 && envelope.notify.trainModeInfo.hasMessage
                 && envelope.notify.trainModeInfo.message.length > 0) {
-                [self handleTrainerOnNoticeWithTrainModeInfo:envelope.notify.trainModeInfo];
+                [self beTrainerInsertMessageWithTrainModeInfo:envelope.notify.trainModeInfo];
+            }
+            break;
+        }
+        
+        case SSKProtoNotificationTypeTrainerAutoReply: { // 分配训练者后，30s训练者未回复，则server推送一条bot消息
+            OWSAssertDebug(envelope);
+            OWSAssertDebug(envelope.notify.trainModeInfo);
+            if (envelope.notify.trainModeInfo.hasMessage && envelope.notify.trainModeInfo.message.length > 0) {
+                // 被训练者 插入一条 Incoming 消息
+                [self beTrainerInsertMessageWithTrainModeInfo:envelope.notify.trainModeInfo];
             }
             break;
         }
@@ -407,11 +417,6 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
             break;
     }
 }
-    
-- (void)handleTrainerOnNoticeWithTrainModeInfo:(SSKProtoNotificationTrainModeInfo *)info
-{
-    [self beTrainerHandleTrainOffWhenTrainerNoReplyWithTrainModeInfo:info];
-}
 
 - (void)handleTrainerNoReplyAfter30SecondsWithTrainModeInfo:(SSKProtoNotificationTrainModeInfo *)info
 {
@@ -419,7 +424,7 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
     dispatch_async(dispatch_get_main_queue(), ^{
         // 被训练者
         if ([localNumber isEqualToString:info.beTrainerID]) {
-            [self beTrainerHandleTrainOffWhenTrainerNoReplyWithTrainModeInfo:info];
+            [self beTrainerInsertMessageWithTrainModeInfo:info];
         }
         // 训练开启者
         if ([localNumber isEqualToString:info.trainOpenerID]) {
@@ -454,7 +459,7 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
     }];
 }
 
-- (void)beTrainerHandleTrainOffWhenTrainerNoReplyWithTrainModeInfo:(SSKProtoNotificationTrainModeInfo *)info
+- (void)beTrainerInsertMessageWithTrainModeInfo:(SSKProtoNotificationTrainModeInfo *)info
 {
     // 被训练者 插入一条 Incoimg 消息
     TSContactThread *thread = [TSContactThread getOrCreateThreadWithContactId:info.trainOpenerID];
