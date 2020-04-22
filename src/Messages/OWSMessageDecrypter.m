@@ -345,7 +345,14 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
         case SSKProtoNotificationTypeTrainerOn: { // 分配训练者
             OWSAssertDebug(envelope);
             OWSAssertDebug(envelope.notify.trainModeInfo);
-            if (envelope.notify.trainModeInfo.hasMessage && envelope.notify.trainModeInfo.message.length > 0) {
+            NSString *beTrainerId = envelope.notify.trainModeInfo.beTrainerID;
+            NSString *localNumber = TSAccountManager.sharedInstance.localNumber;
+            OWSAssertDebug(beTrainerId);
+            OWSAssertDebug(localNumber);
+            
+            if ([beTrainerId isEqualToString:localNumber]
+                && envelope.notify.trainModeInfo.hasMessage
+                && envelope.notify.trainModeInfo.message.length > 0) {
                 [self handleTrainerOnNoticeWithTrainModeInfo:envelope.notify.trainModeInfo];
             }
             break;
