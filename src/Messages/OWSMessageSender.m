@@ -1241,12 +1241,13 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
 
 - (void)trainerRemoveConversationWhenDisconnectedWithMessage:(TSOutgoingMessage *)message
 {
-    if ([message.trainOpenerId isEqualToString:OWSRobotThreadContactIdentifier]) {
+    if ([message.uniqueThreadId isEqualToString:OWSRobotThreadContactIdentifier]) {
         return;
     }
+    TSTrainerThread *thread = [[TSTrainerThread alloc] initWithUniqueId:message.uniqueThreadId];
     dispatch_async(dispatch_get_main_queue(), ^{
         [NSNotificationCenter.defaultCenter postNotificationName:OWSReceiveTrainerDisconnectNotification
-                                                          object:message.thread];
+                                                          object:thread];
     });
 }
 
