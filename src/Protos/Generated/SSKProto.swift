@@ -705,6 +705,7 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
         case webLogin = 1
         case trainerOff = 2
         case trainerOn = 3
+        case trainerAutoReply = 4
     }
 
     private class func SSKProtoNotificationTypeWrap(_ value: SignalServiceProtos_Notification.TypeEnum) -> SSKProtoNotificationType {
@@ -713,6 +714,7 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
         case .webLogin: return .webLogin
         case .trainerOff: return .trainerOff
         case .trainerOn: return .trainerOn
+        case .trainerAutoReply: return .trainerAutoReply
         }
     }
 
@@ -722,6 +724,7 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
         case .webLogin: return .webLogin
         case .trainerOff: return .trainerOff
         case .trainerOn: return .trainerOn
+        case .trainerAutoReply: return .trainerAutoReply
         }
     }
 
