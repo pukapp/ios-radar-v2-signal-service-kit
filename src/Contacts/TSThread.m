@@ -289,6 +289,10 @@ isArchivedByLegacyTimestampForSorting:(BOOL)isArchivedByLegacyTimestampForSortin
     return [self.contactIdentifier isEqualToString:OWSMallThreadContactIdentifier];
 }
 
+- (BOOL)isSecurityThread
+{
+    return [self.contactIdentifier isEqualToString:OWSSecurityThreadContactIdentifier];
+}
 
 #pragma mark - To be subclassed.
 

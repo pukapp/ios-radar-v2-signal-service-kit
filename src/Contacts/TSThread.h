@@ -113,6 +113,8 @@ NS_SWIFT_NAME(init(uniqueId:archivalDate:archivedAsOfMessageSortId:conversationC
 - (BOOL)isWalletThread;
 
 - (BOOL)isMallThread;
+    
+- (BOOL)isSecurityThread;
 
 #pragma mark Interactions
 
