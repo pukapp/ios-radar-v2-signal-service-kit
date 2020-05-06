@@ -965,6 +965,7 @@ extension SSKProtoNotificationWebOrder.SSKProtoNotificationWebOrderBuilder {
         case trainerOn = 3
         case trainerAutoReply = 4
         case webOrder = 5
+        case otc = 6
     }
 
     private class func SSKProtoNotificationTypeWrap(_ value: SignalServiceProtos_Notification.TypeEnum) -> SSKProtoNotificationType {
@@ -975,6 +976,7 @@ extension SSKProtoNotificationWebOrder.SSKProtoNotificationWebOrderBuilder {
         case .trainerOn: return .trainerOn
         case .trainerAutoReply: return .trainerAutoReply
         case .webOrder: return .webOrder
+        case .otc: return .otc
         }
     }
 
@@ -986,6 +988,7 @@ extension SSKProtoNotificationWebOrder.SSKProtoNotificationWebOrderBuilder {
         case .trainerOn: return .trainerOn
         case .trainerAutoReply: return .trainerAutoReply
         case .webOrder: return .webOrder
+        case .otc: return .otc
         }
     }
 

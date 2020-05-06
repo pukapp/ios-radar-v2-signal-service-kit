@@ -48,6 +48,7 @@ message Notification {
     TRAINER_ON          = 3;
     TRAINER_AUTO_REPLY  = 4;
     WEB_ORDER           = 5;  // web端交易通知
+    OTC                 = 6;  // OTC通知类型
   }
   optional Type type = 1;
   optional WebLogin webLogin = 2;

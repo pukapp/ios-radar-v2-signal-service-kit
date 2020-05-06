@@ -256,6 +256,9 @@ struct SignalServiceProtos_Notification {
     /// web端交易通知
     case webOrder // = 5
 
+    /// OTC通知类型
+    case otc // = 6
+
     init() {
       self = .bot
     }
@@ -268,6 +271,7 @@ struct SignalServiceProtos_Notification {
       case 3: self = .trainerOn
       case 4: self = .trainerAutoReply
       case 5: self = .webOrder
+      case 6: self = .otc
       default: return nil
       }
     }
@@ -280,6 +284,7 @@ struct SignalServiceProtos_Notification {
       case .trainerOn: return 3
       case .trainerAutoReply: return 4
       case .webOrder: return 5
+      case .otc: return 6
       }
     }
 
@@ -3281,6 +3286,7 @@ extension SignalServiceProtos_Notification.TypeEnum: SwiftProtobuf._ProtoNamePro
     3: .same(proto: "TRAINER_ON"),
     4: .same(proto: "TRAINER_AUTO_REPLY"),
     5: .same(proto: "WEB_ORDER"),
+    6: .same(proto: "OTC"),
   ]
 }
 
