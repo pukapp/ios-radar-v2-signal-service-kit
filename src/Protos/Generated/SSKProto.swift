@@ -694,6 +694,264 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
 
 #endif
 
+// MARK: - SSKProtoNotificationWebOrder
+
+@objc public class SSKProtoNotificationWebOrder: NSObject {
+
+    // MARK: - SSKProtoNotificationWebOrderBuilder
+
+    @objc public class func builder() -> SSKProtoNotificationWebOrderBuilder {
+        return SSKProtoNotificationWebOrderBuilder()
+    }
+
+    // asBuilder() constructs a builder that reflects the proto's contents.
+    @objc public func asBuilder() -> SSKProtoNotificationWebOrderBuilder {
+        let builder = SSKProtoNotificationWebOrderBuilder()
+        if let _value = account {
+            builder.setAccount(_value)
+        }
+        if hasType {
+            builder.setType(type)
+        }
+        if let _value = amount {
+            builder.setAmount(_value)
+        }
+        if let _value = currency {
+            builder.setCurrency(_value)
+        }
+        if let _value = issuer {
+            builder.setIssuer(_value)
+        }
+        if hasDate {
+            builder.setDate(date)
+        }
+        if let _value = sender {
+            builder.setSender(_value)
+        }
+        if let _value = recipient {
+            builder.setRecipient(_value)
+        }
+        if let _value = hash {
+            builder.setHash(_value)
+        }
+        if let _value = fee {
+            builder.setFee(_value)
+        }
+        if let _value = feeCur {
+            builder.setFeeCur(_value)
+        }
+        return builder
+    }
+
+    @objc public class SSKProtoNotificationWebOrderBuilder: NSObject {
+
+        private var proto = SignalServiceProtos_Notification.WebOrder()
+
+        @objc fileprivate override init() {}
+
+        @objc public func setAccount(_ valueParam: String) {
+            proto.account = valueParam
+        }
+
+        @objc public func setType(_ valueParam: UInt32) {
+            proto.type = valueParam
+        }
+
+        @objc public func setAmount(_ valueParam: String) {
+            proto.amount = valueParam
+        }
+
+        @objc public func setCurrency(_ valueParam: String) {
+            proto.currency = valueParam
+        }
+
+        @objc public func setIssuer(_ valueParam: String) {
+            proto.issuer = valueParam
+        }
+
+        @objc public func setDate(_ valueParam: UInt64) {
+            proto.date = valueParam
+        }
+
+        @objc public func setSender(_ valueParam: String) {
+            proto.sender = valueParam
+        }
+
+        @objc public func setRecipient(_ valueParam: String) {
+            proto.recipient = valueParam
+        }
+
+        @objc public func setHash(_ valueParam: String) {
+            proto.hash = valueParam
+        }
+
+        @objc public func setFee(_ valueParam: String) {
+            proto.fee = valueParam
+        }
+
+        @objc public func setFeeCur(_ valueParam: String) {
+            proto.feeCur = valueParam
+        }
+
+        @objc public func build() throws -> SSKProtoNotificationWebOrder {
+            return try SSKProtoNotificationWebOrder.parseProto(proto)
+        }
+
+        @objc public func buildSerializedData() throws -> Data {
+            return try SSKProtoNotificationWebOrder.parseProto(proto).serializedData()
+        }
+    }
+
+    fileprivate let proto: SignalServiceProtos_Notification.WebOrder
+
+    @objc public var account: String? {
+        guard proto.hasAccount else {
+            return nil
+        }
+        return proto.account
+    }
+    @objc public var hasAccount: Bool {
+        return proto.hasAccount
+    }
+
+    @objc public var type: UInt32 {
+        return proto.type
+    }
+    @objc public var hasType: Bool {
+        return proto.hasType
+    }
+
+    @objc public var amount: String? {
+        guard proto.hasAmount else {
+            return nil
+        }
+        return proto.amount
+    }
+    @objc public var hasAmount: Bool {
+        return proto.hasAmount
+    }
+
+    @objc public var currency: String? {
+        guard proto.hasCurrency else {
+            return nil
+        }
+        return proto.currency
+    }
+    @objc public var hasCurrency: Bool {
+        return proto.hasCurrency
+    }
+
+    @objc public var issuer: String? {
+        guard proto.hasIssuer else {
+            return nil
+        }
+        return proto.issuer
+    }
+    @objc public var hasIssuer: Bool {
+        return proto.hasIssuer
+    }
+
+    @objc public var date: UInt64 {
+        return proto.date
+    }
+    @objc public var hasDate: Bool {
+        return proto.hasDate
+    }
+
+    @objc public var sender: String? {
+        guard proto.hasSender else {
+            return nil
+        }
+        return proto.sender
+    }
+    @objc public var hasSender: Bool {
+        return proto.hasSender
+    }
+
+    @objc public var recipient: String? {
+        guard proto.hasRecipient else {
+            return nil
+        }
+        return proto.recipient
+    }
+    @objc public var hasRecipient: Bool {
+        return proto.hasRecipient
+    }
+
+    @objc public var hash: String? {
+        guard proto.hasHash else {
+            return nil
+        }
+        return proto.hash
+    }
+    @objc public var hasHash: Bool {
+        return proto.hasHash
+    }
+
+    @objc public var fee: String? {
+        guard proto.hasFee else {
+            return nil
+        }
+        return proto.fee
+    }
+    @objc public var hasFee: Bool {
+        return proto.hasFee
+    }
+
+    @objc public var feeCur: String? {
+        guard proto.hasFeeCur else {
+            return nil
+        }
+        return proto.feeCur
+    }
+    @objc public var hasFeeCur: Bool {
+        return proto.hasFeeCur
+    }
+
+    private init(proto: SignalServiceProtos_Notification.WebOrder) {
+        self.proto = proto
+    }
+
+    @objc
+    public func serializedData() throws -> Data {
+        return try self.proto.serializedData()
+    }
+
+    @objc public class func parseData(_ serializedData: Data) throws -> SSKProtoNotificationWebOrder {
+        let proto = try SignalServiceProtos_Notification.WebOrder(serializedData: serializedData)
+        return try parseProto(proto)
+    }
+
+    fileprivate class func parseProto(_ proto: SignalServiceProtos_Notification.WebOrder) throws -> SSKProtoNotificationWebOrder {
+        // MARK: - Begin Validation Logic for SSKProtoNotificationWebOrder -
+
+        // MARK: - End Validation Logic for SSKProtoNotificationWebOrder -
+
+        let result = SSKProtoNotificationWebOrder(proto: proto)
+        return result
+    }
+
+    @objc public override var debugDescription: String {
+        return "\(proto)"
+    }
+}
+
+#if DEBUG
+
+extension SSKProtoNotificationWebOrder {
+    @objc public func serializedDataIgnoringErrors() -> Data? {
+        return try! self.serializedData()
+    }
+}
+
+extension SSKProtoNotificationWebOrder.SSKProtoNotificationWebOrderBuilder {
+    @objc public func buildIgnoringErrors() -> SSKProtoNotificationWebOrder? {
+        return try! self.build()
+    }
+}
+
+#endif
+
 // MARK: - SSKProtoNotification
 
 @objc public class SSKProtoNotification: NSObject {
@@ -706,6 +964,7 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
         case trainerOff = 2
         case trainerOn = 3
         case trainerAutoReply = 4
+        case webOrder = 5
     }
 
     private class func SSKProtoNotificationTypeWrap(_ value: SignalServiceProtos_Notification.TypeEnum) -> SSKProtoNotificationType {
@@ -715,6 +974,7 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
         case .trainerOff: return .trainerOff
         case .trainerOn: return .trainerOn
         case .trainerAutoReply: return .trainerAutoReply
+        case .webOrder: return .webOrder
         }
     }
 
@@ -725,6 +985,7 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
         case .trainerOff: return .trainerOff
         case .trainerOn: return .trainerOn
         case .trainerAutoReply: return .trainerAutoReply
+        case .webOrder: return .webOrder
         }
     }
 
@@ -748,6 +1009,9 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
         }
         if let _value = trainModeInfo {
             builder.setTrainModeInfo(_value)
+        }
+        if let _value = webOrder {
+            builder.setWebOrder(_value)
         }
         return builder
     }
@@ -774,6 +1038,10 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
             proto.trainModeInfo = valueParam.proto
         }
 
+        @objc public func setWebOrder(_ valueParam: SSKProtoNotificationWebOrder) {
+            proto.webOrder = valueParam.proto
+        }
+
         @objc public func build() throws -> SSKProtoNotification {
             return try SSKProtoNotification.parseProto(proto)
         }
@@ -790,6 +1058,8 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
     @objc public let botModeInfo: SSKProtoNotificationBotModeInfo?
 
     @objc public let trainModeInfo: SSKProtoNotificationTrainModeInfo?
+
+    @objc public let webOrder: SSKProtoNotificationWebOrder?
 
     public var type: SSKProtoNotificationType? {
         guard proto.hasType else {
@@ -812,11 +1082,13 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
     private init(proto: SignalServiceProtos_Notification,
                  webLogin: SSKProtoNotificationWebLogin?,
                  botModeInfo: SSKProtoNotificationBotModeInfo?,
-                 trainModeInfo: SSKProtoNotificationTrainModeInfo?) {
+                 trainModeInfo: SSKProtoNotificationTrainModeInfo?,
+                 webOrder: SSKProtoNotificationWebOrder?) {
         self.proto = proto
         self.webLogin = webLogin
         self.botModeInfo = botModeInfo
         self.trainModeInfo = trainModeInfo
+        self.webOrder = webOrder
     }
 
     @objc
@@ -845,6 +1117,11 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
             trainModeInfo = try SSKProtoNotificationTrainModeInfo.parseProto(proto.trainModeInfo)
         }
 
+        var webOrder: SSKProtoNotificationWebOrder? = nil
+        if proto.hasWebOrder {
+            webOrder = try SSKProtoNotificationWebOrder.parseProto(proto.webOrder)
+        }
+
         // MARK: - Begin Validation Logic for SSKProtoNotification -
 
         // MARK: - End Validation Logic for SSKProtoNotification -
@@ -852,7 +1129,8 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
         let result = SSKProtoNotification(proto: proto,
                                           webLogin: webLogin,
                                           botModeInfo: botModeInfo,
-                                          trainModeInfo: trainModeInfo)
+                                          trainModeInfo: trainModeInfo,
+                                          webOrder: webOrder)
         return result
     }
 

@@ -42,16 +42,18 @@ message Envelope {
 
 message Notification {
   enum Type {
-    BOT = 0;
-    WEB_LOGIN = 1;
-    TRAINER_OFF = 2;
-    TRAINER_ON = 3;
-    TRAINER_AUTO_REPLY = 4;
+    BOT                 = 0;
+    WEB_LOGIN           = 1;
+    TRAINER_OFF         = 2;
+    TRAINER_ON          = 3;
+    TRAINER_AUTO_REPLY  = 4;
+    WEB_ORDER           = 5;  // web端交易通知
   }
   optional Type type = 1;
   optional WebLogin webLogin = 2;
   optional BotModeInfo botModeInfo = 3;
   optional TrainModeInfo trainModeInfo = 4;
+  optional WebOrder webOrder = 5; // web端交易通知
 
   message TrainModeInfo {
     optional string trainerId = 1;
@@ -65,11 +67,26 @@ message Notification {
     optional string botContact = 2; // 开启机器人方
     optional bool state = 3; // 机器人状态  true: 开启  false: 关闭
   }
+
   message WebLogin {
     optional string address = 1;
     optional uint64 loginTime = 2;
     optional string loginIp = 3;
   }
+
+  message WebOrder {
+    optional string account = 1; // 账号
+    optional uint32 type = 2; // 交易类型(0:收款;1:付款;2:手续费;3:创建挂单;4:挂单完全成交;5:挂单部分成交;6.取消挂单;100.其他)
+    optional string amount = 3; // 交易金额
+    optional string currency = 4; // 货币符号(VBC)
+    optional string issuer = 5; // 网关
+    optional uint64 date = 6; // 交易时间戳
+    optional string sender = 7; // 转入地址
+    optional string recipient = 8; // 转出地址
+    optional string hash = 9; // 订单号
+    optional string fee = 10;// 手续费金额
+    optional string fee_cur = 11;// 手续费币种符号(VRP)
+  } 
 }
 
 message TypingMessage {

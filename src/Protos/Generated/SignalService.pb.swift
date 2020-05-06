@@ -233,6 +233,16 @@ struct SignalServiceProtos_Notification {
   /// Clears the value of `trainModeInfo`. Subsequent reads from it will return its default value.
   mutating func clearTrainModeInfo() {self._trainModeInfo = nil}
 
+  /// web端交易通知
+  var webOrder: SignalServiceProtos_Notification.WebOrder {
+    get {return _webOrder ?? SignalServiceProtos_Notification.WebOrder()}
+    set {_webOrder = newValue}
+  }
+  /// Returns true if `webOrder` has been explicitly set.
+  var hasWebOrder: Bool {return self._webOrder != nil}
+  /// Clears the value of `webOrder`. Subsequent reads from it will return its default value.
+  mutating func clearWebOrder() {self._webOrder = nil}
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   enum TypeEnum: SwiftProtobuf.Enum {
@@ -242,6 +252,9 @@ struct SignalServiceProtos_Notification {
     case trainerOff // = 2
     case trainerOn // = 3
     case trainerAutoReply // = 4
+
+    /// web端交易通知
+    case webOrder // = 5
 
     init() {
       self = .bot
@@ -254,6 +267,7 @@ struct SignalServiceProtos_Notification {
       case 2: self = .trainerOff
       case 3: self = .trainerOn
       case 4: self = .trainerAutoReply
+      case 5: self = .webOrder
       default: return nil
       }
     }
@@ -265,6 +279,7 @@ struct SignalServiceProtos_Notification {
       case .trainerOff: return 2
       case .trainerOn: return 3
       case .trainerAutoReply: return 4
+      case .webOrder: return 5
       }
     }
 
@@ -406,12 +421,145 @@ struct SignalServiceProtos_Notification {
     fileprivate var _loginIp: String? = nil
   }
 
+  struct WebOrder {
+    // SwiftProtobuf.Message conformance is added in an extension below. See the
+    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+    // methods supported on all messages.
+
+    /// 账号
+    var account: String {
+      get {return _account ?? String()}
+      set {_account = newValue}
+    }
+    /// Returns true if `account` has been explicitly set.
+    var hasAccount: Bool {return self._account != nil}
+    /// Clears the value of `account`. Subsequent reads from it will return its default value.
+    mutating func clearAccount() {self._account = nil}
+
+    /// 交易类型(0:收款;1:付款;2:手续费;3:创建挂单;4:挂单完全成交;5:挂单部分成交;6.取消挂单;100.其他)
+    var type: UInt32 {
+      get {return _type ?? 0}
+      set {_type = newValue}
+    }
+    /// Returns true if `type` has been explicitly set.
+    var hasType: Bool {return self._type != nil}
+    /// Clears the value of `type`. Subsequent reads from it will return its default value.
+    mutating func clearType() {self._type = nil}
+
+    /// 交易金额
+    var amount: String {
+      get {return _amount ?? String()}
+      set {_amount = newValue}
+    }
+    /// Returns true if `amount` has been explicitly set.
+    var hasAmount: Bool {return self._amount != nil}
+    /// Clears the value of `amount`. Subsequent reads from it will return its default value.
+    mutating func clearAmount() {self._amount = nil}
+
+    /// 货币符号(VBC)
+    var currency: String {
+      get {return _currency ?? String()}
+      set {_currency = newValue}
+    }
+    /// Returns true if `currency` has been explicitly set.
+    var hasCurrency: Bool {return self._currency != nil}
+    /// Clears the value of `currency`. Subsequent reads from it will return its default value.
+    mutating func clearCurrency() {self._currency = nil}
+
+    /// 网关
+    var issuer: String {
+      get {return _issuer ?? String()}
+      set {_issuer = newValue}
+    }
+    /// Returns true if `issuer` has been explicitly set.
+    var hasIssuer: Bool {return self._issuer != nil}
+    /// Clears the value of `issuer`. Subsequent reads from it will return its default value.
+    mutating func clearIssuer() {self._issuer = nil}
+
+    /// 交易时间戳
+    var date: UInt64 {
+      get {return _date ?? 0}
+      set {_date = newValue}
+    }
+    /// Returns true if `date` has been explicitly set.
+    var hasDate: Bool {return self._date != nil}
+    /// Clears the value of `date`. Subsequent reads from it will return its default value.
+    mutating func clearDate() {self._date = nil}
+
+    /// 转入地址
+    var sender: String {
+      get {return _sender ?? String()}
+      set {_sender = newValue}
+    }
+    /// Returns true if `sender` has been explicitly set.
+    var hasSender: Bool {return self._sender != nil}
+    /// Clears the value of `sender`. Subsequent reads from it will return its default value.
+    mutating func clearSender() {self._sender = nil}
+
+    /// 转出地址
+    var recipient: String {
+      get {return _recipient ?? String()}
+      set {_recipient = newValue}
+    }
+    /// Returns true if `recipient` has been explicitly set.
+    var hasRecipient: Bool {return self._recipient != nil}
+    /// Clears the value of `recipient`. Subsequent reads from it will return its default value.
+    mutating func clearRecipient() {self._recipient = nil}
+
+    /// 订单号
+    var hash: String {
+      get {return _hash ?? String()}
+      set {_hash = newValue}
+    }
+    /// Returns true if `hash` has been explicitly set.
+    var hasHash: Bool {return self._hash != nil}
+    /// Clears the value of `hash`. Subsequent reads from it will return its default value.
+    mutating func clearHash() {self._hash = nil}
+
+    /// 手续费金额
+    var fee: String {
+      get {return _fee ?? String()}
+      set {_fee = newValue}
+    }
+    /// Returns true if `fee` has been explicitly set.
+    var hasFee: Bool {return self._fee != nil}
+    /// Clears the value of `fee`. Subsequent reads from it will return its default value.
+    mutating func clearFee() {self._fee = nil}
+
+    /// 手续费币种符号(VRP)
+    var feeCur: String {
+      get {return _feeCur ?? String()}
+      set {_feeCur = newValue}
+    }
+    /// Returns true if `feeCur` has been explicitly set.
+    var hasFeeCur: Bool {return self._feeCur != nil}
+    /// Clears the value of `feeCur`. Subsequent reads from it will return its default value.
+    mutating func clearFeeCur() {self._feeCur = nil}
+
+    var unknownFields = SwiftProtobuf.UnknownStorage()
+
+    init() {}
+
+    fileprivate var _account: String? = nil
+    fileprivate var _type: UInt32? = nil
+    fileprivate var _amount: String? = nil
+    fileprivate var _currency: String? = nil
+    fileprivate var _issuer: String? = nil
+    fileprivate var _date: UInt64? = nil
+    fileprivate var _sender: String? = nil
+    fileprivate var _recipient: String? = nil
+    fileprivate var _hash: String? = nil
+    fileprivate var _fee: String? = nil
+    fileprivate var _feeCur: String? = nil
+  }
+
   init() {}
 
   fileprivate var _type: SignalServiceProtos_Notification.TypeEnum? = nil
   fileprivate var _webLogin: SignalServiceProtos_Notification.WebLogin? = nil
   fileprivate var _botModeInfo: SignalServiceProtos_Notification.BotModeInfo? = nil
   fileprivate var _trainModeInfo: SignalServiceProtos_Notification.TrainModeInfo? = nil
+  fileprivate var _webOrder: SignalServiceProtos_Notification.WebOrder? = nil
 }
 
 #if swift(>=4.2)
@@ -3079,6 +3227,7 @@ extension SignalServiceProtos_Notification: SwiftProtobuf.Message, SwiftProtobuf
     2: .same(proto: "webLogin"),
     3: .same(proto: "botModeInfo"),
     4: .same(proto: "trainModeInfo"),
+    5: .same(proto: "webOrder"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -3088,6 +3237,7 @@ extension SignalServiceProtos_Notification: SwiftProtobuf.Message, SwiftProtobuf
       case 2: try decoder.decodeSingularMessageField(value: &self._webLogin)
       case 3: try decoder.decodeSingularMessageField(value: &self._botModeInfo)
       case 4: try decoder.decodeSingularMessageField(value: &self._trainModeInfo)
+      case 5: try decoder.decodeSingularMessageField(value: &self._webOrder)
       default: break
       }
     }
@@ -3106,6 +3256,9 @@ extension SignalServiceProtos_Notification: SwiftProtobuf.Message, SwiftProtobuf
     if let v = self._trainModeInfo {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 4)
     }
+    if let v = self._webOrder {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 5)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -3114,6 +3267,7 @@ extension SignalServiceProtos_Notification: SwiftProtobuf.Message, SwiftProtobuf
     if lhs._webLogin != rhs._webLogin {return false}
     if lhs._botModeInfo != rhs._botModeInfo {return false}
     if lhs._trainModeInfo != rhs._trainModeInfo {return false}
+    if lhs._webOrder != rhs._webOrder {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -3126,6 +3280,7 @@ extension SignalServiceProtos_Notification.TypeEnum: SwiftProtobuf._ProtoNamePro
     2: .same(proto: "TRAINER_OFF"),
     3: .same(proto: "TRAINER_ON"),
     4: .same(proto: "TRAINER_AUTO_REPLY"),
+    5: .same(proto: "WEB_ORDER"),
   ]
 }
 
@@ -3253,6 +3408,95 @@ extension SignalServiceProtos_Notification.WebLogin: SwiftProtobuf.Message, Swif
     if lhs._address != rhs._address {return false}
     if lhs._loginTime != rhs._loginTime {return false}
     if lhs._loginIp != rhs._loginIp {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension SignalServiceProtos_Notification.WebOrder: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = SignalServiceProtos_Notification.protoMessageName + ".WebOrder"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "account"),
+    2: .same(proto: "type"),
+    3: .same(proto: "amount"),
+    4: .same(proto: "currency"),
+    5: .same(proto: "issuer"),
+    6: .same(proto: "date"),
+    7: .same(proto: "sender"),
+    8: .same(proto: "recipient"),
+    9: .same(proto: "hash"),
+    10: .same(proto: "fee"),
+    11: .standard(proto: "fee_cur"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      switch fieldNumber {
+      case 1: try decoder.decodeSingularStringField(value: &self._account)
+      case 2: try decoder.decodeSingularUInt32Field(value: &self._type)
+      case 3: try decoder.decodeSingularStringField(value: &self._amount)
+      case 4: try decoder.decodeSingularStringField(value: &self._currency)
+      case 5: try decoder.decodeSingularStringField(value: &self._issuer)
+      case 6: try decoder.decodeSingularUInt64Field(value: &self._date)
+      case 7: try decoder.decodeSingularStringField(value: &self._sender)
+      case 8: try decoder.decodeSingularStringField(value: &self._recipient)
+      case 9: try decoder.decodeSingularStringField(value: &self._hash)
+      case 10: try decoder.decodeSingularStringField(value: &self._fee)
+      case 11: try decoder.decodeSingularStringField(value: &self._feeCur)
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if let v = self._account {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 1)
+    }
+    if let v = self._type {
+      try visitor.visitSingularUInt32Field(value: v, fieldNumber: 2)
+    }
+    if let v = self._amount {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 3)
+    }
+    if let v = self._currency {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 4)
+    }
+    if let v = self._issuer {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 5)
+    }
+    if let v = self._date {
+      try visitor.visitSingularUInt64Field(value: v, fieldNumber: 6)
+    }
+    if let v = self._sender {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 7)
+    }
+    if let v = self._recipient {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 8)
+    }
+    if let v = self._hash {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 9)
+    }
+    if let v = self._fee {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 10)
+    }
+    if let v = self._feeCur {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 11)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: SignalServiceProtos_Notification.WebOrder, rhs: SignalServiceProtos_Notification.WebOrder) -> Bool {
+    if lhs._account != rhs._account {return false}
+    if lhs._type != rhs._type {return false}
+    if lhs._amount != rhs._amount {return false}
+    if lhs._currency != rhs._currency {return false}
+    if lhs._issuer != rhs._issuer {return false}
+    if lhs._date != rhs._date {return false}
+    if lhs._sender != rhs._sender {return false}
+    if lhs._recipient != rhs._recipient {return false}
+    if lhs._hash != rhs._hash {return false}
+    if lhs._fee != rhs._fee {return false}
+    if lhs._feeCur != rhs._feeCur {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
