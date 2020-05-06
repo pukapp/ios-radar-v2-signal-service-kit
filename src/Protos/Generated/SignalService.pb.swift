@@ -243,6 +243,16 @@ struct SignalServiceProtos_Notification {
   /// Clears the value of `webOrder`. Subsequent reads from it will return its default value.
   mutating func clearWebOrder() {self._webOrder = nil}
 
+  /// otc通知,使用通用通知类型
+  var otc: SignalServiceProtos_Notification.Common {
+    get {return _otc ?? SignalServiceProtos_Notification.Common()}
+    set {_otc = newValue}
+  }
+  /// Returns true if `otc` has been explicitly set.
+  var hasOtc: Bool {return self._otc != nil}
+  /// Clears the value of `otc`. Subsequent reads from it will return its default value.
+  mutating func clearOtc() {self._otc = nil}
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   enum TypeEnum: SwiftProtobuf.Enum {
@@ -558,6 +568,39 @@ struct SignalServiceProtos_Notification {
     fileprivate var _feeCur: String? = nil
   }
 
+  struct Common {
+    // SwiftProtobuf.Message conformance is added in an extension below. See the
+    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+    // methods supported on all messages.
+
+    /// 通用消息类型
+    var msgType: UInt32 {
+      get {return _msgType ?? 0}
+      set {_msgType = newValue}
+    }
+    /// Returns true if `msgType` has been explicitly set.
+    var hasMsgType: Bool {return self._msgType != nil}
+    /// Clears the value of `msgType`. Subsequent reads from it will return its default value.
+    mutating func clearMsgType() {self._msgType = nil}
+
+    /// 通用json字符串，由前端自行解析
+    var msgData: String {
+      get {return _msgData ?? String()}
+      set {_msgData = newValue}
+    }
+    /// Returns true if `msgData` has been explicitly set.
+    var hasMsgData: Bool {return self._msgData != nil}
+    /// Clears the value of `msgData`. Subsequent reads from it will return its default value.
+    mutating func clearMsgData() {self._msgData = nil}
+
+    var unknownFields = SwiftProtobuf.UnknownStorage()
+
+    init() {}
+
+    fileprivate var _msgType: UInt32? = nil
+    fileprivate var _msgData: String? = nil
+  }
+
   init() {}
 
   fileprivate var _type: SignalServiceProtos_Notification.TypeEnum? = nil
@@ -565,6 +608,7 @@ struct SignalServiceProtos_Notification {
   fileprivate var _botModeInfo: SignalServiceProtos_Notification.BotModeInfo? = nil
   fileprivate var _trainModeInfo: SignalServiceProtos_Notification.TrainModeInfo? = nil
   fileprivate var _webOrder: SignalServiceProtos_Notification.WebOrder? = nil
+  fileprivate var _otc: SignalServiceProtos_Notification.Common? = nil
 }
 
 #if swift(>=4.2)
@@ -3233,6 +3277,7 @@ extension SignalServiceProtos_Notification: SwiftProtobuf.Message, SwiftProtobuf
     3: .same(proto: "botModeInfo"),
     4: .same(proto: "trainModeInfo"),
     5: .same(proto: "webOrder"),
+    6: .same(proto: "otc"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -3243,6 +3288,7 @@ extension SignalServiceProtos_Notification: SwiftProtobuf.Message, SwiftProtobuf
       case 3: try decoder.decodeSingularMessageField(value: &self._botModeInfo)
       case 4: try decoder.decodeSingularMessageField(value: &self._trainModeInfo)
       case 5: try decoder.decodeSingularMessageField(value: &self._webOrder)
+      case 6: try decoder.decodeSingularMessageField(value: &self._otc)
       default: break
       }
     }
@@ -3264,6 +3310,9 @@ extension SignalServiceProtos_Notification: SwiftProtobuf.Message, SwiftProtobuf
     if let v = self._webOrder {
       try visitor.visitSingularMessageField(value: v, fieldNumber: 5)
     }
+    if let v = self._otc {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 6)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -3273,6 +3322,7 @@ extension SignalServiceProtos_Notification: SwiftProtobuf.Message, SwiftProtobuf
     if lhs._botModeInfo != rhs._botModeInfo {return false}
     if lhs._trainModeInfo != rhs._trainModeInfo {return false}
     if lhs._webOrder != rhs._webOrder {return false}
+    if lhs._otc != rhs._otc {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
@@ -3503,6 +3553,41 @@ extension SignalServiceProtos_Notification.WebOrder: SwiftProtobuf.Message, Swif
     if lhs._hash != rhs._hash {return false}
     if lhs._fee != rhs._fee {return false}
     if lhs._feeCur != rhs._feeCur {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension SignalServiceProtos_Notification.Common: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = SignalServiceProtos_Notification.protoMessageName + ".Common"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "msgType"),
+    2: .same(proto: "msgData"),
+  ]
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      switch fieldNumber {
+      case 1: try decoder.decodeSingularUInt32Field(value: &self._msgType)
+      case 2: try decoder.decodeSingularStringField(value: &self._msgData)
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    if let v = self._msgType {
+      try visitor.visitSingularUInt32Field(value: v, fieldNumber: 1)
+    }
+    if let v = self._msgData {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 2)
+    }
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: SignalServiceProtos_Notification.Common, rhs: SignalServiceProtos_Notification.Common) -> Bool {
+    if lhs._msgType != rhs._msgType {return false}
+    if lhs._msgData != rhs._msgData {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

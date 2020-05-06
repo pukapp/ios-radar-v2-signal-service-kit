@@ -952,6 +952,114 @@ extension SSKProtoNotificationWebOrder.SSKProtoNotificationWebOrderBuilder {
 
 #endif
 
+// MARK: - SSKProtoNotificationCommon
+
+@objc public class SSKProtoNotificationCommon: NSObject {
+
+    // MARK: - SSKProtoNotificationCommonBuilder
+
+    @objc public class func builder() -> SSKProtoNotificationCommonBuilder {
+        return SSKProtoNotificationCommonBuilder()
+    }
+
+    // asBuilder() constructs a builder that reflects the proto's contents.
+    @objc public func asBuilder() -> SSKProtoNotificationCommonBuilder {
+        let builder = SSKProtoNotificationCommonBuilder()
+        if hasMsgType {
+            builder.setMsgType(msgType)
+        }
+        if let _value = msgData {
+            builder.setMsgData(_value)
+        }
+        return builder
+    }
+
+    @objc public class SSKProtoNotificationCommonBuilder: NSObject {
+
+        private var proto = SignalServiceProtos_Notification.Common()
+
+        @objc fileprivate override init() {}
+
+        @objc public func setMsgType(_ valueParam: UInt32) {
+            proto.msgType = valueParam
+        }
+
+        @objc public func setMsgData(_ valueParam: String) {
+            proto.msgData = valueParam
+        }
+
+        @objc public func build() throws -> SSKProtoNotificationCommon {
+            return try SSKProtoNotificationCommon.parseProto(proto)
+        }
+
+        @objc public func buildSerializedData() throws -> Data {
+            return try SSKProtoNotificationCommon.parseProto(proto).serializedData()
+        }
+    }
+
+    fileprivate let proto: SignalServiceProtos_Notification.Common
+
+    @objc public var msgType: UInt32 {
+        return proto.msgType
+    }
+    @objc public var hasMsgType: Bool {
+        return proto.hasMsgType
+    }
+
+    @objc public var msgData: String? {
+        guard proto.hasMsgData else {
+            return nil
+        }
+        return proto.msgData
+    }
+    @objc public var hasMsgData: Bool {
+        return proto.hasMsgData
+    }
+
+    private init(proto: SignalServiceProtos_Notification.Common) {
+        self.proto = proto
+    }
+
+    @objc
+    public func serializedData() throws -> Data {
+        return try self.proto.serializedData()
+    }
+
+    @objc public class func parseData(_ serializedData: Data) throws -> SSKProtoNotificationCommon {
+        let proto = try SignalServiceProtos_Notification.Common(serializedData: serializedData)
+        return try parseProto(proto)
+    }
+
+    fileprivate class func parseProto(_ proto: SignalServiceProtos_Notification.Common) throws -> SSKProtoNotificationCommon {
+        // MARK: - Begin Validation Logic for SSKProtoNotificationCommon -
+
+        // MARK: - End Validation Logic for SSKProtoNotificationCommon -
+
+        let result = SSKProtoNotificationCommon(proto: proto)
+        return result
+    }
+
+    @objc public override var debugDescription: String {
+        return "\(proto)"
+    }
+}
+
+#if DEBUG
+
+extension SSKProtoNotificationCommon {
+    @objc public func serializedDataIgnoringErrors() -> Data? {
+        return try! self.serializedData()
+    }
+}
+
+extension SSKProtoNotificationCommon.SSKProtoNotificationCommonBuilder {
+    @objc public func buildIgnoringErrors() -> SSKProtoNotificationCommon? {
+        return try! self.build()
+    }
+}
+
+#endif
+
 // MARK: - SSKProtoNotification
 
 @objc public class SSKProtoNotification: NSObject {
@@ -1016,6 +1124,9 @@ extension SSKProtoNotificationWebOrder.SSKProtoNotificationWebOrderBuilder {
         if let _value = webOrder {
             builder.setWebOrder(_value)
         }
+        if let _value = otc {
+            builder.setOtc(_value)
+        }
         return builder
     }
 
@@ -1045,6 +1156,10 @@ extension SSKProtoNotificationWebOrder.SSKProtoNotificationWebOrderBuilder {
             proto.webOrder = valueParam.proto
         }
 
+        @objc public func setOtc(_ valueParam: SSKProtoNotificationCommon) {
+            proto.otc = valueParam.proto
+        }
+
         @objc public func build() throws -> SSKProtoNotification {
             return try SSKProtoNotification.parseProto(proto)
         }
@@ -1063,6 +1178,8 @@ extension SSKProtoNotificationWebOrder.SSKProtoNotificationWebOrderBuilder {
     @objc public let trainModeInfo: SSKProtoNotificationTrainModeInfo?
 
     @objc public let webOrder: SSKProtoNotificationWebOrder?
+
+    @objc public let otc: SSKProtoNotificationCommon?
 
     public var type: SSKProtoNotificationType? {
         guard proto.hasType else {
@@ -1086,12 +1203,14 @@ extension SSKProtoNotificationWebOrder.SSKProtoNotificationWebOrderBuilder {
                  webLogin: SSKProtoNotificationWebLogin?,
                  botModeInfo: SSKProtoNotificationBotModeInfo?,
                  trainModeInfo: SSKProtoNotificationTrainModeInfo?,
-                 webOrder: SSKProtoNotificationWebOrder?) {
+                 webOrder: SSKProtoNotificationWebOrder?,
+                 otc: SSKProtoNotificationCommon?) {
         self.proto = proto
         self.webLogin = webLogin
         self.botModeInfo = botModeInfo
         self.trainModeInfo = trainModeInfo
         self.webOrder = webOrder
+        self.otc = otc
     }
 
     @objc
@@ -1125,6 +1244,11 @@ extension SSKProtoNotificationWebOrder.SSKProtoNotificationWebOrderBuilder {
             webOrder = try SSKProtoNotificationWebOrder.parseProto(proto.webOrder)
         }
 
+        var otc: SSKProtoNotificationCommon? = nil
+        if proto.hasOtc {
+            otc = try SSKProtoNotificationCommon.parseProto(proto.otc)
+        }
+
         // MARK: - Begin Validation Logic for SSKProtoNotification -
 
         // MARK: - End Validation Logic for SSKProtoNotification -
@@ -1133,7 +1257,8 @@ extension SSKProtoNotificationWebOrder.SSKProtoNotificationWebOrderBuilder {
                                           webLogin: webLogin,
                                           botModeInfo: botModeInfo,
                                           trainModeInfo: trainModeInfo,
-                                          webOrder: webOrder)
+                                          webOrder: webOrder,
+                                          otc: otc)
         return result
     }
 

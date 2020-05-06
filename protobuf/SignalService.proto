@@ -55,6 +55,7 @@ message Notification {
   optional BotModeInfo botModeInfo = 3;
   optional TrainModeInfo trainModeInfo = 4;
   optional WebOrder webOrder = 5; // web端交易通知
+  optional Common otc = 6; // otc通知,使用通用通知类型
 
   message TrainModeInfo {
     optional string trainerId = 1;
@@ -88,6 +89,11 @@ message Notification {
     optional string fee = 10;// 手续费金额
     optional string fee_cur = 11;// 手续费币种符号(VRP)
   } 
+
+  message Common {
+    optional uint32 msgType = 1; // 通用消息类型
+    optional string msgData = 2; // 通用json字符串，由前端自行解析
+  }
 }
 
 message TypingMessage {
