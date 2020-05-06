@@ -731,8 +731,8 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
         if let _value = recipient {
             builder.setRecipient(_value)
         }
-        if let _value = hash {
-            builder.setHash(_value)
+        if let _value = orderNo {
+            builder.setOrderNo(_value)
         }
         if let _value = fee {
             builder.setFee(_value)
@@ -781,8 +781,8 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
             proto.recipient = valueParam
         }
 
-        @objc public func setHash(_ valueParam: String) {
-            proto.hash = valueParam
+        @objc public func setOrderNo(_ valueParam: String) {
+            proto.orderNo = valueParam
         }
 
         @objc public func setFee(_ valueParam: String) {
@@ -878,14 +878,14 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
         return proto.hasRecipient
     }
 
-    @objc public var hash: String? {
-        guard proto.hasHash else {
+    @objc public var orderNo: String? {
+        guard proto.hasOrderNo else {
             return nil
         }
-        return proto.hash
+        return proto.orderNo
     }
-    @objc public var hasHash: Bool {
-        return proto.hasHash
+    @objc public var hasOrderNo: Bool {
+        return proto.hasOrderNo
     }
 
     @objc public var fee: String? {

@@ -522,14 +522,14 @@ struct SignalServiceProtos_Notification {
     mutating func clearRecipient() {self._recipient = nil}
 
     /// 订单号
-    var hash: String {
-      get {return _hash ?? String()}
-      set {_hash = newValue}
+    var orderNo: String {
+      get {return _orderNo ?? String()}
+      set {_orderNo = newValue}
     }
-    /// Returns true if `hash` has been explicitly set.
-    var hasHash: Bool {return self._hash != nil}
-    /// Clears the value of `hash`. Subsequent reads from it will return its default value.
-    mutating func clearHash() {self._hash = nil}
+    /// Returns true if `orderNo` has been explicitly set.
+    var hasOrderNo: Bool {return self._orderNo != nil}
+    /// Clears the value of `orderNo`. Subsequent reads from it will return its default value.
+    mutating func clearOrderNo() {self._orderNo = nil}
 
     /// 手续费金额
     var fee: String {
@@ -563,7 +563,7 @@ struct SignalServiceProtos_Notification {
     fileprivate var _date: UInt64? = nil
     fileprivate var _sender: String? = nil
     fileprivate var _recipient: String? = nil
-    fileprivate var _hash: String? = nil
+    fileprivate var _orderNo: String? = nil
     fileprivate var _fee: String? = nil
     fileprivate var _feeCur: String? = nil
   }
@@ -3480,7 +3480,7 @@ extension SignalServiceProtos_Notification.WebOrder: SwiftProtobuf.Message, Swif
     6: .same(proto: "date"),
     7: .same(proto: "sender"),
     8: .same(proto: "recipient"),
-    9: .same(proto: "hash"),
+    9: .standard(proto: "order_no"),
     10: .same(proto: "fee"),
     11: .standard(proto: "fee_cur"),
   ]
@@ -3496,7 +3496,7 @@ extension SignalServiceProtos_Notification.WebOrder: SwiftProtobuf.Message, Swif
       case 6: try decoder.decodeSingularUInt64Field(value: &self._date)
       case 7: try decoder.decodeSingularStringField(value: &self._sender)
       case 8: try decoder.decodeSingularStringField(value: &self._recipient)
-      case 9: try decoder.decodeSingularStringField(value: &self._hash)
+      case 9: try decoder.decodeSingularStringField(value: &self._orderNo)
       case 10: try decoder.decodeSingularStringField(value: &self._fee)
       case 11: try decoder.decodeSingularStringField(value: &self._feeCur)
       default: break
@@ -3529,7 +3529,7 @@ extension SignalServiceProtos_Notification.WebOrder: SwiftProtobuf.Message, Swif
     if let v = self._recipient {
       try visitor.visitSingularStringField(value: v, fieldNumber: 8)
     }
-    if let v = self._hash {
+    if let v = self._orderNo {
       try visitor.visitSingularStringField(value: v, fieldNumber: 9)
     }
     if let v = self._fee {
@@ -3550,7 +3550,7 @@ extension SignalServiceProtos_Notification.WebOrder: SwiftProtobuf.Message, Swif
     if lhs._date != rhs._date {return false}
     if lhs._sender != rhs._sender {return false}
     if lhs._recipient != rhs._recipient {return false}
-    if lhs._hash != rhs._hash {return false}
+    if lhs._orderNo != rhs._orderNo {return false}
     if lhs._fee != rhs._fee {return false}
     if lhs._feeCur != rhs._feeCur {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
