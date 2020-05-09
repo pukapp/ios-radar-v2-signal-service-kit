@@ -394,7 +394,7 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
             });
             break;
         }
-        case SSKProtoNotificationTypeWebLogin:
+        case SSKProtoNotificationTypeWebLogin: {
             OWSAssertDebug(envelope);
             NSString *messagebody = [NSString stringWithFormat:@"%@;%llu", envelope.notify.webLogin.address, envelope.notify.webLogin.loginTime];
             NSString *contactId = OWSSecurityThreadContactIdentifier;
@@ -415,6 +415,25 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
                 [message anyInsertWithTransaction:transaction];
             }];
             break;
+        }
+            
+        case SSKProtoNotificationTypeWebOrder: {
+            // TODO: SSKProtoNotificationTypeWebOrder
+            OWSAssertDebug(envelope);
+            OWSAssertDebug(envelope.notify.webOrder);
+            break;
+        }
+            
+        case SSKProtoNotificationTypeOtc: {
+            OWSAssertDebug(envelope);
+            OWSAssertDebug(envelope.notify.otc);
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [NSNotificationCenter.defaultCenter postNotificationName:OWSReceiveOTCNotification
+                                                                  object:envelope.notify.otc];
+            });
+            break;
+        }
     }
 }
 
