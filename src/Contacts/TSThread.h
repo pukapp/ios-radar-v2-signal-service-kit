@@ -36,6 +36,7 @@ extern NSString *const OWSSecurityThreadContactIdentifier;
 extern NSString *const OWSTradeThreadContactIdentifier;
 extern NSString *const OWSWalletThreadContactIdentifier;
 extern NSString *const OWSMallThreadContactIdentifier;
+extern NSString *const OWSWebOrderThreadContactIdentifier;
 
 /**
  *  TSThread is the superclass of TSContactThread and TSGroupThread

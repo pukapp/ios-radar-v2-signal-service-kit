@@ -57,6 +57,9 @@ NSString *const OWSWalletThreadContactIdentifier = @"+8610002";
 /// 商城
 NSString *const OWSMallThreadContactIdentifier = @"+8610003";
 
+/// Web Order
+NSString *const OWSWebOrderThreadContactIdentifier = @"+8610004";
+
 
 @interface TSThread ()
 
