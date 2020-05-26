@@ -1060,6 +1060,117 @@ extension SSKProtoNotificationCommon.SSKProtoNotificationCommonBuilder {
 
 #endif
 
+// MARK: - SSKProtoNotificationRobotSendMsg
+
+@objc public class SSKProtoNotificationRobotSendMsg: NSObject {
+
+    // MARK: - SSKProtoNotificationRobotSendMsgBuilder
+
+    @objc public class func builder() -> SSKProtoNotificationRobotSendMsgBuilder {
+        return SSKProtoNotificationRobotSendMsgBuilder()
+    }
+
+    // asBuilder() constructs a builder that reflects the proto's contents.
+    @objc public func asBuilder() -> SSKProtoNotificationRobotSendMsgBuilder {
+        let builder = SSKProtoNotificationRobotSendMsgBuilder()
+        if let _value = message {
+            builder.setMessage(_value)
+        }
+        if let _value = source {
+            builder.setSource(_value)
+        }
+        return builder
+    }
+
+    @objc public class SSKProtoNotificationRobotSendMsgBuilder: NSObject {
+
+        private var proto = SignalServiceProtos_Notification.RobotSendMsg()
+
+        @objc fileprivate override init() {}
+
+        @objc public func setMessage(_ valueParam: String) {
+            proto.message = valueParam
+        }
+
+        @objc public func setSource(_ valueParam: String) {
+            proto.source = valueParam
+        }
+
+        @objc public func build() throws -> SSKProtoNotificationRobotSendMsg {
+            return try SSKProtoNotificationRobotSendMsg.parseProto(proto)
+        }
+
+        @objc public func buildSerializedData() throws -> Data {
+            return try SSKProtoNotificationRobotSendMsg.parseProto(proto).serializedData()
+        }
+    }
+
+    fileprivate let proto: SignalServiceProtos_Notification.RobotSendMsg
+
+    @objc public var message: String? {
+        guard proto.hasMessage else {
+            return nil
+        }
+        return proto.message
+    }
+    @objc public var hasMessage: Bool {
+        return proto.hasMessage
+    }
+
+    @objc public var source: String? {
+        guard proto.hasSource else {
+            return nil
+        }
+        return proto.source
+    }
+    @objc public var hasSource: Bool {
+        return proto.hasSource
+    }
+
+    private init(proto: SignalServiceProtos_Notification.RobotSendMsg) {
+        self.proto = proto
+    }
+
+    @objc
+    public func serializedData() throws -> Data {
+        return try self.proto.serializedData()
+    }
+
+    @objc public class func parseData(_ serializedData: Data) throws -> SSKProtoNotificationRobotSendMsg {
+        let proto = try SignalServiceProtos_Notification.RobotSendMsg(serializedData: serializedData)
+        return try parseProto(proto)
+    }
+
+    fileprivate class func parseProto(_ proto: SignalServiceProtos_Notification.RobotSendMsg) throws -> SSKProtoNotificationRobotSendMsg {
+        // MARK: - Begin Validation Logic for SSKProtoNotificationRobotSendMsg -
+
+        // MARK: - End Validation Logic for SSKProtoNotificationRobotSendMsg -
+
+        let result = SSKProtoNotificationRobotSendMsg(proto: proto)
+        return result
+    }
+
+    @objc public override var debugDescription: String {
+        return "\(proto)"
+    }
+}
+
+#if DEBUG
+
+extension SSKProtoNotificationRobotSendMsg {
+    @objc public func serializedDataIgnoringErrors() -> Data? {
+        return try! self.serializedData()
+    }
+}
+
+extension SSKProtoNotificationRobotSendMsg.SSKProtoNotificationRobotSendMsgBuilder {
+    @objc public func buildIgnoringErrors() -> SSKProtoNotificationRobotSendMsg? {
+        return try! self.build()
+    }
+}
+
+#endif
+
 // MARK: - SSKProtoNotification
 
 @objc public class SSKProtoNotification: NSObject {
@@ -1074,6 +1185,7 @@ extension SSKProtoNotificationCommon.SSKProtoNotificationCommonBuilder {
         case trainerAutoReply = 4
         case webOrder = 5
         case otc = 6
+        case robotSendMsg = 7
     }
 
     private class func SSKProtoNotificationTypeWrap(_ value: SignalServiceProtos_Notification.TypeEnum) -> SSKProtoNotificationType {
@@ -1085,6 +1197,7 @@ extension SSKProtoNotificationCommon.SSKProtoNotificationCommonBuilder {
         case .trainerAutoReply: return .trainerAutoReply
         case .webOrder: return .webOrder
         case .otc: return .otc
+        case .robotSendMsg: return .robotSendMsg
         }
     }
 
@@ -1097,6 +1210,7 @@ extension SSKProtoNotificationCommon.SSKProtoNotificationCommonBuilder {
         case .trainerAutoReply: return .trainerAutoReply
         case .webOrder: return .webOrder
         case .otc: return .otc
+        case .robotSendMsg: return .robotSendMsg
         }
     }
 
@@ -1126,6 +1240,9 @@ extension SSKProtoNotificationCommon.SSKProtoNotificationCommonBuilder {
         }
         if let _value = otc {
             builder.setOtc(_value)
+        }
+        if let _value = robotSendMsg {
+            builder.setRobotSendMsg(_value)
         }
         return builder
     }
@@ -1160,6 +1277,10 @@ extension SSKProtoNotificationCommon.SSKProtoNotificationCommonBuilder {
             proto.otc = valueParam.proto
         }
 
+        @objc public func setRobotSendMsg(_ valueParam: SSKProtoNotificationRobotSendMsg) {
+            proto.robotSendMsg = valueParam.proto
+        }
+
         @objc public func build() throws -> SSKProtoNotification {
             return try SSKProtoNotification.parseProto(proto)
         }
@@ -1180,6 +1301,8 @@ extension SSKProtoNotificationCommon.SSKProtoNotificationCommonBuilder {
     @objc public let webOrder: SSKProtoNotificationWebOrder?
 
     @objc public let otc: SSKProtoNotificationCommon?
+
+    @objc public let robotSendMsg: SSKProtoNotificationRobotSendMsg?
 
     public var type: SSKProtoNotificationType? {
         guard proto.hasType else {
@@ -1204,13 +1327,15 @@ extension SSKProtoNotificationCommon.SSKProtoNotificationCommonBuilder {
                  botModeInfo: SSKProtoNotificationBotModeInfo?,
                  trainModeInfo: SSKProtoNotificationTrainModeInfo?,
                  webOrder: SSKProtoNotificationWebOrder?,
-                 otc: SSKProtoNotificationCommon?) {
+                 otc: SSKProtoNotificationCommon?,
+                 robotSendMsg: SSKProtoNotificationRobotSendMsg?) {
         self.proto = proto
         self.webLogin = webLogin
         self.botModeInfo = botModeInfo
         self.trainModeInfo = trainModeInfo
         self.webOrder = webOrder
         self.otc = otc
+        self.robotSendMsg = robotSendMsg
     }
 
     @objc
@@ -1249,6 +1374,11 @@ extension SSKProtoNotificationCommon.SSKProtoNotificationCommonBuilder {
             otc = try SSKProtoNotificationCommon.parseProto(proto.otc)
         }
 
+        var robotSendMsg: SSKProtoNotificationRobotSendMsg? = nil
+        if proto.hasRobotSendMsg {
+            robotSendMsg = try SSKProtoNotificationRobotSendMsg.parseProto(proto.robotSendMsg)
+        }
+
         // MARK: - Begin Validation Logic for SSKProtoNotification -
 
         // MARK: - End Validation Logic for SSKProtoNotification -
@@ -1258,7 +1388,8 @@ extension SSKProtoNotificationCommon.SSKProtoNotificationCommonBuilder {
                                           botModeInfo: botModeInfo,
                                           trainModeInfo: trainModeInfo,
                                           webOrder: webOrder,
-                                          otc: otc)
+                                          otc: otc,
+                                          robotSendMsg: robotSendMsg)
         return result
     }
 
