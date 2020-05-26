@@ -434,6 +434,29 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
             });
             break;
         }
+            
+        case SSKProtoNotificationTypeRobotSendMsg: {
+            OWSAssertDebug(envelope);
+            OWSAssertDebug(envelope.notify.robotSendMsg);
+            NSString *contactId = envelope.notify.robotSendMsg.source;
+            NSString *content = envelope.notify.robotSendMsg.message;
+            TSContactThread *thread = [TSContactThread getOrCreateThreadWithContactId:contactId];
+            TSIncomingMessage *message = [[TSIncomingMessage alloc] initMessageWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                                    inThread:thread
+                                                                                 messageBody:content
+                                                                               attachmentIds:@[]
+                                                                            expiresInSeconds:0
+                                                                             expireStartedAt:0
+                                                                               quotedMessage:nil
+                                                                                contactShare:nil
+                                                                                 linkPreview:nil
+                                                                              messageSticker:nil
+                                                         perMessageExpirationDurationSeconds:0];
+            [SSKEnvironment.shared.databaseStorage asyncWriteWithBlock:^(SDSAnyWriteTransaction * _Nonnull transaction) {
+                [message anyInsertWithTransaction:transaction];
+            }];
+            break;
+        }
     }
 }
 
