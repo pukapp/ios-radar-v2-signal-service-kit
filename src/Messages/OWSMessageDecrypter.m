@@ -418,9 +418,24 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
         }
             
         case SSKProtoNotificationTypeWebOrder: {
-            // TODO: SSKProtoNotificationTypeWebOrder
             OWSAssertDebug(envelope);
             OWSAssertDebug(envelope.notify.webOrder);
+            NSString *body = envelope.notify.webOrder.serializedDataIgnoringErrors.base64EncodedString;
+            TSContactThread *thread = [TSContactThread getOrCreateThreadWithContactId:OWSWebOrderThreadContactIdentifier];
+            TSIncomingMessage *message = [[TSIncomingMessage alloc] initMessageWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                                    inThread:thread
+                                                                                 messageBody:body
+                                                                               attachmentIds:@[]
+                                                                            expiresInSeconds:0
+                                                                             expireStartedAt:0
+                                                                               quotedMessage:nil
+                                                                                contactShare:nil
+                                                                                 linkPreview:nil
+                                                                              messageSticker:nil
+                                                         perMessageExpirationDurationSeconds:0];
+            [SSKEnvironment.shared.databaseStorage asyncWriteWithBlock:^(SDSAnyWriteTransaction * _Nonnull transaction) {
+                [message anyInsertWithTransaction:transaction];
+            }];
             break;
         }
             

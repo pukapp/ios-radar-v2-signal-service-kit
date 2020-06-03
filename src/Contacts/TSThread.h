@@ -117,6 +117,8 @@ NS_SWIFT_NAME(init(uniqueId:archivalDate:archivedAsOfMessageSortId:conversationC
     
 - (BOOL)isSecurityThread;
 
+- (BOOL)isWebOrderThread;
+
 #pragma mark Interactions
 
 /**
