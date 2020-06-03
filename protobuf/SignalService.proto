@@ -79,17 +79,19 @@ message Notification {
   }
 
   message WebOrder {
-    optional string account = 1; // 账号
-    optional string type = 2; // 交易类型（sent、received、offercreate）
-    optional string amount = 3; // 交易金额
-    optional string currency = 4; // 货币符号(VBC)
-    optional string issuer = 5; // 网关
-    optional uint64 date = 6; // 交易时间戳
-    optional string sender = 7; // 转入地址
-    optional string recipient = 8; // 转出地址
-    optional string order_no = 9; // 订单号
-    optional string fee = 10;// 手续费金额
-    optional string fee_cur = 11;// 手续费币种符号(VRP)
+    optional string account          = 1; // 用户钱包账号
+    optional string type             = 2; // 交易类型(sent、received、offercreate)
+    optional string amount           = 3; // 买入 || 发送 || 接收 金额
+    optional string currency         = 4; // 买入 || 发送 || 接收 货币符号
+    optional string issuer           = 5; // 买入 || 发送 || 接收 货币网关
+    optional string sell_amount      = 6; // 卖出金额(offercreate类型)
+    optional string sell_currency    = 7; // 卖出货币符号(offercreate类型)
+    optional string sell_issuer      = 8; // 卖出货币网关(offercreate类型)
+    optional uint64 date             = 9; // 交易时间戳
+    optional string counter          = 10;// 交易/发送 对手方地址
+    optional string order_no         = 11;// 交易订单号
+    optional string fee              = 12;// 手续费金额
+    optional string icon             = 13;//货币符号对应icon url
   } 
 
   message Common {

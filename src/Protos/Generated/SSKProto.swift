@@ -722,14 +722,20 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
         if let _value = issuer {
             builder.setIssuer(_value)
         }
+        if let _value = sellAmount {
+            builder.setSellAmount(_value)
+        }
+        if let _value = sellCurrency {
+            builder.setSellCurrency(_value)
+        }
+        if let _value = sellIssuer {
+            builder.setSellIssuer(_value)
+        }
         if hasDate {
             builder.setDate(date)
         }
-        if let _value = sender {
-            builder.setSender(_value)
-        }
-        if let _value = recipient {
-            builder.setRecipient(_value)
+        if let _value = counter {
+            builder.setCounter(_value)
         }
         if let _value = orderNo {
             builder.setOrderNo(_value)
@@ -737,8 +743,8 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
         if let _value = fee {
             builder.setFee(_value)
         }
-        if let _value = feeCur {
-            builder.setFeeCur(_value)
+        if let _value = icon {
+            builder.setIcon(_value)
         }
         return builder
     }
@@ -769,16 +775,24 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
             proto.issuer = valueParam
         }
 
+        @objc public func setSellAmount(_ valueParam: String) {
+            proto.sellAmount = valueParam
+        }
+
+        @objc public func setSellCurrency(_ valueParam: String) {
+            proto.sellCurrency = valueParam
+        }
+
+        @objc public func setSellIssuer(_ valueParam: String) {
+            proto.sellIssuer = valueParam
+        }
+
         @objc public func setDate(_ valueParam: UInt64) {
             proto.date = valueParam
         }
 
-        @objc public func setSender(_ valueParam: String) {
-            proto.sender = valueParam
-        }
-
-        @objc public func setRecipient(_ valueParam: String) {
-            proto.recipient = valueParam
+        @objc public func setCounter(_ valueParam: String) {
+            proto.counter = valueParam
         }
 
         @objc public func setOrderNo(_ valueParam: String) {
@@ -789,8 +803,8 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
             proto.fee = valueParam
         }
 
-        @objc public func setFeeCur(_ valueParam: String) {
-            proto.feeCur = valueParam
+        @objc public func setIcon(_ valueParam: String) {
+            proto.icon = valueParam
         }
 
         @objc public func build() throws -> SSKProtoNotificationWebOrder {
@@ -854,6 +868,36 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
         return proto.hasIssuer
     }
 
+    @objc public var sellAmount: String? {
+        guard proto.hasSellAmount else {
+            return nil
+        }
+        return proto.sellAmount
+    }
+    @objc public var hasSellAmount: Bool {
+        return proto.hasSellAmount
+    }
+
+    @objc public var sellCurrency: String? {
+        guard proto.hasSellCurrency else {
+            return nil
+        }
+        return proto.sellCurrency
+    }
+    @objc public var hasSellCurrency: Bool {
+        return proto.hasSellCurrency
+    }
+
+    @objc public var sellIssuer: String? {
+        guard proto.hasSellIssuer else {
+            return nil
+        }
+        return proto.sellIssuer
+    }
+    @objc public var hasSellIssuer: Bool {
+        return proto.hasSellIssuer
+    }
+
     @objc public var date: UInt64 {
         return proto.date
     }
@@ -861,24 +905,14 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
         return proto.hasDate
     }
 
-    @objc public var sender: String? {
-        guard proto.hasSender else {
+    @objc public var counter: String? {
+        guard proto.hasCounter else {
             return nil
         }
-        return proto.sender
+        return proto.counter
     }
-    @objc public var hasSender: Bool {
-        return proto.hasSender
-    }
-
-    @objc public var recipient: String? {
-        guard proto.hasRecipient else {
-            return nil
-        }
-        return proto.recipient
-    }
-    @objc public var hasRecipient: Bool {
-        return proto.hasRecipient
+    @objc public var hasCounter: Bool {
+        return proto.hasCounter
     }
 
     @objc public var orderNo: String? {
@@ -901,14 +935,14 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
         return proto.hasFee
     }
 
-    @objc public var feeCur: String? {
-        guard proto.hasFeeCur else {
+    @objc public var icon: String? {
+        guard proto.hasIcon else {
             return nil
         }
-        return proto.feeCur
+        return proto.icon
     }
-    @objc public var hasFeeCur: Bool {
-        return proto.hasFeeCur
+    @objc public var hasIcon: Bool {
+        return proto.hasIcon
     }
 
     private init(proto: SignalServiceProtos_Notification.WebOrder) {

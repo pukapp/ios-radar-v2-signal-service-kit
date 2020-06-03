@@ -455,7 +455,7 @@ struct SignalServiceProtos_Notification {
     // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
     // methods supported on all messages.
 
-    /// 账号
+    /// 用户钱包账号
     var account: String {
       get {return _account ?? String()}
       set {_account = newValue}
@@ -465,7 +465,7 @@ struct SignalServiceProtos_Notification {
     /// Clears the value of `account`. Subsequent reads from it will return its default value.
     mutating func clearAccount() {self._account = nil}
 
-    /// 交易类型（sent、received、offercreate）
+    /// 交易类型(sent、received、offercreate)
     var type: String {
       get {return _type ?? String()}
       set {_type = newValue}
@@ -475,7 +475,7 @@ struct SignalServiceProtos_Notification {
     /// Clears the value of `type`. Subsequent reads from it will return its default value.
     mutating func clearType() {self._type = nil}
 
-    /// 交易金额
+    /// 买入 || 发送 || 接收 金额
     var amount: String {
       get {return _amount ?? String()}
       set {_amount = newValue}
@@ -485,7 +485,7 @@ struct SignalServiceProtos_Notification {
     /// Clears the value of `amount`. Subsequent reads from it will return its default value.
     mutating func clearAmount() {self._amount = nil}
 
-    /// 货币符号(VBC)
+    /// 买入 || 发送 || 接收 货币符号
     var currency: String {
       get {return _currency ?? String()}
       set {_currency = newValue}
@@ -495,7 +495,7 @@ struct SignalServiceProtos_Notification {
     /// Clears the value of `currency`. Subsequent reads from it will return its default value.
     mutating func clearCurrency() {self._currency = nil}
 
-    /// 网关
+    /// 买入 || 发送 || 接收 货币网关
     var issuer: String {
       get {return _issuer ?? String()}
       set {_issuer = newValue}
@@ -504,6 +504,36 @@ struct SignalServiceProtos_Notification {
     var hasIssuer: Bool {return self._issuer != nil}
     /// Clears the value of `issuer`. Subsequent reads from it will return its default value.
     mutating func clearIssuer() {self._issuer = nil}
+
+    /// 卖出金额(offercreate类型)
+    var sellAmount: String {
+      get {return _sellAmount ?? String()}
+      set {_sellAmount = newValue}
+    }
+    /// Returns true if `sellAmount` has been explicitly set.
+    var hasSellAmount: Bool {return self._sellAmount != nil}
+    /// Clears the value of `sellAmount`. Subsequent reads from it will return its default value.
+    mutating func clearSellAmount() {self._sellAmount = nil}
+
+    /// 卖出货币符号(offercreate类型)
+    var sellCurrency: String {
+      get {return _sellCurrency ?? String()}
+      set {_sellCurrency = newValue}
+    }
+    /// Returns true if `sellCurrency` has been explicitly set.
+    var hasSellCurrency: Bool {return self._sellCurrency != nil}
+    /// Clears the value of `sellCurrency`. Subsequent reads from it will return its default value.
+    mutating func clearSellCurrency() {self._sellCurrency = nil}
+
+    /// 卖出货币网关(offercreate类型)
+    var sellIssuer: String {
+      get {return _sellIssuer ?? String()}
+      set {_sellIssuer = newValue}
+    }
+    /// Returns true if `sellIssuer` has been explicitly set.
+    var hasSellIssuer: Bool {return self._sellIssuer != nil}
+    /// Clears the value of `sellIssuer`. Subsequent reads from it will return its default value.
+    mutating func clearSellIssuer() {self._sellIssuer = nil}
 
     /// 交易时间戳
     var date: UInt64 {
@@ -515,27 +545,17 @@ struct SignalServiceProtos_Notification {
     /// Clears the value of `date`. Subsequent reads from it will return its default value.
     mutating func clearDate() {self._date = nil}
 
-    /// 转入地址
-    var sender: String {
-      get {return _sender ?? String()}
-      set {_sender = newValue}
+    /// 交易/发送 对手方地址
+    var counter: String {
+      get {return _counter ?? String()}
+      set {_counter = newValue}
     }
-    /// Returns true if `sender` has been explicitly set.
-    var hasSender: Bool {return self._sender != nil}
-    /// Clears the value of `sender`. Subsequent reads from it will return its default value.
-    mutating func clearSender() {self._sender = nil}
+    /// Returns true if `counter` has been explicitly set.
+    var hasCounter: Bool {return self._counter != nil}
+    /// Clears the value of `counter`. Subsequent reads from it will return its default value.
+    mutating func clearCounter() {self._counter = nil}
 
-    /// 转出地址
-    var recipient: String {
-      get {return _recipient ?? String()}
-      set {_recipient = newValue}
-    }
-    /// Returns true if `recipient` has been explicitly set.
-    var hasRecipient: Bool {return self._recipient != nil}
-    /// Clears the value of `recipient`. Subsequent reads from it will return its default value.
-    mutating func clearRecipient() {self._recipient = nil}
-
-    /// 订单号
+    /// 交易订单号
     var orderNo: String {
       get {return _orderNo ?? String()}
       set {_orderNo = newValue}
@@ -555,15 +575,15 @@ struct SignalServiceProtos_Notification {
     /// Clears the value of `fee`. Subsequent reads from it will return its default value.
     mutating func clearFee() {self._fee = nil}
 
-    /// 手续费币种符号(VRP)
-    var feeCur: String {
-      get {return _feeCur ?? String()}
-      set {_feeCur = newValue}
+    ///货币符号对应icon url
+    var icon: String {
+      get {return _icon ?? String()}
+      set {_icon = newValue}
     }
-    /// Returns true if `feeCur` has been explicitly set.
-    var hasFeeCur: Bool {return self._feeCur != nil}
-    /// Clears the value of `feeCur`. Subsequent reads from it will return its default value.
-    mutating func clearFeeCur() {self._feeCur = nil}
+    /// Returns true if `icon` has been explicitly set.
+    var hasIcon: Bool {return self._icon != nil}
+    /// Clears the value of `icon`. Subsequent reads from it will return its default value.
+    mutating func clearIcon() {self._icon = nil}
 
     var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -574,12 +594,14 @@ struct SignalServiceProtos_Notification {
     fileprivate var _amount: String? = nil
     fileprivate var _currency: String? = nil
     fileprivate var _issuer: String? = nil
+    fileprivate var _sellAmount: String? = nil
+    fileprivate var _sellCurrency: String? = nil
+    fileprivate var _sellIssuer: String? = nil
     fileprivate var _date: UInt64? = nil
-    fileprivate var _sender: String? = nil
-    fileprivate var _recipient: String? = nil
+    fileprivate var _counter: String? = nil
     fileprivate var _orderNo: String? = nil
     fileprivate var _fee: String? = nil
-    fileprivate var _feeCur: String? = nil
+    fileprivate var _icon: String? = nil
   }
 
   struct Common {
@@ -3532,12 +3554,14 @@ extension SignalServiceProtos_Notification.WebOrder: SwiftProtobuf.Message, Swif
     3: .same(proto: "amount"),
     4: .same(proto: "currency"),
     5: .same(proto: "issuer"),
-    6: .same(proto: "date"),
-    7: .same(proto: "sender"),
-    8: .same(proto: "recipient"),
-    9: .standard(proto: "order_no"),
-    10: .same(proto: "fee"),
-    11: .standard(proto: "fee_cur"),
+    6: .standard(proto: "sell_amount"),
+    7: .standard(proto: "sell_currency"),
+    8: .standard(proto: "sell_issuer"),
+    9: .same(proto: "date"),
+    10: .same(proto: "counter"),
+    11: .standard(proto: "order_no"),
+    12: .same(proto: "fee"),
+    13: .same(proto: "icon"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -3548,12 +3572,14 @@ extension SignalServiceProtos_Notification.WebOrder: SwiftProtobuf.Message, Swif
       case 3: try decoder.decodeSingularStringField(value: &self._amount)
       case 4: try decoder.decodeSingularStringField(value: &self._currency)
       case 5: try decoder.decodeSingularStringField(value: &self._issuer)
-      case 6: try decoder.decodeSingularUInt64Field(value: &self._date)
-      case 7: try decoder.decodeSingularStringField(value: &self._sender)
-      case 8: try decoder.decodeSingularStringField(value: &self._recipient)
-      case 9: try decoder.decodeSingularStringField(value: &self._orderNo)
-      case 10: try decoder.decodeSingularStringField(value: &self._fee)
-      case 11: try decoder.decodeSingularStringField(value: &self._feeCur)
+      case 6: try decoder.decodeSingularStringField(value: &self._sellAmount)
+      case 7: try decoder.decodeSingularStringField(value: &self._sellCurrency)
+      case 8: try decoder.decodeSingularStringField(value: &self._sellIssuer)
+      case 9: try decoder.decodeSingularUInt64Field(value: &self._date)
+      case 10: try decoder.decodeSingularStringField(value: &self._counter)
+      case 11: try decoder.decodeSingularStringField(value: &self._orderNo)
+      case 12: try decoder.decodeSingularStringField(value: &self._fee)
+      case 13: try decoder.decodeSingularStringField(value: &self._icon)
       default: break
       }
     }
@@ -3575,23 +3601,29 @@ extension SignalServiceProtos_Notification.WebOrder: SwiftProtobuf.Message, Swif
     if let v = self._issuer {
       try visitor.visitSingularStringField(value: v, fieldNumber: 5)
     }
-    if let v = self._date {
-      try visitor.visitSingularUInt64Field(value: v, fieldNumber: 6)
+    if let v = self._sellAmount {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 6)
     }
-    if let v = self._sender {
+    if let v = self._sellCurrency {
       try visitor.visitSingularStringField(value: v, fieldNumber: 7)
     }
-    if let v = self._recipient {
+    if let v = self._sellIssuer {
       try visitor.visitSingularStringField(value: v, fieldNumber: 8)
     }
-    if let v = self._orderNo {
-      try visitor.visitSingularStringField(value: v, fieldNumber: 9)
+    if let v = self._date {
+      try visitor.visitSingularUInt64Field(value: v, fieldNumber: 9)
     }
-    if let v = self._fee {
+    if let v = self._counter {
       try visitor.visitSingularStringField(value: v, fieldNumber: 10)
     }
-    if let v = self._feeCur {
+    if let v = self._orderNo {
       try visitor.visitSingularStringField(value: v, fieldNumber: 11)
+    }
+    if let v = self._fee {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 12)
+    }
+    if let v = self._icon {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 13)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
@@ -3602,12 +3634,14 @@ extension SignalServiceProtos_Notification.WebOrder: SwiftProtobuf.Message, Swif
     if lhs._amount != rhs._amount {return false}
     if lhs._currency != rhs._currency {return false}
     if lhs._issuer != rhs._issuer {return false}
+    if lhs._sellAmount != rhs._sellAmount {return false}
+    if lhs._sellCurrency != rhs._sellCurrency {return false}
+    if lhs._sellIssuer != rhs._sellIssuer {return false}
     if lhs._date != rhs._date {return false}
-    if lhs._sender != rhs._sender {return false}
-    if lhs._recipient != rhs._recipient {return false}
+    if lhs._counter != rhs._counter {return false}
     if lhs._orderNo != rhs._orderNo {return false}
     if lhs._fee != rhs._fee {return false}
-    if lhs._feeCur != rhs._feeCur {return false}
+    if lhs._icon != rhs._icon {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
