@@ -710,8 +710,8 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
         if let _value = account {
             builder.setAccount(_value)
         }
-        if hasType {
-            builder.setType(type)
+        if let _value = type {
+            builder.setType(_value)
         }
         if let _value = amount {
             builder.setAmount(_value)
@@ -753,7 +753,7 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
             proto.account = valueParam
         }
 
-        @objc public func setType(_ valueParam: UInt32) {
+        @objc public func setType(_ valueParam: String) {
             proto.type = valueParam
         }
 
@@ -814,7 +814,10 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
         return proto.hasAccount
     }
 
-    @objc public var type: UInt32 {
+    @objc public var type: String? {
+        guard proto.hasType else {
+            return nil
+        }
         return proto.type
     }
     @objc public var hasType: Bool {

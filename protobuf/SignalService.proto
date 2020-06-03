@@ -80,7 +80,7 @@ message Notification {
 
   message WebOrder {
     optional string account = 1; // 账号
-    optional uint32 type = 2; // 交易类型(0:收款;1:付款;2:手续费;3:创建挂单;4:挂单完全成交;5:挂单部分成交;6.取消挂单;100.其他)
+    optional string type = 2; // 交易类型（sent、received、offercreate）
     optional string amount = 3; // 交易金额
     optional string currency = 4; // 货币符号(VBC)
     optional string issuer = 5; // 网关

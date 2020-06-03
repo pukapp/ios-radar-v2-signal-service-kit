@@ -465,9 +465,9 @@ struct SignalServiceProtos_Notification {
     /// Clears the value of `account`. Subsequent reads from it will return its default value.
     mutating func clearAccount() {self._account = nil}
 
-    /// 交易类型(0:收款;1:付款;2:手续费;3:创建挂单;4:挂单完全成交;5:挂单部分成交;6.取消挂单;100.其他)
-    var type: UInt32 {
-      get {return _type ?? 0}
+    /// 交易类型（sent、received、offercreate）
+    var type: String {
+      get {return _type ?? String()}
       set {_type = newValue}
     }
     /// Returns true if `type` has been explicitly set.
@@ -570,7 +570,7 @@ struct SignalServiceProtos_Notification {
     init() {}
 
     fileprivate var _account: String? = nil
-    fileprivate var _type: UInt32? = nil
+    fileprivate var _type: String? = nil
     fileprivate var _amount: String? = nil
     fileprivate var _currency: String? = nil
     fileprivate var _issuer: String? = nil
@@ -3544,7 +3544,7 @@ extension SignalServiceProtos_Notification.WebOrder: SwiftProtobuf.Message, Swif
     while let fieldNumber = try decoder.nextFieldNumber() {
       switch fieldNumber {
       case 1: try decoder.decodeSingularStringField(value: &self._account)
-      case 2: try decoder.decodeSingularUInt32Field(value: &self._type)
+      case 2: try decoder.decodeSingularStringField(value: &self._type)
       case 3: try decoder.decodeSingularStringField(value: &self._amount)
       case 4: try decoder.decodeSingularStringField(value: &self._currency)
       case 5: try decoder.decodeSingularStringField(value: &self._issuer)
@@ -3564,7 +3564,7 @@ extension SignalServiceProtos_Notification.WebOrder: SwiftProtobuf.Message, Swif
       try visitor.visitSingularStringField(value: v, fieldNumber: 1)
     }
     if let v = self._type {
-      try visitor.visitSingularUInt32Field(value: v, fieldNumber: 2)
+      try visitor.visitSingularStringField(value: v, fieldNumber: 2)
     }
     if let v = self._amount {
       try visitor.visitSingularStringField(value: v, fieldNumber: 3)
