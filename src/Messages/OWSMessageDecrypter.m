@@ -420,22 +420,52 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
         case SSKProtoNotificationTypeWebOrder: {
             OWSAssertDebug(envelope);
             OWSAssertDebug(envelope.notify.webOrder);
-            NSString *body = envelope.notify.webOrder.serializedDataIgnoringErrors.base64EncodedString;
+            
             TSContactThread *thread = [TSContactThread getOrCreateThreadWithContactId:OWSWebOrderThreadContactIdentifier];
-            TSIncomingMessage *message = [[TSIncomingMessage alloc] initMessageWithTimestamp:[NSDate ows_millisecondTimeStamp]
-                                                                                    inThread:thread
-                                                                                 messageBody:body
-                                                                               attachmentIds:@[]
-                                                                            expiresInSeconds:0
-                                                                             expireStartedAt:0
-                                                                               quotedMessage:nil
-                                                                                contactShare:nil
-                                                                                 linkPreview:nil
-                                                                              messageSticker:nil
-                                                         perMessageExpirationDurationSeconds:0];
-            [SSKEnvironment.shared.databaseStorage asyncWriteWithBlock:^(SDSAnyWriteTransaction * _Nonnull transaction) {
-                [message anyInsertWithTransaction:transaction];
-            }];
+            
+            // offercreate 要插入两条数据
+            if ([envelope.notify.webOrder.type isEqualToString:@"offercreate"]) {
+                // 1.
+                SSKProtoNotificationWebOrder *order = envelope.notify.webOrder;
+                NSError *aError;
+                NSData *aData = [order serializedDataAndReturnError:&aError];
+                if (aError) {
+                    OWSFailDebug(@"Serializ data error: %@", aError);
+                } else {
+                    NSString *aBody = [aData base64EncodedString];
+                    [self insertInComingMessageWithBody:aBody toThread:thread];
+                }
+                
+                // 2.
+                SSKProtoNotificationWebOrderBuilder *builder = [SSKProtoNotificationWebOrder builder];
+                [builder setAccount:order.account];
+                [builder setType:order.type];
+                [builder setAmount:order.amount];
+                [builder setCurrency:order.currency];
+                [builder setIssuer:order.issuer];
+                [builder setDate:order.date];
+                [builder setCounter:order.counter];
+                [builder setOrderNo:order.orderNo];
+                [builder setFee:order.fee];
+                [builder setIcon:order.icon];
+                NSError *bError;
+                NSData *bData = [builder buildSerializedDataAndReturnError:&bError];
+                if (bError) {
+                    OWSFailDebug(@"Serializ data error: %@", bError);
+                } else {
+                    NSString *bBody = [bData base64EncodedString];
+                    [self insertInComingMessageWithBody:bBody toThread:thread];
+                }
+            } else {
+                NSError *error;
+                NSData *data = [envelope.notify.webOrder serializedDataAndReturnError:&error];
+                if (error) {
+                    OWSFailDebug(@"Serializ data error: %@", error);
+                } else {
+                    NSString *body = [data base64EncodedString];
+                    [self insertInComingMessageWithBody:body toThread:thread];
+                }
+            }
             break;
         }
             
@@ -473,6 +503,23 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
             break;
         }
     }
+}
+
+- (void)insertInComingMessageWithBody:(NSString *)body toThread:(TSThread *)thread {
+    TSIncomingMessage *message = [[TSIncomingMessage alloc] initMessageWithTimestamp:[NSDate ows_millisecondTimeStamp]
+                                                                            inThread:thread
+                                                                         messageBody:body
+                                                                       attachmentIds:@[]
+                                                                    expiresInSeconds:0
+                                                                     expireStartedAt:0
+                                                                       quotedMessage:nil
+                                                                        contactShare:nil
+                                                                         linkPreview:nil
+                                                                      messageSticker:nil
+                                                 perMessageExpirationDurationSeconds:0];
+    [SSKEnvironment.shared.databaseStorage asyncWriteWithBlock:^(SDSAnyWriteTransaction * _Nonnull transaction) {
+        [message anyInsertWithTransaction:transaction];
+    }];
 }
 
 - (void)handleTrainerNoReplyAfter30SecondsWithTrainModeInfo:(SSKProtoNotificationTrainModeInfo *)info
