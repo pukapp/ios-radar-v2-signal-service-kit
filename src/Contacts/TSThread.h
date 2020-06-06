@@ -37,6 +37,7 @@ extern NSString *const OWSTradeThreadContactIdentifier;
 extern NSString *const OWSWalletThreadContactIdentifier;
 extern NSString *const OWSMallThreadContactIdentifier;
 extern NSString *const OWSWebOrderThreadContactIdentifier;
+extern NSString *const OWSOTCOrderThreadContactIdentifier;
 
 /**
  *  TSThread is the superclass of TSContactThread and TSGroupThread
@@ -118,6 +119,8 @@ NS_SWIFT_NAME(init(uniqueId:archivalDate:archivedAsOfMessageSortId:conversationC
 - (BOOL)isSecurityThread;
 
 - (BOOL)isWebOrderThread;
+
+- (BOOL)isOTCOrderThread;
 
 #pragma mark Interactions
 

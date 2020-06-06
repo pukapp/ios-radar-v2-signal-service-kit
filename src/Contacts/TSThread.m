@@ -60,6 +60,9 @@ NSString *const OWSMallThreadContactIdentifier = @"+8610003";
 /// Web Order
 NSString *const OWSWebOrderThreadContactIdentifier = @"+8610004";
 
+/// OTC Order
+NSString *const OWSOTCOrderThreadContactIdentifier = @"+8610005";
+
 
 @interface TSThread ()
 
@@ -299,6 +302,10 @@ isArchivedByLegacyTimestampForSorting:(BOOL)isArchivedByLegacyTimestampForSortin
 
 - (BOOL)isWebOrderThread {
     return [self.contactIdentifier isEqualToString:OWSWebOrderThreadContactIdentifier];
+}
+
+- (BOOL)isOTCOrderThread {
+    return [self.contactIdentifier isEqualToString:OWSOTCOrderThreadContactIdentifier];
 }
 
 #pragma mark - To be subclassed.
