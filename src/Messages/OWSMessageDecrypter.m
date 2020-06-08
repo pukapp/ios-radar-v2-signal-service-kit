@@ -477,6 +477,27 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
                 [NSNotificationCenter.defaultCenter postNotificationName:OWSReceiveOTCNotification
                                                                   object:envelope.notify.otc];
             });
+            
+            NSString *content = envelope.notify.otc.msgData;
+            NSData *data = [content dataUsingEncoding:NSUTF8StringEncoding];
+            NSError *error;
+            NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+            if (error) {
+                OWSFailDebug(@"JSON serialization error: %@", error);
+            } else {
+                BOOL shouldShowInServiceNotice = dict[@"service_notice"];
+                if (shouldShowInServiceNotice) {
+                    NSError *serializedDataError;
+                    NSData *otcData = [envelope.notify.otc serializedDataAndReturnError:&serializedDataError];
+                    if (serializedDataError) {
+                        OWSFailDebug(@"Serializ data error: %@", error);
+                    } else {
+                        TSContactThread *thread = [TSContactThread getOrCreateThreadWithContactId:OWSOTCOrderThreadContactIdentifier];
+                        NSString *body = [otcData base64EncodedString];
+                        [self insertInComingMessageWithBody:body toThread:thread];
+                    }
+                }
+            }
             break;
         }
             
