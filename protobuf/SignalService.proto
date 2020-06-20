@@ -92,6 +92,7 @@ message Notification {
     optional string order_no         = 11;// 交易订单号
     optional string fee              = 12;// 手续费金额
     optional string icon             = 13;//货币符号对应icon url
+    optional string sell_icon        = 14;
   } 
 
   message Common {

@@ -746,6 +746,9 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
         if let _value = icon {
             builder.setIcon(_value)
         }
+        if let _value = sellIcon {
+            builder.setSellIcon(_value)
+        }
         return builder
     }
 
@@ -805,6 +808,10 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
 
         @objc public func setIcon(_ valueParam: String) {
             proto.icon = valueParam
+        }
+
+        @objc public func setSellIcon(_ valueParam: String) {
+            proto.sellIcon = valueParam
         }
 
         @objc public func build() throws -> SSKProtoNotificationWebOrder {
@@ -943,6 +950,16 @@ extension SSKProtoNotificationWebLogin.SSKProtoNotificationWebLoginBuilder {
     }
     @objc public var hasIcon: Bool {
         return proto.hasIcon
+    }
+
+    @objc public var sellIcon: String? {
+        guard proto.hasSellIcon else {
+            return nil
+        }
+        return proto.sellIcon
+    }
+    @objc public var hasSellIcon: Bool {
+        return proto.hasSellIcon
     }
 
     private init(proto: SignalServiceProtos_Notification.WebOrder) {

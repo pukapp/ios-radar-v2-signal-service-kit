@@ -585,6 +585,15 @@ struct SignalServiceProtos_Notification {
     /// Clears the value of `icon`. Subsequent reads from it will return its default value.
     mutating func clearIcon() {self._icon = nil}
 
+    var sellIcon: String {
+      get {return _sellIcon ?? String()}
+      set {_sellIcon = newValue}
+    }
+    /// Returns true if `sellIcon` has been explicitly set.
+    var hasSellIcon: Bool {return self._sellIcon != nil}
+    /// Clears the value of `sellIcon`. Subsequent reads from it will return its default value.
+    mutating func clearSellIcon() {self._sellIcon = nil}
+
     var unknownFields = SwiftProtobuf.UnknownStorage()
 
     init() {}
@@ -602,6 +611,7 @@ struct SignalServiceProtos_Notification {
     fileprivate var _orderNo: String? = nil
     fileprivate var _fee: String? = nil
     fileprivate var _icon: String? = nil
+    fileprivate var _sellIcon: String? = nil
   }
 
   struct Common {
@@ -3562,6 +3572,7 @@ extension SignalServiceProtos_Notification.WebOrder: SwiftProtobuf.Message, Swif
     11: .standard(proto: "order_no"),
     12: .same(proto: "fee"),
     13: .same(proto: "icon"),
+    14: .standard(proto: "sell_icon"),
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -3580,6 +3591,7 @@ extension SignalServiceProtos_Notification.WebOrder: SwiftProtobuf.Message, Swif
       case 11: try decoder.decodeSingularStringField(value: &self._orderNo)
       case 12: try decoder.decodeSingularStringField(value: &self._fee)
       case 13: try decoder.decodeSingularStringField(value: &self._icon)
+      case 14: try decoder.decodeSingularStringField(value: &self._sellIcon)
       default: break
       }
     }
@@ -3625,6 +3637,9 @@ extension SignalServiceProtos_Notification.WebOrder: SwiftProtobuf.Message, Swif
     if let v = self._icon {
       try visitor.visitSingularStringField(value: v, fieldNumber: 13)
     }
+    if let v = self._sellIcon {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 14)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -3642,6 +3657,7 @@ extension SignalServiceProtos_Notification.WebOrder: SwiftProtobuf.Message, Swif
     if lhs._orderNo != rhs._orderNo {return false}
     if lhs._fee != rhs._fee {return false}
     if lhs._icon != rhs._icon {return false}
+    if lhs._sellIcon != rhs._sellIcon {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
