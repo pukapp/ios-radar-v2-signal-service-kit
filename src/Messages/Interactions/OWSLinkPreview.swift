@@ -387,30 +387,30 @@ public class OWSLinkPreviewManager: NSObject {
     }
 
     private class func whitelistedDomain(forUrl url: URL, domainWhitelist: [String], allowSubdomains: Bool) -> String? {
-        guard let urlProtocol = url.scheme?.lowercased() else {
-            return nil
-        }
-        guard protocolWhitelist.contains(urlProtocol) else {
-            return nil
-        }
-        guard let domain = url.host?.lowercased() else {
-            return nil
-        }
-        guard url.path.count > 1 else {
-            // URL must have non-empty path.
-            return nil
-        }
-
-        for whitelistedDomain in domainWhitelist {
-            if domain == whitelistedDomain.lowercased() {
-                return whitelistedDomain
-            }
-            if allowSubdomains,
-                domain.hasSuffix("." + whitelistedDomain.lowercased()) {
-                return whitelistedDomain
-            }
-        }
-        return nil
+//        guard let urlProtocol = url.scheme?.lowercased() else {
+//            return nil
+//        }
+//        guard protocolWhitelist.contains(urlProtocol) else {
+//            return nil
+//        }
+//        guard let domain = url.host?.lowercased() else {
+//            return nil
+//        }
+//        guard url.path.count > 1 else {
+//            // URL must have non-empty path.
+//            return nil
+//        }
+//
+//        for whitelistedDomain in domainWhitelist {
+//            if domain == whitelistedDomain.lowercased() {
+//                return whitelistedDomain
+//            }
+//            if allowSubdomains,
+//                domain.hasSuffix("." + whitelistedDomain.lowercased()) {
+//                return whitelistedDomain
+//            }
+//        }
+        return url.absoluteString
     }
 
     private class func stickerPackShareDomain(forUrl url: URL) -> String? {
@@ -610,6 +610,7 @@ public class OWSLinkPreviewManager: NSObject {
                 guard linkPreviewDraft.isValid() else {
                     throw LinkPreviewError.noPreview
                 }
+                OWSLogger.info("获取的:\(linkPreviewDraft.title) \(linkPreviewDraft.urlString)")
                 self.setCachedLinkPreview(linkPreviewDraft, forPreviewUrl: previewUrl)
 
                 return linkPreviewDraft
@@ -630,19 +631,21 @@ public class OWSLinkPreviewManager: NSObject {
 
         Logger.verbose("url: \(urlString)")
 
-        let sessionConfiguration = ContentProxy.sessionConfiguration()
+//        let sessionConfiguration = ContentProxy.sessionConfiguration()
+//
+//        // Don't use any caching to protect privacy of these requests.
+//        sessionConfiguration.requestCachePolicy = .reloadIgnoringLocalCacheData
+//        sessionConfiguration.urlCache = nil
 
-        // Don't use any caching to protect privacy of these requests.
-        sessionConfiguration.requestCachePolicy = .reloadIgnoringLocalCacheData
-        sessionConfiguration.urlCache = nil
-
-        let sessionManager = AFHTTPSessionManager(baseURL: nil,
-                                                  sessionConfiguration: sessionConfiguration)
+        let sessionManager = AFHTTPSessionManager(sessionConfiguration: .default)
         sessionManager.requestSerializer = AFHTTPRequestSerializer()
         sessionManager.responseSerializer = AFHTTPResponseSerializer()
+        let setArr = NSSet(objects: "text/html", "application/json", "text/json")
+        sessionManager.responseSerializer.acceptableContentTypes = setArr as? Set<String>
+
         let redirectionBlock = { (session: URLSession, task: URLSessionTask, response: URLResponse, request: URLRequest) -> URLRequest? in
             guard let redirectURL = request.url else {
-                owsFailDebug("redirectURL was unexpectedly nil")
+                Logger.warn("redirectURL was unexpectedly nil")
                 return nil
             }
 
@@ -656,61 +659,54 @@ public class OWSLinkPreviewManager: NSObject {
         }
         sessionManager.setTaskWillPerformHTTPRedirectionBlock(redirectionBlock)
 
-        guard ContentProxy.configureSessionManager(sessionManager: sessionManager, forUrl: urlString) else {
-            owsFailDebug("Could not configure url: \(urlString).")
-            return Promise(error: LinkPreviewError.assertionFailure)
-        }
+//        guard ContentProxy.configureSessionManager(sessionManager: sessionManager, forUrl: urlString) else {
+//            Logger.warn("Could not configure url: \(urlString).")
+//            return Promise(error: LinkPreviewError.assertionFailure)
+//        }
 
         let (promise, resolver) = Promise<Data>.pending()
-        sessionManager.get(urlString,
-                           parameters: [String: AnyObject](),
-                           progress: nil,
-                           success: { task, value in
+        sessionManager.get(urlString, parameters: [String: AnyObject](), progress: nil, success: { task, value in
+            guard let response = task.response as? HTTPURLResponse else {
+                Logger.warn("Invalid response: \(type(of: task.response)).")
+                resolver.reject(LinkPreviewError.assertionFailure)
+                return
+            }
+            if let contentType = response.allHeaderFields["Content-Type"] as? String {
+                guard contentType.lowercased().hasPrefix("text/") else {
+                    Logger.warn("Invalid content type: \(contentType).")
+                    resolver.reject(LinkPreviewError.invalidContent)
+                    return
+                }
+            }
+            guard let data = value as? Data else {
+                Logger.warn("Result is not data: \(type(of: value)).")
+                resolver.reject(LinkPreviewError.assertionFailure)
+                return
+            }
+            guard data.count > 0 else {
+                Logger.warn("Empty data: \(type(of: value)).")
+                resolver.reject(LinkPreviewError.invalidContent)
+                return
+            }
 
-                            guard let response = task.response as? HTTPURLResponse else {
-                                Logger.warn("Invalid response: \(type(of: task.response)).")
-                                resolver.reject(LinkPreviewError.assertionFailure)
-                                return
-                            }
-                            if let contentType = response.allHeaderFields["Content-Type"] as? String {
-                                guard contentType.lowercased().hasPrefix("text/") else {
-                                    Logger.warn("Invalid content type: \(contentType).")
-                                    resolver.reject(LinkPreviewError.invalidContent)
-                                    return
-                                }
-                            }
-                            guard let data = value as? Data else {
-                                Logger.warn("Result is not data: \(type(of: value)).")
-                                resolver.reject(LinkPreviewError.assertionFailure)
-                                return
-                            }
-                            guard data.count > 0 else {
-                                Logger.warn("Empty data: \(type(of: value)).")
-                                resolver.reject(LinkPreviewError.invalidContent)
-                                return
-                            }
-                            resolver.fulfill(data)
-        },
-                           failure: { _, error in
-                            Logger.verbose("Error: \(error)")
-
-                            guard self.isRetryable(error: error) else {
-                                Logger.warn("Error is not retryable.")
-                                resolver.reject(LinkPreviewError.couldNotDownload)
-                                return
-                            }
-
-                            guard remainingRetries > 0 else {
-                                Logger.warn("No more retries.")
-                                resolver.reject(LinkPreviewError.couldNotDownload)
-                                return
-                            }
-                            self.downloadLink(url: urlString, remainingRetries: remainingRetries - 1)
-                            .done(on: DispatchQueue.global()) { (data) in
-                                resolver.fulfill(data)
-                            }.catch(on: DispatchQueue.global()) { (error) in
-                                resolver.reject(error)
-                            }.retainUntilComplete()
+            resolver.fulfill(data)
+        }, failure: { _, error in
+            Logger.verbose("Error: \(error)")
+            guard self.isRetryable(error: error) else {
+                Logger.warn("Error is not retryable.")
+                resolver.reject(LinkPreviewError.couldNotDownload)
+                return
+            }
+            guard remainingRetries > 0 else {
+                Logger.warn("No more retries.")
+                resolver.reject(LinkPreviewError.couldNotDownload)
+                return
+            }
+            self.downloadLink(url: urlString, remainingRetries: remainingRetries - 1).done(on: DispatchQueue.global()) { (data) in
+                resolver.fulfill(data)
+            }.catch(on: DispatchQueue.global()) { (error) in
+                resolver.reject(error)
+            }.retainUntilComplete()
         })
         return promise
     }
@@ -723,37 +719,40 @@ public class OWSLinkPreviewManager: NSObject {
             Logger.error("Could not parse URL.")
             return Promise(error: LinkPreviewError.invalidInput)
         }
+        
+        guard let documentDirectory = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) else {return Promise(error: LinkPreviewError.invalidInput)}
 
-        guard let assetDescription = ProxiedContentAssetDescription(url: url as NSURL) else {
-            Logger.error("Could not create asset description.")
-            return Promise(error: LinkPreviewError.invalidInput)
+        
+        let (promise, resolver) = Promise<String>.pending()
+
+        let manager = AFURLSessionManager(sessionConfiguration: .default)
+        let downloadtask = manager.downloadTask(with: URLRequest(url: url), progress: nil, destination: { (targetPath, response) -> URL in
+            let path = response.suggestedFilename ?? "temp.jpeg"
+            return documentDirectory.appendingPathComponent(path)
+        }) { (response, filePath, error) in
+            if let _ = error {
+                resolver.reject(LinkPreviewError.couldNotDownload)
+            }
+            /// url获取路径不能使用absoluteString
+            guard let path = filePath?.path else{
+                return resolver.reject(LinkPreviewError.couldNotDownload)
+
+            }
+            resolver.fulfill(path)
         }
-        let (promise, resolver) = Promise<ProxiedContentAsset>.pending()
-        DispatchQueue.main.async {
-            _ = self.proxiedContentDownloader.requestAsset(assetDescription: assetDescription,
-                                                      priority: .high,
-                                                      success: { (_, asset) in
-                                                        resolver.fulfill(asset)
-            },
-                                                      failure: { (_) in
-                                                        Logger.warn("Error downloading asset")
-                                                        resolver.reject(LinkPreviewError.couldNotDownload)
-            })
-        }
-        return promise.then(on: DispatchQueue.global()) { (asset: ProxiedContentAsset) -> Promise<Data> in
+        downloadtask.resume()
+        return promise.then { (filePath) -> Promise<Data> in
             do {
-                let imageSize = NSData.imageSize(forFilePath: asset.filePath, mimeType: imageMimeType)
+                let imageSize = NSData.imageSize(forFilePath: filePath, mimeType: imageMimeType)
                 guard imageSize.width > 0, imageSize.height > 0 else {
                     Logger.error("Link preview is invalid or has invalid size.")
                     return Promise(error: LinkPreviewError.invalidContent)
-               }
-                let data = try Data(contentsOf: URL(fileURLWithPath: asset.filePath))
-
+                }
+                let data = try Data(contentsOf: URL(fileURLWithPath: filePath))
                 guard let srcImage = UIImage(data: data) else {
                     Logger.error("Could not parse image.")
                     return Promise(error: LinkPreviewError.invalidContent)
                 }
-
                 let maxImageSize: CGFloat = 1024
                 let shouldResize = imageSize.width > maxImageSize || imageSize.height > maxImageSize
                 guard shouldResize else {
@@ -774,10 +773,64 @@ public class OWSLinkPreviewManager: NSObject {
                 }
                 return Promise.value(dstData)
             } catch {
-                owsFailDebug("Could not load asset data: \(type(of: asset.filePath)).")
+                Logger.error("Could not load asset data: \(type(of: filePath)).")
                 return Promise(error: LinkPreviewError.assertionFailure)
             }
         }
+//        guard let assetDescription = ProxiedContentAssetDescription(url: url as NSURL) else {
+//            Logger.error("Could not create asset description.")
+//            return Promise(error: LinkPreviewError.invalidInput)
+//        }
+//        let (promise, resolver) = Promise<ProxiedContentAsset>.pending()
+//        DispatchQueue.main.async {
+//            _ = self.proxiedContentDownloader.requestAsset(assetDescription: assetDescription,
+//                                                      priority: .high,
+//                                                      success: { (_, asset) in
+//                                                        resolver.fulfill(asset)
+//            },
+//                                                      failure: { (_) in
+//                                                        Logger.warn("Error downloading asset")
+//                                                        resolver.reject(LinkPreviewError.couldNotDownload)
+//            })
+//        }
+//        return promise.then(on: DispatchQueue.global()) { (asset: ProxiedContentAsset) -> Promise<Data> in
+//            do {
+//                let imageSize = NSData.imageSize(forFilePath: asset.filePath, mimeType: imageMimeType)
+//                guard imageSize.width > 0, imageSize.height > 0 else {
+//                    Logger.error("Link preview is invalid or has invalid size.")
+//                    return Promise(error: LinkPreviewError.invalidContent)
+//               }
+//                let data = try Data(contentsOf: URL(fileURLWithPath: asset.filePath))
+//
+//                guard let srcImage = UIImage(data: data) else {
+//                    Logger.error("Could not parse image.")
+//                    return Promise(error: LinkPreviewError.invalidContent)
+//                }
+//
+//                let maxImageSize: CGFloat = 1024
+//                let shouldResize = imageSize.width > maxImageSize || imageSize.height > maxImageSize
+//                guard shouldResize else {
+//                    guard let dstData = srcImage.jpegData(compressionQuality: 0.8) else {
+//                        Logger.error("Could not write resized image.")
+//                        return Promise(error: LinkPreviewError.invalidContent)
+//                    }
+//                    return Promise.value(dstData)
+//                }
+//
+//                guard let dstImage = srcImage.resized(withMaxDimensionPoints: maxImageSize) else {
+//                    Logger.error("Could not resize image.")
+//                    return Promise(error: LinkPreviewError.invalidContent)
+//                }
+//                guard let dstData = dstImage.jpegData(compressionQuality: 0.8) else {
+//                    Logger.error("Could not write resized image.")
+//                    return Promise(error: LinkPreviewError.invalidContent)
+//                }
+//                return Promise.value(dstData)
+//            } catch {
+//                owsFailDebug("Could not load asset data: \(type(of: asset.filePath)).")
+//                return Promise(error: LinkPreviewError.assertionFailure)
+//            }
+//        }
     }
 
     private func isRetryable(error: Error) -> Bool {
@@ -806,12 +859,12 @@ public class OWSLinkPreviewManager: NSObject {
                 Logger.error("Invalid image URL.")
                 return Promise.value(OWSLinkPreviewDraft(urlString: linkUrlString, title: title))
             }
-            guard let imageFileExtension = type(of: self).fileExtension(forImageUrl: imageUrlString) else {
-                Logger.error("Image URL has unknown or invalid file extension: \(imageUrlString).")
-                return Promise.value(OWSLinkPreviewDraft(urlString: linkUrlString, title: title))
-            }
-            guard let imageMimeType = type(of: self).mimetype(forImageFileExtension: imageFileExtension) else {
-                Logger.error("Image URL has unknown or invalid content type: \(imageUrl).")
+//            guard let imageFileExtension = type(of: self).fileExtension(forImageUrl: imageUrlString) else {
+//                Logger.error("Image URL has unknown or invalid file extension: \(imageUrlString).")
+//                return Promise.value(OWSLinkPreviewDraft(urlString: linkUrlString, title: title))
+//            }
+            guard let imageMimeType = type(of: self).mimetype(forImageFileExtension: imageUrlString) else {
+                Logger.error("Image URL has unknown or invalid content type: \(imageUrlString).")
                 return Promise.value(OWSLinkPreviewDraft(urlString: linkUrlString, title: title))
             }
 
@@ -828,7 +881,7 @@ public class OWSLinkPreviewManager: NSObject {
                     return Promise.value(OWSLinkPreviewDraft(urlString: linkUrlString, title: title))
             }
         } catch {
-            owsFailDebug("Could not parse link data: \(error).")
+            OWSLogger.info("Could not parse link data: \(error).")
             return Promise(error: error)
         }
     }
@@ -853,6 +906,8 @@ public class OWSLinkPreviewManager: NSObject {
                     title = normalizedTitle
                 }
             }
+        }else{
+            title = filterTitle(text: linkText)
         }
 
         Logger.verbose("title: \(String(describing: title))")
@@ -865,6 +920,21 @@ public class OWSLinkPreviewManager: NSObject {
         }
 
         return OWSLinkPreviewContents(title: title, imageUrl: imageUrlString)
+    }
+    
+    fileprivate func filterTitle(text: String) -> String? {
+        guard text.contains("<title>"), text.contains("</title>") else {
+            return nil
+        }
+        let range = text.range(of: "</title>")!
+        let location: Int = text.distance(from: text.startIndex, to: range.lowerBound)
+        let subStr = text.prefix(location)
+
+        let prerange: Range = subStr.range(of: "<title>")!
+        let prelocation: Int = subStr.distance(from: subStr.startIndex, to: prerange.upperBound)
+        let preStr = subStr.suffix(subStr.count - prelocation).description
+
+        return preStr
     }
 
     class func fileExtension(forImageUrl urlString: String) -> String? {
@@ -884,19 +954,20 @@ public class OWSLinkPreviewManager: NSObject {
         guard imageFileExtension.count > 0 else {
             return nil
         }
-        guard let imageMimeType = MIMETypeUtil.mimeType(forFileExtension: imageFileExtension) else {
+        if let imageMimeType = MIMETypeUtil.mimeType(forFileExtension: imageFileExtension) {
             Logger.error("Image URL has unknown content type: \(imageFileExtension).")
-            return nil
+            let kValidMimeTypes = [
+                OWSMimeTypeImagePng,
+                OWSMimeTypeImageJpeg
+            ]
+            guard kValidMimeTypes.contains(imageMimeType) else {
+                Logger.error("Image URL has invalid content type: \(imageMimeType).")
+                return nil
+            }
+            return imageMimeType
         }
-        let kValidMimeTypes = [
-            OWSMimeTypeImagePng,
-            OWSMimeTypeImageJpeg
-        ]
-        guard kValidMimeTypes.contains(imageMimeType) else {
-            Logger.error("Image URL has invalid content type: \(imageMimeType).")
-            return nil
-        }
-        return imageMimeType
+        return OWSMimeTypeImageJpeg
+
     }
 
     private func decodeHTMLEntities(inString value: String) -> String? {

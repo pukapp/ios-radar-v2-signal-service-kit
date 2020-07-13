@@ -65,14 +65,14 @@ public class ContentProxy: NSObject {
                                               forUrl urlString: String) -> Bool {
 
         guard let url = URL(string: urlString, relativeTo: sessionManager.baseURL) else {
-            owsFailDebug("Invalid URL query: \(urlString).")
+            Logger.warn("Invalid URL query: \(urlString).")
             return false
         }
 
         var request = URLRequest(url: url)
 
         guard configureProxiedRequest(request: &request) else {
-            owsFailDebug("Invalid URL query: \(urlString).")
+            Logger.warn("Invalid URL query: \(urlString).")
             return false
         }
 
