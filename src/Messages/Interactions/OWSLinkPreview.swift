@@ -610,7 +610,6 @@ public class OWSLinkPreviewManager: NSObject {
                 guard linkPreviewDraft.isValid() else {
                     throw LinkPreviewError.noPreview
                 }
-                OWSLogger.info("获取的:\(linkPreviewDraft.title) \(linkPreviewDraft.urlString)")
                 self.setCachedLinkPreview(linkPreviewDraft, forPreviewUrl: previewUrl)
 
                 return linkPreviewDraft

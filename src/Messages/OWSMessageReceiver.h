@@ -53,6 +53,8 @@ NS_SWIFT_NAME(init(uniqueId:createdAt:envelopeData:));
 
 - (void)handleReceivedEnvelopeData:(NSData *)envelopeData;
 
+- (BOOL)hasPendingJobs;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -528,6 +528,11 @@ NSString *const OWSMessageDecryptJobFinderExtensionGroup = @"OWSMessageProcessin
     }
 }
 
+- (BOOL)hasPendingJobs
+{
+    return [self.yapProcessingQueue.finder nextJob];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

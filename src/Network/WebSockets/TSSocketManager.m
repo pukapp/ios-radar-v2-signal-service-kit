@@ -73,6 +73,11 @@ NS_ASSUME_NONNULL_BEGIN
     return self.websocket.state;
 }
 
+- (BOOL)hasEmptiedInitialQueue
+{
+    return self.websocket.hasEmptiedInitialQueue;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

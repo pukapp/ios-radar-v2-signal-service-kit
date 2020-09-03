@@ -5,6 +5,7 @@
 #import "SSKEnvironment.h"
 #import "AppContext.h"
 #import "OWSPrimaryStorage.h"
+#import <SignalServiceKit/SignalServiceKit-Swift.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -37,6 +38,9 @@ static SSKEnvironment *sharedSSKEnvironment;
 @property (nonatomic) OWSAttachmentDownloads *attachmentDownloads;
 @property (nonatomic) StickerManager *stickerManager;
 @property (nonatomic) SDSDatabaseStorage *databaseStorage;
+
+@property (nonatomic) MessageFetcherJob *messageFetcherJob;
+@property (nonatomic) MessageProcessing *messageProcessing;
 
 @end
 
@@ -79,6 +83,8 @@ static SSKEnvironment *sharedSSKEnvironment;
                        typingIndicators:(id<OWSTypingIndicators>)typingIndicators
                     attachmentDownloads:(OWSAttachmentDownloads *)attachmentDownloads
                          stickerManager:(StickerManager *)stickerManager
+                      messageProcessing:(MessageProcessing *)messageProcessing
+                      messageFetcherJob:(MessageFetcherJob *)messageFetcherJob
                         databaseStorage:(SDSDatabaseStorage *)databaseStorage
 {
     self = [super init];
@@ -116,6 +122,9 @@ static SSKEnvironment *sharedSSKEnvironment;
     OWSAssertDebug(attachmentDownloads);
     OWSAssertDebug(stickerManager);
     OWSAssertDebug(databaseStorage);
+    OWSAssertDebug(messageFetcherJob);
+    OWSAssertDebug(messageProcessing);
+
 
     _contactsManager = contactsManager;
     _linkPreviewManager = linkPreviewManager;
@@ -146,6 +155,8 @@ static SSKEnvironment *sharedSSKEnvironment;
     _typingIndicators = typingIndicators;
     _attachmentDownloads = attachmentDownloads;
     _stickerManager = stickerManager;
+    _messageProcessing = messageProcessing;
+    _messageFetcherJob = messageFetcherJob;
     _databaseStorage = databaseStorage;
 
     return self;

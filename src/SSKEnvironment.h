@@ -31,6 +31,9 @@ NS_ASSUME_NONNULL_BEGIN
 @class TSNetworkManager;
 @class TSSocketManager;
 @class YapDatabaseConnection;
+@class MessageFetcherJob;
+@class MessageProcessing;
+
 
 @protocol ContactsManagerProtocol;
 @protocol NotificationsProtocol;
@@ -72,6 +75,8 @@ NS_ASSUME_NONNULL_BEGIN
                        typingIndicators:(id<OWSTypingIndicators>)typingIndicators
                     attachmentDownloads:(OWSAttachmentDownloads *)attachmentDownloads
                          stickerManager:(StickerManager *)stickerManager
+                      messageProcessing:(MessageProcessing *)messageProcessing
+                      messageFetcherJob:(MessageFetcherJob *)messageFetcherJob
                         databaseStorage:(SDSDatabaseStorage *)databaseStorage NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -113,6 +118,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) id<SSKReachabilityManager> reachabilityManager;
 @property (nonatomic, readonly) id<OWSTypingIndicators> typingIndicators;
 @property (nonatomic, readonly) OWSAttachmentDownloads *attachmentDownloads;
+@property (nonatomic, readonly) MessageFetcherJob *messageFetcherJob;
+@property (nonatomic, readonly) MessageProcessing *messageProcessing;
+
 
 @property (nonatomic, readonly) StickerManager *stickerManager;
 @property (nonatomic, readonly) SDSDatabaseStorage *databaseStorage;

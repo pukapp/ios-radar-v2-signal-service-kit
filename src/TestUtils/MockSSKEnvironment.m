@@ -84,6 +84,8 @@ NS_ASSUME_NONNULL_BEGIN
     id<OWSTypingIndicators> typingIndicators = [[OWSTypingIndicatorsImpl alloc] init];
     OWSAttachmentDownloads *attachmentDownloads = [[OWSAttachmentDownloads alloc] init];
     StickerManager *stickerManager = [[StickerManager alloc] init];
+    MessageProcessing *messageProcessing = [MessageProcessing new];
+    MessageFetcherJob *messageFetcherJob = [MessageFetcherJob new];
 
     self = [super initWithContactsManager:contactsManager
                        linkPreviewManager:linkPreviewManager
@@ -114,6 +116,8 @@ NS_ASSUME_NONNULL_BEGIN
                          typingIndicators:typingIndicators
                       attachmentDownloads:attachmentDownloads
                            stickerManager:stickerManager
+                        messageProcessing:messageProcessing
+                        messageFetcherJob:messageFetcherJob
                           databaseStorage:databaseStorage];
 
     if (!self) {

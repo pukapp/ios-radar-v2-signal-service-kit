@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 // socket state of the sockets.  e.g. the UI should reflect
 // "open" if any of the sockets is open.
 - (OWSWebSocketState)highestSocketState;
+- (BOOL)hasEmptiedInitialQueue;
 
 // If the app is in the foreground, we'll try to open the socket unless it's already
 // open or connecting.
