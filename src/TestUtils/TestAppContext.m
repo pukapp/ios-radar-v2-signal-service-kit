@@ -62,6 +62,13 @@ NS_ASSUME_NONNULL_BEGIN
     return YES;
 }
 
+- (UIApplicationState)mainApplicationStateOnLaunch
+{
+    OWSFailDebug(@"Not main app.");
+
+    return UIApplicationStateInactive;
+}
+
 - (BOOL)isRTL
 {
     return NO;
@@ -156,6 +163,17 @@ NS_ASSUME_NONNULL_BEGIN
 {
     return self.mockAppSharedDataDirectoryPath;
 }
+
+- (NSString *)appDatabaseBaseDirectoryPath
+{
+    return self.appSharedDataDirectoryPath;
+}
+
+- (BOOL)canPresentNotifications
+{
+    return NO;
+}
+
 
 @end
 

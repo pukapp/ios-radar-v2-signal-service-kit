@@ -197,7 +197,7 @@ public class MessageSticker: MTLModel {
         let fileExtension = "webp"
         let contentType = OWSMimeTypeImageWebp
 
-        let filePath = OWSFileSystem.temporaryFilePath(withFileExtension: fileExtension)
+        let filePath = OWSFileSystem.temporaryFilePath(fileExtension: fileExtension)
         do {
             try stickerData.write(to: NSURL.fileURL(withPath: filePath))
         } catch let error as NSError {

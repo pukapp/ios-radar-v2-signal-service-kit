@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) BOOL silent;
 @property (nonatomic, readonly) BOOL online;
 @property (nonatomic, readonly) BOOL trainer; // 是否是训练者发送的消息
+@property (nonatomic, readonly) BOOL video;   // true:打电话;false:文本(默认)
 
 /// 训练开启者contact id
 @property (nonatomic, readonly, nullable) NSString *trainOpenerId;
@@ -45,7 +46,8 @@ NS_ASSUME_NONNULL_BEGIN
                trainOpenerId:(NSString *_Nullable)trainOpenerId
                       typing:(BOOL)typing
                      message:(NSString *_Nullable)message
-              registrationId:(int)registrationId;
+              registrationId:(int)registrationId
+                    video:(BOOL)video;
 
 @end
 

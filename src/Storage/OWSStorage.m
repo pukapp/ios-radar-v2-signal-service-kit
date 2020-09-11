@@ -22,6 +22,7 @@
 #import <YapDatabase/YapDatabaseFullTextSearchPrivate.h>
 #import <YapDatabase/YapDatabaseSecondaryIndex.h>
 #import <YapDatabase/YapDatabaseSecondaryIndexPrivate.h>
+#import <SignalServiceKit/SSKEnvironment.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -278,6 +279,18 @@ NSString *const kNSUserDefaults_DatabaseExtensionVersionMap = @"kNSUserDefaults_
 
 @implementation OWSStorage
 
+#pragma mark - Dependencies
+
++ (SDSDatabaseStorage *)databaseStorage
+{
+    return SSKEnvironment.shared.databaseStorage;
+}
+
++ (nullable OWSPrimaryStorage *)primaryStorage
+{
+    return SSKEnvironment.shared.primaryStorage;
+}
+
 - (instancetype)initStorage
 {
     self = [super init];
@@ -382,6 +395,20 @@ NSString *const kNSUserDefaults_DatabaseExtensionVersionMap = @"kNSUserDefaults_
         migrationBlock();
 
         backgroundTask = nil;
+    }];
+}
+
++ (void)registerExtensionsWithCompletionBlock:(OWSStorageCompletionBlock)completionBlock
+{
+    OWSAssertDebug(self.databaseStorage.canLoadYdb);
+    OWSAssertDebug(completionBlock);
+
+    [self.primaryStorage runSyncRegistrations];
+
+    [self.primaryStorage runAsyncRegistrationsWithCompletion:^{
+        OWSAssertDebug(self.isStorageReady);
+
+        completionBlock();
     }];
 }
 

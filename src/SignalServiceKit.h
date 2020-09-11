@@ -37,3 +37,4 @@
 #import <SignalServiceKit/YAPDBMessageContentJobFinder.h>
 #import <SignalServiceKit/YapDatabaseTransaction+OWS.h>
 #import <SignalServiceKit/DarwinNotificationCenter.h>
+#import <SignalServiceKit/StorageCoordinator.h>

@@ -6,6 +6,11 @@ import Foundation
 import GRDBCipher
 
 @objc
+public protocol SDSDatabaseStorageDelegate {
+    var storageCoordinatorState: StorageCoordinatorState { get }
+}
+
+@objc
 public class SDSDatabaseStorage: NSObject {
 
     @objc
@@ -13,6 +18,8 @@ public class SDSDatabaseStorage: NSObject {
         return SSKEnvironment.shared.databaseStorage
     }
 
+    private weak var delegate: SDSDatabaseStorageDelegate?
+    
     static public var shouldLogDBQueries: Bool = false
 
     private var hasPendingCrossProcessWrite = false
@@ -47,7 +54,9 @@ public class SDSDatabaseStorage: NSObject {
     }
 
     @objc
-    override init() {
+    required init(delegate: SDSDatabaseStorageDelegate) {
+        self.delegate = delegate
+
         super.init()
 
         addObservers()
@@ -73,6 +82,40 @@ public class SDSDatabaseStorage: NSObject {
         Logger.verbose("")
 
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    // GRDB TODO: Remove
+    @objc
+    public static var shouldUseDisposableGrdb: Bool {
+        // We don't need to use a "disposable" database in our tests;
+        // TestAppContext ensures that our entire appSharedDataDirectoryPath
+        // is disposable in that case.
+
+        if .grdbThrowawayIfMigrating == FeatureFlags.storageMode {
+            // .grdbThrowawayIfMigrating allows us to re-test the migration on each launch.
+            // It doesn't make sense (and won't work) if there's no YDB database
+            // to migrate.
+            //
+            // Specifically, state persisted in NSUserDefaults won't be "throw away"
+            // and this will break the app if we throw away our database.
+            return StorageCoordinator.hasYdbFile
+        }
+        return false
+    }
+    
+    private class func baseDir() -> URL {
+        return URL(fileURLWithPath: CurrentAppContext().appDatabaseBaseDirectoryPath(),
+                   isDirectory: true)
+    }
+    
+    @objc
+    public static var grdbDatabaseDirUrl: URL {
+        return GRDBDatabaseStorageAdapter.databaseDirUrl(baseDir: baseDir())
+    }
+
+    @objc
+    public static var grdbDatabaseFileUrl: URL {
+        return GRDBDatabaseStorageAdapter.databaseFileUrl(baseDir: baseDir())
     }
 
     func createGrdbStorage() -> GRDBDatabaseStorageAdapter {
@@ -396,6 +439,17 @@ public class GRDBDatabaseStorageAdapter: NSObject {
         return storage.pool
     }
 
+    static func databaseDirUrl(baseDir: URL) -> URL {
+        return baseDir.appendingPathComponent("grdb", isDirectory: true)
+    }
+
+    static func databaseFileUrl(baseDir: URL) -> URL {
+        let databaseDir = databaseDirUrl(baseDir: baseDir)
+        OWSFileSystem.ensureDirectoryExists(databaseDir.path)
+        return databaseDir.appendingPathComponent("signal.sqlite", isDirectory: false)
+    }
+
+    
     init(dbDir: URL) throws {
         OWSFileSystem.ensureDirectoryExists(dbDir.path)
 
@@ -702,3 +756,53 @@ private struct KeySpecSource {
         return try CurrentAppContext().keychainStorage().data(forService: keyServiceName, key: keyName)
     }
 }
+
+// MARK: - Coordination
+
+extension SDSDatabaseStorage {
+    
+    private var storageCoordinatorState: StorageCoordinatorState {
+        guard let delegate = delegate else {
+            owsFail("Missing delegate.")
+        }
+        return delegate.storageCoordinatorState
+    }
+    
+    @objc
+    var canLoadYdb: Bool {
+        switch storageCoordinatorState {
+        case .YDB, .beforeYDBToGRDBMigration, .duringYDBToGRDBMigration:
+            return true
+        case .GRDB:
+            return false
+        case .ydbTests, .grdbTests:
+            return true
+        }
+    }
+
+    @objc
+    var canReadFromYdb: Bool {
+        // We can read from YDB before and during the YDB-to-GRDB migration.
+        switch storageCoordinatorState {
+        case .YDB, .beforeYDBToGRDBMigration, .duringYDBToGRDBMigration:
+            return true
+        case .GRDB:
+            return false
+        case .ydbTests, .grdbTests:
+            return true
+        }
+    }
+    
+    @objc
+    var canLoadGrdb: Bool {
+        switch storageCoordinatorState {
+        case .YDB:
+            return false
+        case .beforeYDBToGRDBMigration, .duringYDBToGRDBMigration, .GRDB:
+            return true
+        case .ydbTests, .grdbTests:
+            return true
+        }
+    }
+}
+

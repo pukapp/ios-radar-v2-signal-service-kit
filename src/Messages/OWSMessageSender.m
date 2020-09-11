@@ -56,6 +56,7 @@
 #import <SignalServiceKit/SignalServiceKit-Swift.h>
 #import "SignalServiceKit/TSBeTrainerToTrainerOutgoingMessage.h"
 #import "SignalServiceKit/TSTrainerToBeTrainerOutgoingMessage.h"
+#import <SignalServiceKit/OWSOutgoingCallMessage.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -1850,6 +1851,8 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
         messageText = message.body;
     }
     
+    BOOL isVideo = [message isKindOfClass:[OWSOutgoingCallMessage class]];
+    
     OWSMessageServiceParams *messageParams =
         [[OWSMessageServiceParams alloc] initWithType:messageType
                                               msgType:message.radarMessageType
@@ -1862,10 +1865,12 @@ NSString *const OWSMessageSenderRateLimitedException = @"RateLimitedException";
                                         trainOpenerId:trainOpenerId
                                                typing:typing
                                               message:messageText
-                                       registrationId:[cipher throws_remoteRegistrationId:transaction]];
+                                       registrationId:[cipher throws_remoteRegistrationId:transaction]
+                                                video: isVideo];
 
     NSError *error;
     NSDictionary *jsonDict = [MTLJSONAdapter JSONDictionaryFromModel:messageParams error:&error];
+    OWSLogInfo(@"消息体: %@", jsonDict);
 
     if (error) {
         OWSProdError([OWSAnalyticsEvents messageSendErrorCouldNotSerializeMessageJson]);

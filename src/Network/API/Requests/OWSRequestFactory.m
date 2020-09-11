@@ -223,11 +223,15 @@ NS_ASSUME_NONNULL_BEGIN
 
     NSString *path = [NSString stringWithFormat:@"%@/%@", textSecureAccountsAPI, @"apn"];
     OWSAssertDebug(voipId);
+    
+    BOOL isiOS133 = [[UIDevice currentDevice] systemVersion].doubleValue >= 13.3;
+
     return [TSRequest requestWithUrl:[NSURL URLWithString:path]
                               method:@"PUT"
                           parameters:@{
                               @"apnRegistrationId" : identifier,
                               @"voipRegistrationId" : voipId ?: @"",
+                              @"ios133" : @(isiOS133),
                           }];
 }
 

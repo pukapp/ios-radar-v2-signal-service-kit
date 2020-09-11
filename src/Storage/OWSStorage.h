@@ -46,6 +46,8 @@ extern NSString *const StorageIsReadyNotification;
 
 typedef void (^OWSStorageMigrationBlock)(void);
 
+typedef void (^OWSStorageCompletionBlock)(void);
+
 @interface OWSStorage : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -60,6 +62,9 @@ typedef void (^OWSStorageMigrationBlock)(void);
 
 // migrationBlock will be invoked _off_ the main thread.
 + (void)registerExtensionsWithMigrationBlock:(OWSStorageMigrationBlock)migrationBlock;
+
+// completionBlock will be invoked _off_ the main thread.
++ (void)registerExtensionsWithCompletionBlock:(OWSStorageCompletionBlock)completionBlock;
 
 #ifdef DEBUG
 - (void)closeStorageForTests;

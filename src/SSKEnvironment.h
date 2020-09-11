@@ -33,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class YapDatabaseConnection;
 @class MessageFetcherJob;
 @class MessageProcessing;
+@class StorageCoordinator;
 
 
 @protocol ContactsManagerProtocol;
@@ -77,6 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
                          stickerManager:(StickerManager *)stickerManager
                       messageProcessing:(MessageProcessing *)messageProcessing
                       messageFetcherJob:(MessageFetcherJob *)messageFetcherJob
+                     storageCoordinator:(StorageCoordinator *)storageCoordinator
                         databaseStorage:(SDSDatabaseStorage *)databaseStorage NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -89,6 +91,9 @@ NS_ASSUME_NONNULL_BEGIN
 // Should only be called by tests.
 + (void)clearSharedForTests;
 #endif
+
++ (BOOL)hasShared;
+
 
 @property (nonatomic, readonly) id<ContactsManagerProtocol> contactsManager;
 @property (nonatomic, readonly) OWSLinkPreviewManager *linkPreviewManager;
@@ -133,6 +138,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (atomic, readonly) YapDatabaseConnection *objectReadWriteConnection;
 @property (atomic, readonly) YapDatabaseConnection *migrationDBConnection;
 @property (atomic, readonly) YapDatabaseConnection *analyticsDBConnection;
+
+@property (nonatomic, readonly) StorageCoordinator *storageCoordinator;
+
 
 - (BOOL)isComplete;
 

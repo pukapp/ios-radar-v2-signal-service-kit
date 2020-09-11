@@ -6,6 +6,7 @@
 #import "OWSError.h"
 #import "TSConstants.h"
 #import <SignalCoreKit/NSDate+OWS.h>
+#import <SignalServiceKit/SignalServiceKit-Swift.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -300,28 +301,11 @@ NS_ASSUME_NONNULL_BEGIN
     return filePaths;
 }
 
-+ (NSString *)temporaryFilePath
-{
-    return [self temporaryFilePathWithFileExtension:nil];
-}
-
-+ (NSString *)temporaryFilePathWithFileExtension:(NSString *_Nullable)fileExtension
-{
-    NSString *temporaryDirectory = OWSTemporaryDirectory();
-    NSString *tempFileName = NSUUID.UUID.UUIDString;
-    if (fileExtension.length > 0) {
-        tempFileName = [[tempFileName stringByAppendingString:@"."] stringByAppendingString:fileExtension];
-    }
-    NSString *tempFilePath = [temporaryDirectory stringByAppendingPathComponent:tempFileName];
-
-    return tempFilePath;
-}
-
 + (nullable NSString *)writeDataToTemporaryFile:(NSData *)data fileExtension:(NSString *_Nullable)fileExtension
 {
     OWSAssertDebug(data);
 
-    NSString *tempFilePath = [self temporaryFilePathWithFileExtension:fileExtension];
+    NSString *tempFilePath = [OWSFileSystem temporaryFilePathWithFileExtension:fileExtension];
     NSError *error;
     BOOL success = [data writeToFile:tempFilePath options:NSDataWritingAtomic error:&error];
     if (!success || error) {

@@ -4,11 +4,53 @@
 
 import Foundation
 
+// MARK: -
+
+@objc
+public enum StorageMode: Int {
+    // Only use YDB.  This should be used in production until we ship
+    // the YDB-to-GRDB migration.
+    case ydbForAll
+    // Use GRDB, migrating if possible on every launch.
+    // If no YDB database exists, a throwaway db is not used.
+    //
+    // Supercedes grdbMigratesFreshDBEveryLaunch.
+    //
+    // TODO: Remove.
+    case grdbThrowawayIfMigrating
+    // Use GRDB under certain conditions.
+    //
+    // TODO: Remove.
+    case grdbForAlreadyMigrated
+    case grdbForLegacyUsersOnly
+    case grdbForNewUsersOnly
+    // Use GRDB, migrating once if necessary.
+    case grdbForAll
+    // These modes can be used while running tests.
+    // They are more permissive than the release modes.
+    //
+    // The build shepherd should be running the test
+    // suites in .ydbTests and .grdbTests modes before each release.
+    case ydbTests
+    case grdbTests
+}
+
+
 /// By centralizing feature flags here and documenting their rollout plan, it's easier to review
 /// which feature flags are in play.
 @objc(SSKFeatureFlags)
 public class FeatureFlags: NSObject {
 
+    @objc
+    public static var storageMode: StorageMode {
+        if CurrentAppContext().isRunningTests {
+            // We should be running the tests using both .ydbTests or .grdbTests.
+            return .grdbTests
+        } else {
+            return .grdbForAll
+        }
+    }
+    
     @objc
     public static var conversationSearch: Bool {
         return false

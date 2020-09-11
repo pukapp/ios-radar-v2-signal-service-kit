@@ -42,6 +42,8 @@ static SSKEnvironment *sharedSSKEnvironment;
 @property (nonatomic) MessageFetcherJob *messageFetcherJob;
 @property (nonatomic) MessageProcessing *messageProcessing;
 
+@property (nonatomic) StorageCoordinator *storageCoordinator;
+
 @end
 
 #pragma mark -
@@ -85,6 +87,7 @@ static SSKEnvironment *sharedSSKEnvironment;
                          stickerManager:(StickerManager *)stickerManager
                       messageProcessing:(MessageProcessing *)messageProcessing
                       messageFetcherJob:(MessageFetcherJob *)messageFetcherJob
+                     storageCoordinator:(StorageCoordinator *)storageCoordinator
                         databaseStorage:(SDSDatabaseStorage *)databaseStorage
 {
     self = [super init];
@@ -124,6 +127,7 @@ static SSKEnvironment *sharedSSKEnvironment;
     OWSAssertDebug(databaseStorage);
     OWSAssertDebug(messageFetcherJob);
     OWSAssertDebug(messageProcessing);
+    OWSAssertDebug(storageCoordinator);
 
 
     _contactsManager = contactsManager;
@@ -157,6 +161,7 @@ static SSKEnvironment *sharedSSKEnvironment;
     _stickerManager = stickerManager;
     _messageProcessing = messageProcessing;
     _messageFetcherJob = messageFetcherJob;
+    _storageCoordinator = storageCoordinator;
     _databaseStorage = databaseStorage;
 
     return self;
@@ -175,6 +180,11 @@ static SSKEnvironment *sharedSSKEnvironment;
     OWSAssertDebug(!sharedSSKEnvironment || CurrentAppContext().isRunningTests);
 
     sharedSSKEnvironment = env;
+}
+
++ (BOOL)hasShared
+{
+    return sharedSSKEnvironment != nil;
 }
 
 + (void)clearSharedForTests

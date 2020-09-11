@@ -27,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
                       typing:(BOOL)typing
                      message:(NSString *_Nullable)message
               registrationId:(int)registrationId
+                       video:(BOOL)video
+                    
 {
     self = [super init];
 
@@ -46,7 +48,8 @@ NS_ASSUME_NONNULL_BEGIN
     _trainOpenerId = trainOpenerId;
     _typing = typing;
     _message = message;
-
+    _video = video;
+    
     return self;
 }
 

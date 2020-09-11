@@ -51,7 +51,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init
 {
-    SDSDatabaseStorage *databaseStorage = [SDSDatabaseStorage new];
+    StorageCoordinator *storageCoordinator = [StorageCoordinator new];
+    SDSDatabaseStorage *databaseStorage = storageCoordinator.databaseStorage;
     OWSPrimaryStorage *primaryStorage = databaseStorage.yapPrimaryStorage;
     [OWSPrimaryStorage protectFiles];
 
@@ -118,6 +119,7 @@ NS_ASSUME_NONNULL_BEGIN
                            stickerManager:stickerManager
                         messageProcessing:messageProcessing
                         messageFetcherJob:messageFetcherJob
+                       storageCoordinator:storageCoordinator
                           databaseStorage:databaseStorage];
 
     if (!self) {
