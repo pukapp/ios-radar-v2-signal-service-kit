@@ -153,7 +153,7 @@ static SSKEnvironment *sharedSSKEnvironment;
 
 + (instancetype)shared
 {
-    OWSAssertDebug(sharedSSKEnvironment);
+//    OWSAssertDebug(sharedSSKEnvironment);
 
     return sharedSSKEnvironment;
 }

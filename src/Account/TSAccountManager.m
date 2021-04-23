@@ -96,7 +96,7 @@ NSString *const TSAccountManager_NeedsAccountAttributesUpdateKey = @"TSAccountMa
 
 + (instancetype)sharedInstance
 {
-    OWSAssertDebug(SSKEnvironment.shared.tsAccountManager);
+//    OWSAssertDebug(SSKEnvironment.shared.tsAccountManager);
     
     return SSKEnvironment.shared.tsAccountManager;
 }
@@ -221,6 +221,7 @@ NSString *const TSAccountManager_NeedsAccountAttributesUpdateKey = @"TSAccountMa
         [self.databaseStorage readWithBlock:^(SDSAnyReadTransaction *transaction) {
             result = [self.keyValueStore getString:TSAccountManager_RegisteredNumberKey transaction:transaction];
         }];
+//        [[[NSUserDefaults alloc]initWithSuiteName:SignalApplicationGroup] setValue:result forKey:TSAccountManager_RegisteredNumberKey];
         return result;
     }
 }
@@ -483,6 +484,7 @@ NSString *const TSAccountManager_NeedsAccountAttributesUpdateKey = @"TSAccountMa
     [self.databaseStorage readWithBlock:^(SDSAnyReadTransaction *transaction) {
         result = [self.keyValueStore getString:TSAccountManager_ServerAuthToken transaction:transaction];
     }];
+//    [[[NSUserDefaults alloc]initWithSuiteName:SignalApplicationGroup] setValue:result forKey:TSAccountManager_ServerAuthToken];
     return result;
 }
 

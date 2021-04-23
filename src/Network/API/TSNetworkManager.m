@@ -359,7 +359,7 @@ constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block
     _udSessionManagerPool = [OWSSessionManagerPool new];
     _nonUdSessionManagerPool = [OWSSessionManagerPool new];
 
-    OWSSingletonAssert();
+//    OWSSingletonAssert();
 
     return self;
 }

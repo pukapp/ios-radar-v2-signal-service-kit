@@ -59,7 +59,7 @@ NSString *const kNSUserDefaults_DatabaseExtensionVersionMap = @"kNSUserDefaults_
         return self;
     }
 
-    OWSAssertDebug(delegate);
+//    OWSAssertDebug(delegate);
 
     self.delegate = delegate;
 
@@ -169,7 +169,7 @@ NSString *const kNSUserDefaults_DatabaseExtensionVersionMap = @"kNSUserDefaults_
 - (YapDatabaseConnection *)newConnection
 {
     id<OWSDatabaseConnectionDelegate> delegate = self.delegate;
-    OWSAssertDebug(delegate);
+//    OWSAssertDebug(delegate);
 
     OWSDatabaseConnection *connection = [[OWSDatabaseConnection alloc] initWithDatabase:self delegate:delegate];
     [self addConnection:connection];
@@ -309,7 +309,7 @@ NSString *const kNSUserDefaults_DatabaseExtensionVersionMap = @"kNSUserDefaults_
         //
         // The best we can try to do is to discard the current database
         // and behave like a clean install.
-        OWSFailDebug(@"Could not load database");
+//        OWSFailDebug(@"Could not load database");
         OWSProdCritical([OWSAnalyticsEvents storageErrorCouldNotLoadDatabase]);
 
         // Try to reset app by deleting all databases.
@@ -318,13 +318,13 @@ NSString *const kNSUserDefaults_DatabaseExtensionVersionMap = @"kNSUserDefaults_
         // [OWSStorage deleteDatabaseFiles];
 
         if (![self tryToLoadDatabase]) {
-            OWSFailDebug(@"Could not load database (second try)");
+//            OWSFailDebug(@"Could not load database (second try)");
             OWSProdCritical([OWSAnalyticsEvents storageErrorCouldNotLoadDatabaseSecondAttempt]);
 
             // Sleep to give analytics events time to be delivered.
             [NSThread sleepForTimeInterval:15.0f];
 
-            OWSFail(@"Failed to initialize database.");
+//            OWSFail(@"Failed to initialize database.");
         }
     }
 }

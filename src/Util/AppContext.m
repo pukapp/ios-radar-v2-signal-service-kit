@@ -32,7 +32,7 @@ static id<AppContext> currentAppContext = nil;
 
 id<AppContext> CurrentAppContext(void)
 {
-    OWSCAssertDebug(currentAppContext);
+//    OWSCAssertDebug(currentAppContext);
 
     return currentAppContext;
 }

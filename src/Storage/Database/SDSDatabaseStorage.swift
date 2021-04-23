@@ -47,7 +47,7 @@ public class SDSDatabaseStorage: NSObject {
     }
 
     @objc
-    override init() {
+    public override init() {
         super.init()
 
         addObservers()

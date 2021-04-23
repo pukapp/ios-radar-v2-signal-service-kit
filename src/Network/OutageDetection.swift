@@ -60,7 +60,7 @@ public class OutageDetection: NSObject {
                 } else if addressString == kOutageAddress {
                     isOutageDetected = true
                 } else {
-                    owsFailDebug("unexpected address: \(addressString)")
+//                    owsFailDebug("unexpected address: \(addressString)")
                 }
             }
         }

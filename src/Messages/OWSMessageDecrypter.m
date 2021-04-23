@@ -69,7 +69,7 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
     OWSAssertDebug(envelopeData);
     OWSAssertDebug(source.length > 0);
     OWSAssertDebug(sourceDevice > 0);
-
+    OWSLogDebug(@"resultWithEnvelopeData  plaintextData: %ld", plaintextData.length);
     OWSMessageDecryptResult *result = [OWSMessageDecryptResult new];
     result.envelopeData = envelopeData;
     result.plaintextData = plaintextData;
@@ -678,6 +678,7 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
     [self.databaseStorage
         asyncWriteWithBlock:^(SDSAnyWriteTransaction *transaction) {
             @try {
+                //wjwjwj
                 id<CipherMessage> cipherMessage = cipherMessageBlock(encryptedData);
                 SessionCipher *cipher = [[SessionCipher alloc] initWithSessionStore:self.sessionStore
                                                                         preKeyStore:self.preKeyStore
@@ -689,6 +690,7 @@ NSError *EnsureDecryptError(NSError *_Nullable error, NSString *fallbackErrorDes
                 // plaintextData may be nil for some envelope types.
                 NSData *_Nullable plaintextData =
                     [[cipher throws_decrypt:cipherMessage protocolContext:transaction] removePadding];
+                OWSLogDebug(@"plaintextData:----------------- %ld", plaintextData.length);
                 OWSMessageDecryptResult *result = [OWSMessageDecryptResult resultWithEnvelopeData:envelopeData
                                                                                     plaintextData:plaintextData
                                                                                            source:envelope.source

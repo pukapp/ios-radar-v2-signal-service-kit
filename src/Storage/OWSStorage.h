@@ -71,6 +71,10 @@ typedef void (^OWSStorageMigrationBlock)(void);
 
 + (YapDatabaseOptions *)defaultDatabaseOptions;
 
++ (YapDatabaseDeserializer)logOnFailureDeserializer;
+
++ (nullable NSData *)tryToLoadDatabaseCipherKeySpec:(NSError **)errorHandle;
+
 #pragma mark - Extension Registration
 
 + (void)incrementVersionOfDatabaseExtension:(NSString *)extensionName;

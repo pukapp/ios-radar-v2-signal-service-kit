@@ -66,7 +66,7 @@ void VerifyRegistrationsForPrimaryStorage(OWSStorage *storage, dispatch_block_t 
 
 + (instancetype)sharedManager
 {
-    OWSAssertDebug(SSKEnvironment.shared.primaryStorage);
+//    OWSAssertDebug(SSKEnvironment.shared.primaryStorage);
 
     return SSKEnvironment.shared.primaryStorage;
 }
